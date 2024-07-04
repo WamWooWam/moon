@@ -1,0 +1,510 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<ItemGroup Label="ProjectConfigurations">
+		<ProjectConfiguration Include="Debug|Win32">
+			<Configuration>Debug</Configuration>
+			<Platform>Win32</Platform>
+		</ProjectConfiguration>
+		<ProjectConfiguration Include="Debug|x64">
+			<Configuration>Debug</Configuration>
+			<Platform>x64</Platform>
+		</ProjectConfiguration>
+		<ProjectConfiguration Include="Release|Win32">
+			<Configuration>Release</Configuration>
+			<Platform>Win32</Platform>
+		</ProjectConfiguration>
+		<ProjectConfiguration Include="Release|x64">
+			<Configuration>Release</Configuration>
+			<Platform>x64</Platform>
+		</ProjectConfiguration>
+	</ItemGroup>
+	<PropertyGroup Label="Globals">
+		<VCProjectVersion>17.0</VCProjectVersion>
+		<ProjectGuid>{60929B2B-B85C-45B1-BE80-D892DD3EB1EE}</ProjectGuid>
+		<RootNamespace>libmoon</RootNamespace>
+		<Keyword>Win32Proj</Keyword>
+		<WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+	</PropertyGroup>
+	<Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+		<ConfigurationType>DynamicLibrary</ConfigurationType>
+		<PlatformToolset>v143</PlatformToolset>
+		<CharacterSet>Unicode</CharacterSet>
+		<WholeProgramOptimization>true</WholeProgramOptimization>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+		<ConfigurationType>DynamicLibrary</ConfigurationType>
+		<PlatformToolset>v143</PlatformToolset>
+		<CharacterSet>Unicode</CharacterSet>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+		<ConfigurationType>DynamicLibrary</ConfigurationType>
+		<PlatformToolset>v143</PlatformToolset>
+		<CharacterSet>Unicode</CharacterSet>
+		<WholeProgramOptimization>true</WholeProgramOptimization>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+		<ConfigurationType>DynamicLibrary</ConfigurationType>
+		<PlatformToolset>v143</PlatformToolset>
+		<CharacterSet>Unicode</CharacterSet>
+	</PropertyGroup>
+	<Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+	<ImportGroup Label="ExtensionSettings">
+	</ImportGroup>
+	<ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+		<Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+	</ImportGroup>
+	<ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+		<Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+	</ImportGroup>
+	<ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+		<Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+	</ImportGroup>
+	<ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+		<Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+	</ImportGroup>
+	<PropertyGroup Label="UserMacros" />
+	<PropertyGroup>
+		<_ProjectFileVersion>17.0.32505.173</_ProjectFileVersion>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+		<OutDir>bin\$(Configuration)\$(Platform)\</OutDir>
+		<IntDir>obj\$(Configuration)\$(Platform)\</IntDir>
+		<LinkIncremental>true</LinkIncremental>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+		<OutDir>bin\$(Configuration)\$(Platform)\</OutDir>
+		<IntDir>obj\$(Configuration)\$(Platform)\</IntDir>
+		<LinkIncremental>true</LinkIncremental>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+		<OutDir>bin\$(Configuration)\$(Platform)\</OutDir>
+		<IntDir>obj\$(Configuration)\$(Platform)\</IntDir>
+		<LinkIncremental>false</LinkIncremental>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+		<OutDir>bin\$(Configuration)\$(Platform)\</OutDir>
+		<IntDir>obj\$(Configuration)\$(Platform)\</IntDir>
+		<LinkIncremental>false</LinkIncremental>
+	</PropertyGroup>
+	<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+		<ClCompile>
+			<Optimization>Disabled</Optimization>
+			<AdditionalIncludeDirectories>.;pal;pal\win32;..\..\deps\curl\builds\libcurl-vc-$(PlatformTarget)-release-static-ipv6-sspi-schannel\include;..\..\deps\cairo\include;..\..\deps\expat\include;..\..\deps\freetype\include;..\..\deps\eglib\eglib\src;..\..\deps\zlib\include;..\..\deps\glew\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+			<PreprocessorDefinitions>WIN32;BUILDING_LIBMOON;DEBUG;_DEBUG;_WINDOWS;_USRDLL;LIBMOON_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+			<MinimalRebuild>false</MinimalRebuild>
+			<BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+			<RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+			<PrecompiledHeader>
+			</PrecompiledHeader>
+			<WarningLevel>Level1</WarningLevel>
+			<DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+			<CallingConvention>Cdecl</CallingConvention>
+			<MultiProcessorCompilation>true</MultiProcessorCompilation>
+			<LanguageStandard_C>stdc11</LanguageStandard_C>
+		</ClCompile>
+		<Link>
+			<GenerateDebugInformation>true</GenerateDebugInformation>
+			<SubSystem>Windows</SubSystem>
+			<TargetMachine>MachineX86</TargetMachine>
+			<AdditionalLibraryDirectories>..\..\deps\cairo\lib\$(PlatformTarget);..\..\deps\freetype\release\$(PlatformTarget);..\..\deps\eglib\$(PlatformTarget)\Debug;..\..\deps\expat\lib\$(PlatformTarget)\Release;..\..\deps\glew\lib\Release\$(PlatformTarget);..\..\deps\curl\builds\libcurl-vc-$(PlatformTarget)-release-static-ipv6-sspi-schannel\lib;..\..\deps\zlib\binaries\$(PlatformTarget)\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+			<AdditionalDependencies>$(CoreLibraryDependencies);zlib.lib;cairo.lib;libexpat.lib;eglib.lib;freetype.lib;libcurl_a.lib;ws2_32.lib;crypt32.lib;wldap32.lib;normaliz.lib;comctl32.lib;shlwapi.lib;windowscodecs.lib;winmm.lib;opengl32.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+		</Link>
+	</ItemDefinitionGroup>
+	<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+		<Midl>
+			<TargetEnvironment>X64</TargetEnvironment>
+		</Midl>
+		<ClCompile>
+			<Optimization>Disabled</Optimization>
+			<AdditionalIncludeDirectories>.;pal;pal\win32;..\..\deps\curl\builds\libcurl-vc-$(PlatformTarget)-release-static-ipv6-sspi-schannel\include;..\..\deps\cairo\include;..\..\deps\expat\include;..\..\deps\freetype\include;..\..\deps\eglib\eglib\src;..\..\deps\zlib\include;..\..\deps\glew\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+			<PreprocessorDefinitions>WIN32;BUILDING_LIBMOON;DEBUG;_DEBUG;_WINDOWS;_USRDLL;LIBMOON_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+			<MinimalRebuild>false</MinimalRebuild>
+			<BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+			<RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+			<PrecompiledHeader>
+			</PrecompiledHeader>
+			<WarningLevel>Level1</WarningLevel>
+			<DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+			<CallingConvention>Cdecl</CallingConvention>
+			<MultiProcessorCompilation>true</MultiProcessorCompilation>
+			<LanguageStandard_C>stdc17</LanguageStandard_C>
+			<LanguageStandard>stdcpp17</LanguageStandard>
+		</ClCompile>
+		<Link>
+			<GenerateDebugInformation>true</GenerateDebugInformation>
+			<SubSystem>Windows</SubSystem>
+			<TargetMachine>MachineX64</TargetMachine>
+			<AdditionalLibraryDirectories>..\..\deps\cairo\lib\$(PlatformTarget);..\..\deps\freetype\release\$(PlatformTarget);..\..\deps\eglib\$(PlatformTarget)\Debug;..\..\deps\expat\lib\$(PlatformTarget)\Release;..\..\deps\glew\lib\Release\$(PlatformTarget);..\..\deps\curl\builds\libcurl-vc-$(PlatformTarget)-release-static-ipv6-sspi-schannel\lib;..\..\deps\zlib\binaries\$(PlatformTarget)\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+			<AdditionalDependencies>$(CoreLibraryDependencies);zlib.lib;cairo.lib;libexpat.lib;eglib.lib;freetype.lib;libcurl_a.lib;ws2_32.lib;crypt32.lib;wldap32.lib;normaliz.lib;comctl32.lib;shlwapi.lib;windowscodecs.lib;winmm.lib;opengl32.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+		</Link>
+	</ItemDefinitionGroup>
+	<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+		<ClCompile>
+			<Optimization>MaxSpeed</Optimization>
+			<IntrinsicFunctions>true</IntrinsicFunctions>
+			<AdditionalIncludeDirectories>.;pal;pal\win32;..\..\deps\curl\builds\libcurl-vc-$(PlatformTarget)-release-static-ipv6-sspi-schannel\include;..\..\deps\cairo\include;..\..\deps\expat\include;..\..\deps\freetype\include;..\..\deps\eglib\eglib\src;..\..\deps\zlib\include;..\..\deps\glew\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+			<PreprocessorDefinitions>WIN32;BUILDING_LIBMOON;DEBUG;NDEBUG;_WINDOWS;_USRDLL;LIBMOON_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+			<RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+			<FunctionLevelLinking>true</FunctionLevelLinking>
+			<PrecompiledHeader>
+			</PrecompiledHeader>
+			<WarningLevel>Level1</WarningLevel>
+			<DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+			<CallingConvention>Cdecl</CallingConvention>
+			<MultiProcessorCompilation>true</MultiProcessorCompilation>
+			<LanguageStandard_C>stdc11</LanguageStandard_C>
+			<WholeProgramOptimization>false</WholeProgramOptimization>
+		</ClCompile>
+		<Link>
+			<GenerateDebugInformation>true</GenerateDebugInformation>
+			<SubSystem>Windows</SubSystem>
+			<OptimizeReferences>true</OptimizeReferences>
+			<EnableCOMDATFolding>true</EnableCOMDATFolding>
+			<TargetMachine>MachineX86</TargetMachine>
+			<AdditionalDependencies>$(CoreLibraryDependencies);zlib.lib;cairo.lib;libexpat.lib;eglib.lib;freetype.lib;libcurl_a.lib;ws2_32.lib;crypt32.lib;wldap32.lib;normaliz.lib;comctl32.lib;shlwapi.lib;windowscodecs.lib;winmm.lib;opengl32.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+			<AdditionalLibraryDirectories>..\..\deps\cairo\lib\$(PlatformTarget);..\..\deps\freetype\release\$(PlatformTarget);..\..\deps\glib\__builddir_$(PlatformTarget)\glib;..\..\deps\expat\lib\$(PlatformTarget)\Release;..\..\deps\glew\lib\Release\$(PlatformTarget);..\..\deps\curl\builds\libcurl-vc-$(PlatformTarget)-release-static-ipv6-sspi-schannel\lib;..\..\deps\zlib\binaries\$(PlatformTarget)\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+			<LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
+		</Link>
+	</ItemDefinitionGroup>
+	<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+		<Midl>
+			<TargetEnvironment>X64</TargetEnvironment>
+		</Midl>
+		<ClCompile>
+			<Optimization>MaxSpeed</Optimization>
+			<IntrinsicFunctions>true</IntrinsicFunctions>
+			<AdditionalIncludeDirectories>.;pal;pal\win32;..\..\deps\curl\builds\libcurl-vc-$(PlatformTarget)-release-static-ipv6-sspi-schannel\include;..\..\deps\cairo\include;..\..\deps\expat\include;..\..\deps\freetype\include;..\..\deps\eglib\eglib\src;..\..\deps\zlib\include;..\..\deps\glew\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+			<PreprocessorDefinitions>WIN32;BUILDING_LIBMOON;DEBUG;NDEBUG;_WINDOWS;_USRDLL;LIBMOON_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+			<RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+			<FunctionLevelLinking>true</FunctionLevelLinking>
+			<PrecompiledHeader>
+			</PrecompiledHeader>
+			<WarningLevel>Level1</WarningLevel>
+			<DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+			<CallingConvention>Cdecl</CallingConvention>
+			<MultiProcessorCompilation>true</MultiProcessorCompilation>
+			<LanguageStandard_C>stdc11</LanguageStandard_C>
+			<WholeProgramOptimization>false</WholeProgramOptimization>
+		</ClCompile>
+		<Link>
+			<GenerateDebugInformation>true</GenerateDebugInformation>
+			<SubSystem>Windows</SubSystem>
+			<OptimizeReferences>true</OptimizeReferences>
+			<EnableCOMDATFolding>true</EnableCOMDATFolding>
+			<TargetMachine>MachineX64</TargetMachine>
+			<AdditionalLibraryDirectories>..\..\deps\cairo\lib\$(PlatformTarget);..\..\deps\freetype\release\$(PlatformTarget);..\..\deps\eglib\$(PlatformTarget)\Release;..\..\deps\expat\lib\$(PlatformTarget)\Release;..\..\deps\glew\lib\Release\$(PlatformTarget);..\..\deps\curl\builds\libcurl-vc-$(PlatformTarget)-release-static-ipv6-sspi-schannel\lib;..\..\deps\zlib\binaries\$(PlatformTarget)\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+			<AdditionalDependencies>$(CoreLibraryDependencies);zlib.lib;cairo.lib;libexpat.lib;eglib.lib;freetype.lib;libcurl_a.lib;ws2_32.lib;crypt32.lib;wldap32.lib;normaliz.lib;comctl32.lib;shlwapi.lib;windowscodecs.lib;winmm.lib;opengl32.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+			<LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
+		</Link>
+	</ItemDefinitionGroup>
+	<ItemGroup>
+		<ClCompile Include="animation.cpp" />
+		<ClCompile Include="application.cpp" />
+		<ClCompile Include="applier.cpp" />
+		<ClCompile Include="asxparser.cpp" />
+		<ClCompile Include="audio.cpp" />
+		<ClCompile Include="bitmapcache.cpp" />
+		<ClCompile Include="bitmapimage.cpp" />
+		<ClCompile Include="bitmapsource.cpp" />
+		<ClCompile Include="border.cpp" />
+		<ClCompile Include="brush.cpp" />
+		<ClCompile Include="canvas.cpp" />
+		<ClCompile Include="capture.cpp" />
+		<ClCompile Include="cbinding.cpp" />
+		<ClCompile Include="clock.cpp" />
+		<ClCompile Include="collection.cpp" />
+		<ClCompile Include="color.cpp" />
+		<ClCompile Include="consent.cpp" />
+		<ClCompile Include="contentcontrol.cpp" />
+		<ClCompile Include="contentpresenter.cpp" />
+		<ClCompile Include="context-cairo.cpp" />
+		<ClCompile Include="context-gl.cpp" />
+		<ClCompile Include="context-wgl.cpp" />
+		<ClCompile Include="context.cpp" />
+		<ClCompile Include="control.cpp" />
+		<ClCompile Include="cornerradius.cpp" />
+		<ClCompile Include="cpu.cpp" />
+		<ClCompile Include="debug.cpp" />
+		<ClCompile Include="deepzoomimagetilesource.cpp" />
+		<ClCompile Include="dependencyobject.cpp" />
+		<ClCompile Include="dependencyproperty.cpp" />
+		<ClCompile Include="dependencyproperty.g.cpp" />
+		<ClCompile Include="deployment.cpp" />
+		<ClCompile Include="dirty.cpp" />
+		<ClCompile Include="downloader.cpp" />
+		<ClCompile Include="easing.cpp" />
+		<ClCompile Include="effect.cpp" />
+		<ClCompile Include="enums.cpp" />
+		<ClCompile Include="error.cpp" />
+		<ClCompile Include="eventargs.cpp" />
+		<ClCompile Include="factory.cpp" />
+		<ClCompile Include="font-utils.cpp" />
+		<ClCompile Include="fontmanager.cpp" />
+		<ClCompile Include="fonts.cpp" />
+		<ClCompile Include="frameworkelement.cpp" />
+		<ClCompile Include="gchandle.cpp" />
+		<ClCompile Include="geometry.cpp" />
+		<ClCompile Include="gkeyfile.c" />
+		<ClCompile Include="glyphs.cpp" />
+		<ClCompile Include="grid.cpp" />
+		<ClCompile Include="http-streaming.cpp" />
+		<ClCompile Include="imagesource.cpp" />
+		<ClCompile Include="keyboard.cpp" />
+		<ClCompile Include="layoutinformation.cpp" />
+		<ClCompile Include="list.cpp" />
+		<ClCompile Include="managedtypeinfo.cpp" />
+		<ClCompile Include="media.cpp" />
+		<ClCompile Include="mediaelement.cpp" />
+		<ClCompile Include="medialog.cpp" />
+		<ClCompile Include="mediaplayer.cpp" />
+		<ClCompile Include="messaging.cpp" />
+		<ClCompile Include="moon-curves.cpp" />
+		<ClCompile Include="moon-path.cpp" />
+		<ClCompile Include="moonlightconfiguration.cpp" />
+		<ClCompile Include="mp3.cpp" />
+		<ClCompile Include="multiscaleimage.cpp" />
+		<ClCompile Include="multiscalesubimage.cpp" />
+		<ClCompile Include="namescope.cpp" />
+		<ClCompile Include="network-curl.cpp" />
+		<ClCompile Include="network.cpp" />
+		<ClCompile Include="notificationwindow.cpp" />
+		<ClCompile Include="openfile.cpp" />
+		<ClCompile Include="pal\pal.cpp" />
+		<ClCompile Include="pal\win32\fonts-win32.cpp" />
+		<ClCompile Include="pal\win32\im-win32.cpp" />
+		<ClCompile Include="pal\win32\pal-win32.cpp" />
+		<ClCompile Include="pal\win32\pixbuf-win32.cpp" />
+		<ClCompile Include="pal\win32\threads-win32.cpp" />
+		<ClCompile Include="pal\win32\window-win32.cpp" />
+		<ClCompile Include="pal\window.cpp" />
+		<ClCompile Include="panel.cpp" />
+		<ClCompile Include="pipeline-asf.cpp" />
+		<ClCompile Include="pipeline-logo.cpp" />
+		<ClCompile Include="pipeline-mp4.cpp" />
+		<ClCompile Include="pipeline.cpp" />
+		<ClCompile Include="playlist.cpp" />
+		<ClCompile Include="point.cpp" />
+		<ClCompile Include="popup.cpp" />
+		<ClCompile Include="printing.cpp" />
+		<ClCompile Include="projection.cpp" />
+		<ClCompile Include="provider.cpp" />
+		<ClCompile Include="rect.cpp" />
+		<ClCompile Include="region.cpp" />
+		<ClCompile Include="resources.cpp" />
+		<ClCompile Include="richtextbox.cpp" />
+		<ClCompile Include="richtextlayout.cpp" />
+		<ClCompile Include="runtime.cpp" />
+		<ClCompile Include="security.cpp" />
+		<ClCompile Include="shape.cpp" />
+		<ClCompile Include="size.cpp" />
+		<ClCompile Include="style.cpp" />
+		<ClCompile Include="stylus.cpp" />
+		<ClCompile Include="surface-cairo.cpp" />
+		<ClCompile Include="surface-gl.cpp" />
+		<ClCompile Include="surface-wgl.cpp" />
+		<ClCompile Include="surface.cpp" />
+		<ClCompile Include="tabnavigationwalker.cpp" />
+		<ClCompile Include="template.cpp" />
+		<ClCompile Include="textblock.cpp" />
+		<ClCompile Include="textbox.cpp" />
+		<ClCompile Include="textelement.cpp" />
+		<ClCompile Include="textlayout.cpp" />
+		<ClCompile Include="textpointer.cpp" />
+		<ClCompile Include="textselection.cpp" />
+		<ClCompile Include="thickness.cpp" />
+		<ClCompile Include="tilesource.cpp" />
+		<ClCompile Include="timeline.cpp" />
+		<ClCompile Include="timemanager.cpp" />
+		<ClCompile Include="timesource.cpp" />
+		<ClCompile Include="transform.cpp" />
+		<ClCompile Include="trigger.cpp" />
+		<ClCompile Include="type-generated.cpp" />
+		<ClCompile Include="type.cpp" />
+		<ClCompile Include="uielement.cpp" />
+		<ClCompile Include="uri.cpp" />
+		<ClCompile Include="usercontrol.cpp" />
+		<ClCompile Include="utils.cpp" />
+		<ClCompile Include="validators.cpp" />
+		<ClCompile Include="value.cpp" />
+		<ClCompile Include="weakrefmanager.cpp" />
+		<ClCompile Include="webbrowser.cpp" />
+		<ClCompile Include="writeablebitmap.cpp" />
+		<ClCompile Include="xaml.cpp" />
+		<ClCompile Include="xap.cpp" />
+		<ClCompile Include="yuv-converter.cpp" />
+		<ClCompile Include="zip\ioapi.c" />
+		<ClCompile Include="zip\unzip.c" />
+	</ItemGroup>
+	<ItemGroup>
+		<ClInclude Include="animation.h" />
+		<ClInclude Include="application.h" />
+		<ClInclude Include="applier.h" />
+		<ClInclude Include="asxparser.h" />
+		<ClInclude Include="audio-alsa.h" />
+		<ClInclude Include="audio-opensles.h" />
+		<ClInclude Include="audio-pulse.h" />
+		<ClInclude Include="audio.h" />
+		<ClInclude Include="authors.h" />
+		<ClInclude Include="bitmapcache.h" />
+		<ClInclude Include="bitmapimage.h" />
+		<ClInclude Include="bitmapsource.h" />
+		<ClInclude Include="border.h" />
+		<ClInclude Include="brush.h" />
+		<ClInclude Include="canvas.h" />
+		<ClInclude Include="capture.h" />
+		<ClInclude Include="cbinding.h" />
+		<ClInclude Include="clock.h" />
+		<ClInclude Include="collection.h" />
+		<ClInclude Include="color.h" />
+		<ClInclude Include="consent.h" />
+		<ClInclude Include="contentcontrol.h" />
+		<ClInclude Include="contentpresenter.h" />
+		<ClInclude Include="context-cairo.h" />
+		<ClInclude Include="context-cgl.h" />
+		<ClInclude Include="context-egl.h" />
+		<ClInclude Include="context-gallium.h" />
+		<ClInclude Include="context-gl.h" />
+		<ClInclude Include="context-opengl.h" />
+		<ClInclude Include="context.h" />
+		<ClInclude Include="control.h" />
+		<ClInclude Include="cornerradius.h" />
+		<ClInclude Include="cpu.h" />
+		<ClInclude Include="debug.h" />
+		<ClInclude Include="deepzoomimagetilesource.h" />
+		<ClInclude Include="dependencyobject.h" />
+		<ClInclude Include="dependencyproperty.h" />
+		<ClInclude Include="deployment.h" />
+		<ClInclude Include="designmode.h" />
+		<ClInclude Include="dirty.h" />
+		<ClInclude Include="downloader.h" />
+		<ClInclude Include="drm.h" />
+		<ClInclude Include="easing.h" />
+		<ClInclude Include="effect.h" />
+		<ClInclude Include="enums.h" />
+		<ClInclude Include="error.h" />
+		<ClInclude Include="eventargs.h" />
+		<ClInclude Include="factory.h" />
+		<ClInclude Include="font-utils.h" />
+		<ClInclude Include="fontfamily.h" />
+		<ClInclude Include="fontmanager.h" />
+		<ClInclude Include="fonts.h" />
+		<ClInclude Include="fontsource.h" />
+		<ClInclude Include="fontstretch.h" />
+		<ClInclude Include="fontstyle.h" />
+		<ClInclude Include="fontweight.h" />
+		<ClInclude Include="framerate-display.h" />
+		<ClInclude Include="frameworkelement.h" />
+		<ClInclude Include="fullscreen.h" />
+		<ClInclude Include="gchandle.h" />
+		<ClInclude Include="geometry.h" />
+		<ClInclude Include="gkeyfile.h" />
+		<ClInclude Include="glyphs.h" />
+		<ClInclude Include="grid.h" />
+		<ClInclude Include="http-streaming.h" />
+		<ClInclude Include="imagesource.h" />
+		<ClInclude Include="incomplete-support.h" />
+		<ClInclude Include="inputmethod.h" />
+		<ClInclude Include="inputscope.h" />
+		<ClInclude Include="jpeg.h" />
+		<ClInclude Include="keyboard.h" />
+		<ClInclude Include="layoutinformation.h" />
+		<ClInclude Include="libmoon.h" />
+		<ClInclude Include="list.h" />
+		<ClInclude Include="managedtypeinfo.h" />
+		<ClInclude Include="media.h" />
+		<ClInclude Include="mediaelement.h" />
+		<ClInclude Include="medialog.h" />
+		<ClInclude Include="mediaplayer.h" />
+		<ClInclude Include="messaging.h" />
+		<ClInclude Include="moon-curves.h" />
+		<ClInclude Include="moon-path.h" />
+		<ClInclude Include="moonlightconfiguration.h" />
+		<ClInclude Include="mp3.h" />
+		<ClInclude Include="multiscaleimage.h" />
+		<ClInclude Include="multiscalesubimage.h" />
+		<ClInclude Include="namescope.h" />
+		<ClInclude Include="network-curl.h" />
+		<ClInclude Include="network.h" />
+		<ClInclude Include="notificationwindow.h" />
+		<ClInclude Include="openfile.h" />
+		<ClInclude Include="pal\pal-threads.h" />
+		<ClInclude Include="pal\pal.h" />
+		<ClInclude Include="pal\win32\pal-win32.h" />
+		<ClInclude Include="pal\win32\pixbuf-win32.h" />
+		<ClInclude Include="pal\win32\window-win32.h" />
+		<ClInclude Include="pal\window.h" />
+		<ClInclude Include="panel.h" />
+		<ClInclude Include="pipeline-asf.h" />
+		<ClInclude Include="pipeline-ffmpeg.h" />
+		<ClInclude Include="pipeline-mp4.h" />
+		<ClInclude Include="pipeline-vda.h" />
+		<ClInclude Include="pipeline.h" />
+		<ClInclude Include="playlist.h" />
+		<ClInclude Include="point.h" />
+		<ClInclude Include="popup.h" />
+		<ClInclude Include="printing.h" />
+		<ClInclude Include="projection.h" />
+		<ClInclude Include="propertypath.h" />
+		<ClInclude Include="provider.h" />
+		<ClInclude Include="ptr.h" />
+		<ClInclude Include="rect.h" />
+		<ClInclude Include="region.h" />
+		<ClInclude Include="resources.h" />
+		<ClInclude Include="richtextbox.h" />
+		<ClInclude Include="richtextlayout.h" />
+		<ClInclude Include="runtime.h" />
+		<ClInclude Include="security.h" />
+		<ClInclude Include="shape.h" />
+		<ClInclude Include="size.h" />
+		<ClInclude Include="style.h" />
+		<ClInclude Include="stylus.h" />
+		<ClInclude Include="surface-cairo.h" />
+		<ClInclude Include="surface-cgl.h" />
+		<ClInclude Include="surface-egl.h" />
+		<ClInclude Include="surface-gallium-egl.h" />
+		<ClInclude Include="surface-gallium.h" />
+		<ClInclude Include="surface-gl.h" />
+		<ClInclude Include="surface-glew.h" />
+		<ClInclude Include="surface-opengl.h" />
+		<ClInclude Include="surface.h" />
+		<ClInclude Include="tabnavigationwalker.h" />
+		<ClInclude Include="template.h" />
+		<ClInclude Include="textblock.h" />
+		<ClInclude Include="textbox.h" />
+		<ClInclude Include="textelement.h" />
+		<ClInclude Include="textlayout.h" />
+		<ClInclude Include="textoptions.h" />
+		<ClInclude Include="textpointer.h" />
+		<ClInclude Include="textselection.h" />
+		<ClInclude Include="thickness.h" />
+		<ClInclude Include="tilesource.h" />
+		<ClInclude Include="timeline.h" />
+		<ClInclude Include="timemanager.h" />
+		<ClInclude Include="timesource.h" />
+		<ClInclude Include="transform.h" />
+		<ClInclude Include="trigger.h" />
+		<ClInclude Include="type.h" />
+		<ClInclude Include="uielement.h" />
+		<ClInclude Include="uri.h" />
+		<ClInclude Include="usercontrol.h" />
+		<ClInclude Include="utils.h" />
+		<ClInclude Include="validators.h" />
+		<ClInclude Include="value.h" />
+		<ClInclude Include="weakrefmanager.h" />
+		<ClInclude Include="webbrowser.h" />
+		<ClInclude Include="writeablebitmap.h" />
+		<ClInclude Include="xaml.h" />
+		<ClInclude Include="xap.h" />
+		<ClInclude Include="yuv-converter.h" />
+		<ClInclude Include="zip\crypt.h" />
+		<ClInclude Include="zip\ioapi.h" />
+		<ClInclude Include="zip\unzip.h" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="..\..\.clang-format" />
+	</ItemGroup>
+	<Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+	<ImportGroup Label="ExtensionTargets">
+	</ImportGroup>
+</Project>

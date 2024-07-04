@@ -1,0 +1,210 @@
+2010-07-12  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* ivt-check.cs: Open up System.ServiceModel.Web for
+	System.ServiceModel.Web.Extensions.
+
+2010-04-12  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* audit.cs: Don't consider icall visibility (i.e. bring all
+	of them unless they are decorated with [SecurityCritical])
+
+2010-03-26  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* detect-sc.cs: Do not decorate pinvoke inside SafeNativeMethods
+	* detect-ssc.cs: Decorate pinvoke inside SafeNativeMethods
+
+2010-03-10  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* ivt-check.cs: Allow System.Json (SDK assembly) access
+	to System.ServiceModel.Web internals.
+	
+2010-03-04  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Makefile.am: Cecil is now in the basic profile.
+
+2010-02-09  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* ivt-check.cs: Mono.CompilerServices.SymbolWriter.dll is not
+	welcome anymore to poke inside mscorlib.dll internals
+
+2010-01-20  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* ivt-compat.cs: New. Tool to check if Moonlight platform code
+	provides all the internals required to execute MS Silverlight
+	3 SDK assemblies correctly.
+	* ivt-detect.cs: New. Tool to detect what fields, methods and
+	types are being used because [InternalsVisibleTo] are present
+	* sl-3-sdk.internals: New. List of internals (to the platform
+	code) methods being used by Silverlight 3 SDK.
+	* CecilRocks.cs: Add rock for FieldDefinition.IsVisible
+	* Makefile.am: Build new tools
+	* README: Add description for new tools and data files
+
+2009-12-08  Andrew Jorgensen  <ajorgensen@novell.com>
+
+	* Makefile.am: Dist ivt-check.cs and M.VB.auto.*
+
+2009-11-30  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* ivt-check.cs: Add an exception for MoonAtkBridge to be able
+	to access mscorlib.dll and System.Windows internals
+
+2009-11-23  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Makefile.am: Make the ivt check work when there is no 
+	mono-basic present.
+
+2009-11-21  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Makefile.am: Add ivt-check target to detect any new, unsafe,
+	[InternalsVisibleTo] usages in trusted (i.e. installed plugin)
+	code. Call it at "install" time to make sure we detect any
+	such change early (i.e. never release them)
+
+2009-11-19  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* ivt-check.cs: Add special case for Mono.CompilerServices.
+	SymbolWriter.dll. Update comments for System.Xml.dll
+
+2009-11-17  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* ivt-check.cs: New. Tool to check if platform assemblies are
+	opening up their internals to non-platform code.
+	* PlatformCode.cs: Update comments to match current reality
+	* README: Add description about ivt-check.exe
+	* Makefile.am: Build ivt-check.exe
+
+2009-10-21  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* audit.cs: Add all visible internal calls to the audit list :|
+
+	r: lewing
+
+2009-10-20  Chris Toshok  <toshok@ximian.com>
+
+	* Makefile.am (%.secattr): change the rule such that each .secattr
+	file runs its own mono process so we can parallelize it.
+
+	* merge.cs: always expect input-dir/output-dir/assembly.secattr
+
+	* PlatformCode.cs: just expose the array as Assemblies so we can
+	use array ops on it.
+
+	r: spouliot
+
+2009-10-08  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* audit.cs: Fix when dealing with methods without a body, 
+	e.g. icall. Show the current method name in case of an exception
+
+2009-09-17  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* audit.cs/sh: New. Tool to update audit data files based on any
+	[SecuritySafeCritical] methods that were modified since the last
+	review.
+	* Makefile.am: Build audit.exe
+	* README: Updated for the audit tool
+
+	r: jb
+
+2009-06-23  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* detect-sc.cs: Mark non-visible, non-virtual or abstract icalls
+	as [SecurityCritical]. Also fix a bug when comparing methods.
+	* detect-ssc.cs: Mark visible or virtual (special rules applies)
+	icalls as [SecuritySafeCritical].
+
+2009-05-15  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* detect-sc.cs, detect-ssc.cs: Use the new CecilRock to turn a
+	MethodReference to a string (since ToString could return 
+	duplicates wrt generics, which would be misapplied).
+	* CecilRock.cs: Add new GetFullName rock
+
+2009-05-06  Raja R Harinath  <harinath@hurrynot.org>
+
+	* Makefile.am (securitymodel_sources): Prefix $(srcdir).
+	(merge.exe): Look for merge.cs in $(srcdir).
+	($(MERGED_SECURITY_ATTRIBUTES_INFO)): Look for input files in
+	$(srcdir).
+
+2009-04-24  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Makefile.am: compile tools with --debug
+
+2009-04-23  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* detect-sc.cs: Call AddSearchDirectory on the input directory
+
+2009-03-27  Sebastien Pouliot  <sebastien@ximian.com> 
+
+	* Makefile.am: Use the plugin directory as the assembly source
+	to analyze.
+
+2009-03-27  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* detect-sc.cs: Handle interfaces and method overrides since the
+	rules for [SecurityCritical] makes it impossible to have them 
+	differs. This is not a problem for [SecuritySafeCritical] since 
+	the override rules are more lax.
+
+2009-03-25  Sebastien Pouliot  <sebastien@ximian.com> 
+
+	* detect-sc.cs: The idea of SC API with IntPtr (to reduce the
+	number of SSC to audit) was not a good one. It reduced the ones
+	in System.Windows.dll but added quite more elsewhere. Removing
+	this saves about 100 SSC (total). Also avoid signature checks
+	on visible API so we don't add extra SC where SL don't have them.
+	* Makefile.am: Fix 'validate' target to let us compare the end
+	result of applying the security attributes with the public API
+	of Silverlight.
+
+2009-03-12  Sebastien Pouliot  <sebastien@ximian.com> 
+
+	* CecilRocks.cs: Fix logic for IsSecurity[Safe]Critical rocks
+
+2009-03-12  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Makefile.am: Adjust detect target to look at a single directory
+	since all assemblies are now available from a single location.
+	Make the stored data files a dependency to re-merge the attributes
+
+2009-03-10  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Makefile: Remove. Replacedby Makefile.am
+	* Makefile.am: New
+
+2009-02-26  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* merge.cs: Smarter merge to avoid duplicate (or unneeded) attributes
+	on methods when a type is decorated with SC or SSC.
+
+2009-02-25  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* merge.cs: Avoid duplicates in the merged files (e.g. an SC from
+	both compatibility and automatic).
+
+2009-02-19  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* detect-sc.cs, detect-ssc.cs: Accept multiple input directories
+	to find the platform assemblies (and deal with the current /mcs
+	and /moon locations).
+	* Makefile.am: Detect platform assemblies in {x}/mcs and {x}/moon
+
+2009-02-17  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* detect-sc.cs: Tool to detect methods that *likely* needs a
+	[SecurityCritical] attribute to execute under the CoreCLR
+	* detect-ssc.cs: Tool to detect methods that *likely* needs a
+	[SecuritySafeCritical] attribute to execute under the CoreCLR
+	* find-sc.cs: Tool to extract types and methods decorated with
+	[SecurityCritical] in Silverlight platform code.
+	* merge.cs: Tool to merge the different data files into files (one
+	per assembly) usable by the tuner.
+	* PlatformCode.cs: Helpers for tools.
+	* CecilRocks.cs: Extension methods helpers for tools.
+	* Makefile: Build file. Normally only the merging should be done.
+	Other options needs "supervision" ;-) and store their data into 
+	SVN to allow tracking/auditing all changes. Note: this is not (yet)
+	part of the main build.
+	* README: Documentation about the files.

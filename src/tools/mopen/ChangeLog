@@ -1,0 +1,175 @@
+2010-03-05  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* mopen.cs: Gtk.Window now needs to be qualified with the namespace,
+	since Silverlight also has a Window class now.
+
+2009-12-04  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Makefile.am: Remove mopen1.
+
+	* mopen1.*: Deleted. Managed code is mandatory now, this only crashes.
+
+2009-07-02  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* mopen1.cpp: Update according to downloader API changes.
+
+2009-05-27  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* mopen1.cpp: Update according to downloader API changes.
+
+2009-05-02  Jeffrey Stedfast  <fejj@novell.com>
+
+	* mopen1.cpp: Fixed the build by using guint32 instead of uint32_t
+
+2009-04-13  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* mopen.mdp:
+	* mopen1.mdp: Add a project for each tool, and clean up some
+	  of the existing projects.
+
+2009-04-13  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Makefile.am: Fix install directories.
+
+2009-04-09  Jackson Harper  <jackson@ximian.com>
+
+	* mopen1.cpp: New method name.
+
+2009-04-03  Aaron Bockover  <abockover@novell.com>
+
+	* mopen.cs: Updated to use the new Moonlight.Gtk APIs
+
+	* Makefile.am: gtksilver -> Moonlight.Gtk
+
+2009-04-01  Geoff Norton  <gnorton@novell.com>
+
+	* mopen.cs: Support mopen directly from a uri.
+
+2009-03-25  Jeffrey Stedfast  <fejj@novell.com>
+
+	* mopen1.cpp (LoadXaml): Fixed call to Surface ctor (no longer
+	takes an IsSL2 arg).
+
+2008-11-05  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* mopen1.cpp: Add support for --timeout X to ease testing (mopen 
+	brings the mono runtime in the picture) and show the help info when
+	no arguments are provided.
+
+2008-11-03  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* mopen1.cpp: Add support for doing mopen1 video.wmv instead of having
+	  to create xaml to test media.
+
+2008-09-06  Chris Toshok  <toshok@ximian.com>
+
+	* mopen.cs: remove the canvas-only restriction.
+
+2008-08-28  Chris Toshok  <toshok@ximian.com>
+
+	* mopen1.cpp (LoadXaml): track XamlLoader api change.
+
+2008-08-17  Chris Toshok  <toshok@ximian.com>
+
+	* Makefile.am: INCLUDE_MONO_RUNTIME ->
+	INCLUDE_DESKTOP_MANAGED_CODE.
+
+2008-08-12  Jeffrey Stedfast  <fejj@novell.com>
+
+	* mopen1.cpp (main): Allow gtk_init() to consume some args. Needed
+	to debug w/ XSync.
+
+2008-08-02  Miguel de Icaza  <miguel@novell.com>
+
+	* mopen.cs: Make this use NDesk.Options as well.
+
+2008-07-25  Chris Toshok  <toshok@ximian.com>
+
+	* mopen1.cpp (LoadXaml): pass false to the Surface ctor, and use
+	ctors instead of the *_new functions.
+
+2008-07-23  Jeffrey Stedfast  <fejj@novell.com>
+
+	* mopen.cs: Updated.
+
+2008-07-18  Chris Toshok  <toshok@ximian.com>
+
+	* mopen1.cpp (LoadXaml): create a MoonWindowGtk and initialize the
+	surface with that.
+
+2008-06-27  Stephane Delcroix  <sdelcroix@novell.com>
+
+	* mopen1.cpp: adapt for the downloader changes.
+
+2008-06-05  Geoff Norton  <gnorton@novell.com>
+
+	* mopen1.cpp: Update to call the new downloader_set_functions API.
+	We dont support mms in mopen1 at this time.
+
+2008-05-20  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Makefile.am: Fix mopen script to use mopen.exe
+
+2008-05-13  Andrew Jorgensen  <ajorgensen@novell.com>
+
+	* Makefile.am: Correct flags for mopen1 and only build mopen.exe if
+	--with-mono
+
+2008-04-24  Fernando Herrera  <fherrera@novell.com>
+
+	* Makefile.am: Fix "make -jN" build.
+
+2008-04-17  Andrew Jorgensen  <ajorgensen@novell.com>
+
+	* Makefile.am: Use AM_LDFLAGS, not LDFLAGS which is a user variable
+
+2008-04-16  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Makefile.am: Remove warnings.
+
+2008-04-15  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* mopen1.cpp, Makefile.am: Added a native version of mopen which
+	(for the moment) can only open 1.0 xaml files.
+
+2008-03-31  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* mopen.cs: add --timeout option to close mopen after X seconds.
+	Useful for testing/fuzzing a step farther than --parseonly can do.
+
+2008-02-27  Larry Ewing  <lewing@novell.com>
+
+	* mopen.cs: add --sync option to pass --sync to gtk_init.
+
+2008-02-21  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* mopen.in: Improve gdb support (no need to manually specify command line),
+	  and add valgrind support.
+
+2008-02-02  Miguel de Icaza  <miguel@novell.com>
+
+	* mopen.cs: Release the Cairo Context when we are done.
+
+2007-10-10  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* mopen.cs: Use GtkSilver's LoadFile method instead of
+	LoadXaml, simplifies code a bit.
+
+2007-10-08  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* mopen.cs: Use the GtkSilver methods to load the xaml.
+
+2007-09-22  Zoltan Varga  <vargaz@gmail.com>
+
+	* mopen.cs: Update after Moonlight.RegisterLoader change.
+
+2007-09-13  Jb Evain  <jbevain@novell.com>
+
+	* Makefile.am: install the .mdb file.
+
+2007-08-22  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* ChangeLog: New. Track changes.
+	* mopen.cs: Add a --parseonly option which is useful to gather stats
+	on xaml loading/processing and before any drawing operations. Can also
+	be useful to know if the xaml file is valid (0) or not (1).

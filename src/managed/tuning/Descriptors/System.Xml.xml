@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<linker>
+	<assembly fullname="System.Xml">
+		<type fullname="System.Xml.XmlConvert">
+			<method signature="System.String ToBinHexString(System.Byte[])" />
+			<method signature="System.Byte[] FromBinHexString(System.String)" />
+			<method signature="System.Uri ToUri(System.String)" />
+		</type>
+		<type fullname="System.Xml.Serialization.XmlRootAttribute" preserve="all" />
+		<type fullname="System.Xml.Serialization.XmlAnyElementAttribute" preserve="all" />
+		<type fullname="System.Xml.Serialization.XmlElementAttribute" preserve="all" />
+		<type fullname="System.Xml.Serialization.XmlArrayItemAttribute" preserve="all" />
+		<type fullname="System.Xml.Serialization.XmlChoiceIdentifierAttribute" preserve="all" />
+	</assembly>
+</linker>

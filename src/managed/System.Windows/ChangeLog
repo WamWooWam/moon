@@ -1,0 +1,1604 @@
+2010-07-13  Alan McGovern  <amcgovern@novell.com>
+
+	* System.Windows.mdp: Add missing files to the solution file
+
+2010-07-09  Alan McGovern  <amcgovern@novell.com>
+
+	* Makefile.am: Implement a WeakListener for
+	  INotifyCollectionChanged objects. Classes which want to
+	  weak-listen to the event need to be of type
+	  IListenCollectionChanged.
+
+2010-07-06  Alan McGovern  <amcgovern@novell.com>
+
+	* System.Windows.mdp: Add files to the build
+
+2010-07-06  Alan McGovern  <amcgovern@novell.com>
+
+	* System.Windows.mdp: Update the solution file.
+
+2010-06-29  Mario Carrion  <mcarrion@novell.com>
+
+	* Makefile.am: Deprecate A11yHelper class in favor of
+	AccessibilityBridge in C++. (Reworked patch r156659)
+
+	r: toshok
+
+2010-06-22  Alan McGovern  <amcgovern@novell.com>
+
+	* System.Windows.mdp: Add missing files to the build
+
+2010-06-18  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Makefile.am:
+	* System.Windows.mdp: Update to SL4 final API.
+
+2010-06-03  Alan McGovern  <amcgovern@novell.com>
+
+	* System.Windows.mdp: Add missing files to sln.
+
+2010-05-28  Chris Toshok  <toshok@ximian.com>
+
+	* System.Windows.Media.Media3D/UnmanagedMatrix3D.cs: we need to
+	look these properties up on Kind.UNMANAGEDMATRIX3D, not MATRIX3D.
+
+2010-05-27  Chris Toshok  <toshok@ximian.com>
+
+	* Makefile.am (system_windows_sources): add
+	System.Windows.Media/CaptureImageCompletedEventArgs.cs
+
+2010-05-27  Alan McGovern  <amcgovern@novell.com>
+
+	* Makefile.am:
+	* System.Windows.mdp: Strip out the IEditableCollectionView
+	  properties into the new 'EditableCollectionView' class.
+
+2010-05-26  Chris Toshok  <toshok@ximian.com>
+
+	* Makefile.am (system_windows_sources): add SampleReadyEventArgs
+	and VideoFormatChangedEventArgs.
+
+2010-05-24  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* System.Windows.mdp: Updated.
+
+2010-05-18  Alan McGovern  <amcgovern@novell.com>
+
+	* System.Windows.mdp: Update build files.
+
+2010-05-18  Alan McGovern  <amcgovern@novell.com>
+
+	* Makefile.am: Add BinarySearch extension method to IList<T>
+	  so that I can binary search observable collections (and
+	  others).
+
+2010-05-13  Alan McGovern  <amcgovern@novell.com>
+
+	* Makefile.am:
+	* System.Windows.mdp: Add in the ICollectionViewFactory
+	  interface and make CollectionViewSource use it.
+
+2010-05-12  Alan McGovern  <amcgovern@novell.com>
+
+	* Makefile.am:
+	* System.Windows.mdp: Update build files.
+
+2010-05-07  Alan McGovern  <amcgovern@novell.com>
+
+	* Makefile.am:
+	* System.Windows.mdp: Add support for enumerating over the
+	  Groups if the CollectionView has been grouped.
+
+2010-05-07  Alan McGovern  <amcgovern@novell.com>
+
+	* Makefile.am:
+	* System.Windows.mdp: Add a helper class to simplify
+	  implementing INotifyPropertyChanged class.
+
+2010-05-05  Alan McGovern  <amcgovern@novell.com>
+
+	* Makefile.am:
+	* System.Windows.mdp: Add CollectionViewNode to the build.
+
+2010-05-04  Alan McGovern  <amcgovern@novell.com>
+
+	* Makefile.am:
+	* System.Windows.mdp: update build files.
+
+2010-04-30  Alan McGovern  <amcgovern@novell.com>
+
+	* Makefile.am: Add StandardCollectionViewGroup to the build.
+
+2010-04-29  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Makefile.am: Work around smcs regression #601141
+
+2010-04-29  Alan McGovern  <amcgovern@novell.com>
+
+	* Makefile.am: Add an IDeferRefresh interface which is
+	  implemented by the default CollectionView implementation and
+	  CollectionViewSource. This allows both classes to use the
+	  same machinery for their DeferRefresh calls.
+
+	* System.Windows.mdp: Update build files
+
+2010-04-27  Alan McGovern  <amcgovern@novell.com>
+
+	* Makefile.am:
+	* System.Windows.mdp: Add the beginnings of a default
+	  implementation of ICollectionView.
+
+2010-04-26  Alan McGovern  <amcgovern@novell.com>
+
+	* Makefile.am:
+	* System.Windows.mdp: Add a missing enum and a missing class.
+
+2010-04-26  Alan McGovern  <amcgovern@novell.com>
+
+	* Makefile.am:
+	* System.Windows.mdp: Stub out the missing 'Section' class.
+
+2010-04-22  Alan McGovern  <amcgovern@novell.com>
+
+	* Makefile.am:
+	* System.Windows.mdp: update build files.
+
+2010-04-21  Alan McGovern  <amcgovern@novell.com>
+
+	* System.Windows.mdp: Add ToolTip.cs to the solution.
+
+2010-04-20  Alan McGovern  <amcgovern@novell.com>
+
+	* Makefile.am:
+	* System.Windows.mdp: Add new types and DPs so that the SL4
+	  generated DefaultValue tests can compile.
+
+2010-03-30  Alan McGovern  <amcgovern@novell.com>
+
+	* Makefile.am:
+	* System.Windows.mdp: StylusPoint is a DO in native and a
+	  struct in managed, so give it the same magic marshalling
+	  treatment that Matrix gets.
+
+2010-03-29  Alan McGovern  <amcgovern@novell.com>
+
+	* System.Windows.mdp: Add missing files to the solution
+
+2010-03-26  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Makefile.am: Remove duplicate /System.Windows.Controls/StretchDirection.cs
+
+2010-03-24  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Makefile.am: Add System.Windows.ApplicationLifetimeObjectsCollection
+	to the build
+
+2010-03-16  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Makefile.am: Add DataErrorsChangedEventArgs.cs and INotifyDataErrorInfo.cs
+	to the build.
+
+2010-03-11  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Makefile.am: Add browser stack files to build (moved from
+	System.Windows.Browser.dll to ease sharing with the client stack).
+
+2010-03-09  David Reveman  <davidr@novell.com>
+
+	* System.Windows.Media.Media3D/Matrix3D.cs: Add
+	multiply operator.
+
+2010-03-09  Alan McGovern  <amcgovern@novell.com>
+
+	* System.Windows.mdp: Add support for DeepLinking. It works
+	  for my (trivial) testcases. Basically the only change we
+	  appear to need is to change HyperlinkButton to look up
+	  UIElements implementing INavigator in the visual tree if the
+	  'TargetName' is not one of the known names and then call
+	  'Navigate' on it.
+
+2010-03-05  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* MS.Internal.ComAutomation/ComAutomationParam.cs:
+	* System.Windows.mdp:
+	* Makefile.am: Add new files.
+
+2010-03-04  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Makefile.am: smcs needs to be executed using the moonlight mono and
+	the linker/tuner using the system mono.
+
+2010-03-04  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Makefile.am: Revert accidental changes.
+
+2010-03-02  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Makefile.am: smcs needs to be executed using the moonlight mono
+	and the linker/tuner using the system mono.
+
+2010-03-02  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Makefile.am: Define DEBUG/SANITY when the corresponding configure options
+	are specified.
+
+2010-03-01  Alan McGovern  <amcgovern@novell.com>
+
+	* System.Windows.mdp: update build files.
+
+2010-02-25  Alan McGovern  <amcgovern@novell.com>
+
+	* Makefile.am:
+	* System.Windows.mdp: Add an initial implementation of
+	  BindingOperations to get some sites going.
+
+2010-02-23  Mario Carrion  <mcarrion@novell.com>
+
+	* Makefile.am: File added PopupAutomationPeer.
+	* System.Windows.Automation.Peers/PopupAutomationPeer.cs: Popup
+	AutomationPeer.
+
+2010-02-19  Alan McGovern  <amcgovern@novell.com>
+
+	* Makefile.am:
+	* System.Windows.mdp: Update build files
+
+2010-02-11  Alan McGovern  <amcgovern@novell.com>
+
+	* System.Windows.mdp: Update build files
+
+2010-01-29  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* System.Windows.mdp: Add new files.
+
+2010-02-01  Alan McGovern  <amcgovern@novell.com>
+
+	* Makefile.am:
+	* System.Windows.mdp: update build files
+
+2010-02-01  Alan McGovern  <amcgovern@novell.com>
+
+	* Makefile.am:
+	* System.Windows.mdp: update build files
+
+2010-01-29  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* System.Windows.mdp: Remove deleted file.
+
+2010-01-27  Alan McGovern  <amcgovern@novell.com>
+
+	* Makefile.am:
+	* System.Windows.mdp: Update build files.
+
+2010-01-25  Alan McGovern  <amcgovern@novell.com>
+
+	* System.Windows.mdp: Add some missing files to the
+	  monodevelop solution
+
+2010-01-21  Alan McGovern  <amcgovern@novell.com>
+
+	* System.Windows.mdp: update build files.
+
+2010-01-11  Alan McGovern  <amcgovern@novell.com>
+
+	* Makefile.am:
+	* System.Windows.mdp: Add and implement the SL 3.0 Validation
+	  class.
+
+2009-01-04  Sebastien Pouliot  <sebastien@ximian.com> 
+
+	* Makefile.am: Remove types that are not part of SL3 final API.
+
+2009-12-22  Alan McGovern  <amcgovern@novell.com>
+
+	* Makefile.am:
+	* System.Windows.mdp: Update build files.
+
+2009-12-21  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* System.IO/SimpleUnmanagedMemoryStream.cs: Removed (unused).
+	We can use the UnmanagedMemoryStream that mscorlib provides
+
+2009-12-21  Alan McGovern  <amcgovern@novell.com>
+
+	* Makefile.am:
+	* System.Windows.mdp: Update build files.
+
+2009-12-17  Alan McGovern  <amcgovern@novell.com>
+
+	* System.Windows.mdp: Comment out the SL3 visual states for
+	  now so the DRTs keep passing.
+
+2009-12-15  Chris Toshok  <toshok@ximian.com>
+
+	* Makefile.am: install the .dll.config file to both the gac and
+	plugin directories.
+
+	* System.Windows.dll.config: new file, we need to explicitly list
+	libmoon.so.0 or it'll try to load libmoon.so
+
+2009-12-15  Alan McGovern  <amcgovern@novell.com>
+
+	* System.Windows.mdp: Update mdp file.
+
+2009-12-09  Alan McGovern  <amcgovern@novell.com>
+
+	* System.Windows.mdp: Update project files again
+
+2009-12-09  Alan McGovern  <amcgovern@novell.com>
+
+	* System.Windows.mdp: Give a basic implementation of
+	  ItemsContainerGenerator to support the NFL site.
+
+2009-12-04  Alan McGovern  <amcgovern@novell.com>
+
+	* System.Windows.Automation/AutomationProperties.cs: Add a
+	  note to make sure everyone knows
+	  AutomationProperties.NameProperty is different to
+	  FrameworkElement.NameProperty.
+
+2009-12-02  Alan McGovern  <amcgovern@novell.com>
+
+	* System.Windows.mdp: Implement support for RelativeSource
+	  based bindings.
+
+2009-12-02  Alan McGovern  <amcgovern@novell.com>
+
+	* System.Windows.mdp: Update the build files.
+
+2009-11-30  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Makefile.am: MOON_A11Y_INTERNAL_HACK is not needed anymore
+	  since the audit finished in r147098. r: spouliot
+
+2009-11-23  Alan McGovern  <amcgovern@novell.com>
+
+	* System.Windows.mdp: Add ScrollViewer and
+	  ScrollContentPresenter to the solution.
+
+2009-11-20  Chris Toshok  <toshok@ximian.com>
+
+	* Makefile.am (system_windows_sources): add new files.
+
+2009-11-19  Sebastien Pouliot  <sebastien@ximian.com> 
+
+	* Makefile.am: Remove second copy (dupe in a different namespace) 
+	of IScrollInfo
+
+2009-11-19  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Makefile.am: Remove unneeded files from compilation
+
+2009-11-19  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* System.Windows.mdp: Updated with new files.
+
+2009-11-09  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Makefile.am: Updated with new files.
+
+	r: toshok
+
+2009-11-09  Chris Toshok  <toshok@ximian.com>
+
+	* Makefile.am (system_windows_sources): add BitmapCreateOptions.cs
+
+	r: spouliot
+
+2009-11-08  Chris Toshok  <toshok@ximian.com>
+
+	* Makefile.am (system_windows_sources): add out-of-browser class
+	stubs.
+
+	r: lewing
+
+2009-11-08  Chris Toshok  <toshok@ximian.com>
+
+	* Makefile.am (system_windows_sources): add the effects classes.
+
+	r: kangaroo
+
+2009-10-22  Mario Carrion  <mcarrion@novell.com>
+
+	* System.Windows.Automation/AutomationProperties.cs: Added callback to
+	raise events when attached properties change.
+
+	r: toshok
+
+
+2009-10-09  Mario Carrion  <mcarrion@novell.com>
+
+	* Makefile.am: File adde MultiScaleImageAutomationPeer.cs.
+
+	r: toshok
+
+2009-09-30  Jackson Harper  <jackson@ximian.com>
+
+	* Makefile.am: Add some SL3 types so we can load
+	System.Windows.Controls.Data.dll
+
+	r: toshok
+
+2009-09-29  Mario Carrion  <mcarrion@novell.com>
+
+	* Makefile.am: File added: SWAP/PasswordBoxAutomationPeer.cs.
+
+	r: spouliot
+
+2009-09-23  Chris Toshok  <toshok@ximian.com>
+
+	* Makefile.am (system_windows_sources): add Mono/Events.g.cs
+
+	r: spouliot, andriea
+
+2009-09-10  Mario Carrion  <mcarrion@novell.com>
+
+	* Makefile.am: ProgressBarAutomationPeer.cs file added.
+
+	r: toshok
+
+2009-09-08  Mario Carrion  <mcarrion@novell.com>
+
+	* Makefile.am: ComboBoxAutomationPeer.cs file added.
+
+	r: toshok
+
+2009-08-26  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* System.Windows.mdp: Add new file.
+
+	* Makefile.am: Pass a11y env var to CSCFLAGS.
+
+2009-08-15  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* System.Windows.mdp: Updated.
+
+	* Makefile.am: Added INativeEventObjectWrapper.cs
+
+	r: andreia
+
+2009-08-10  Chris Toshok  <toshok@ximian.com>
+
+	* Makefile.am (system_windows_sources): add
+	System.Windows/Analytics.cs and GpuInformation.cs.
+
+2009-08-08  Chris Toshok  <toshok@ximian.com>
+
+	* Makefile.am (BOOTSTRAP_FLAGS_2_1, BOOTSTRAP_FLAGS_DESKTOP): add
+	a couple of overridable variables for use during the initial
+	circular bootstrap.
+
+2009-07-30  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* System.Windows.mdp: Connect the Build command in
+        MonoDevelop with 'make install'.
+
+2009-07-29  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Makefile.am: Add System.Windows/Mono/Helper.PublicKey.cs
+
+2009-07-27  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* System.Windows.mdp: Use Makefile integration.
+
+2009-06-30  Mario Carrion  <mcarrion@novell.com>
+
+	* Makefile.am: Files added: ScrollViewerAutomationPeer.cs and 
+	ScrollBarAutomationPeer.cs.
+	* System.Windows.Automation.Peers/ItemAutomationPeer.cs: Fixed
+	properties: ItemsControlAutomationPeer and ChildrenCore.
+	* System.Windows.Automation.Peers/SelectorAutomationPeer.cs: Raises 
+	SelectionItemPatternOnElementSelected, fixes GetSelection.
+	* System.Windows.Automation.Peers/ListBoxItemAutomationPeer.cs: 
+	ScrollIntoView implementation.
+	* System.Windows.Automation.Peers/ItemsControlAutomationPeer.cs: 
+	Fixed children, returns scrollbars only when visible.
+	* System.Windows.Automation.Peers/SelectorItemAutomationPeer.cs: 
+	Fixed SelectionContainer.
+	* System.Windows.Automation.Peers/ScrollBarAutomationPeer.cs, 
+	  System.Windows.Automation.Peers/ScrollViewerAutomationPeer.cs: New
+	files.
+
+2009-06-26  Mario Carrion  <mcarrion@novell.com>
+
+	* System.Windows.Automation.Peers/AutomationPeer.cs: [MonoTODO] removed.
+	* System.Windows.Automation.Peers/MediaElementAutomationPeer.cs:  New 
+	file, implements MediaElement automation peer.
+
+2009-06-25  Mario Carrion  <mcarrion@novell.com>
+
+	* System.Windows.Automation.Peers/AutomationPeer.cs: New internal
+	method GetCachedProperty.
+	* System.Windows.Automation.Peers/AutomationSingleton.cs: Raising
+	event only when cached value is different than new value.
+	* System.Windows.Automation.Peers/ButtonAutomationPeer.cs: Calling base
+	in GetPattern.
+	* System.Windows.Automation.Peers/WindowAutomationPeer.cs: Method 
+	overridden: GetBoundingRectangleCore.
+	* System.Windows.Automation.Peers/ButtonBaseAutomationPeer.cs: Valid
+	GetNameCore and ChildrenCore implementation.
+	* System.Windows.Automation.Peers/FrameworkElementAutomationPeer.cs: owner
+	private variable changed to FrameworkElement. Raising default events.
+	Valid implementations: ChildrenCore, GetBoundingRectangle, 
+	HasKeyboardFocusCore and IsEnabledCore.
+
+2009-06-16  Chris Toshok  <toshok@ximian.com>
+
+	* Makefile.am (system_windows_sources): add StaticResource.cs
+
+2009-06-04  Chris Toshok  <toshok@ximian.com>
+
+	* Makefile.am (system_windows_sources): add MoonException.cs
+
+2009-05-28  Mario Carrion  <mcarrion@novell.com>
+
+	* System.Windows.Automation.Peers/ButtonAutomationPeer.cs: Subclassing
+	from ButtonBaseAutomationPeer and IInvokeProvider implementation.
+	* System.Windows.Automation.Peers/ButtonBaseAutomationPeer.cs: 
+	GetNameCore asks for attached property.
+
+2009-05-27  Mario Carrion  <mcarrion@novell.com>
+
+	* Makefile.am: File ImageAutomationPeer.cs added.
+	* System.Windows.Controls/Image.cs: OnCreateAutomationPeer 
+	implemented.
+	* System.Windows.Automation.Peers/ImageAutomationPeer.cs: New file
+	implemented Image automation peer.
+
+2009-05-26  Mario Carrion  <mcarrion@novell.com>
+
+	* System.Windows.Controls/TextBox.cs: OnCreateAutomationPeer 
+	overridden.
+	* System.Windows.Automation.Peers/TextBoxAutomationPeer.cs: Not
+	implemented methods implemented. 
+	* System.Windows.Automation.Peers/TextBlockAutomationPeer.cs: 
+	GetNameCore implementation.
+	* System.Windows.Automation.Peers/FrameworkElementAutomationPeer.cs: 
+	New internal properties: AutomationControlTypeCore (used by 
+	GetAutomationControlTypeCore) and ClassNameCore (used by 
+	GetClassNameCore).
+
+2009-05-22  Alan McGovern  <amcgovern@novell.com>
+
+	* System.Windows.Automation/AutomationProperties.cs: Use
+	DependencyProperty.RegisterCore for these DPs.
+
+2009-04-13  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* System.Windows.mdp: Delete files we got from MS' controls
+	  drop, and update project file to compile.
+
+2009-04-09  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Makefile.am: Add System.Windows.Controls/SaveFileDialog.cs
+
+2009-04-09  Mario Carrion  <mcarrion@novell.com>
+
+	* Makefile.am: Automation files added: DockPatternIdentifiers.cs,
+	  ExpandCollapsePatternIdentifiers.cs, GridItemPatternIdentifiers.cs,
+	  GridPatternIdentifiers.cs, MultipleViewPatternIdentifiers.cs,
+	  RangeValuePatternIdentifiers.cs, TransformPatternIdentifiers.cs,
+	  SelectionPatternIdentifiers.cs, TableItemPatternIdentifiers.cs,
+	  TablePatternIdentifiers.cs, TogglePatternIdentifiers.cs,
+	  ValuePatternIdentifiers.cs and WindowPatternIdentifiers.cs.
+	* System.Windows.Automation/AutomationProperties.cs: Attached
+	  properties implemented.
+	* System.Windows.Automation/DockPatternIdentifiers.cs,
+	  System.Windows.Automation/GridPatternIdentifiers.cs, 
+	  System.Windows.Automation/GridItemPatternIdentifiers.cs, 
+	  System.Windows.Automation/ExpandCollapsePatternIdentifiers.cs, 
+	  System.Windows.Automation/RangeValuePatternIdentifiers.cs, 
+	  System.Windows.Automation/MultipleViewPatternIdentifiers.cs, 
+	  System.Windows.Automation/TableItemPatternIdentifiers.cs, 
+	  System.Windows.Automation/SelectionPatternIdentifiers.cs, 
+	  System.Windows.Automation/TablePatternIdentifiers.cs, 
+	  System.Windows.Automation/TogglePatternIdentifiers.cs, 
+	  System.Windows.Automation/TransformPatternIdentifiers.cs, 
+	  System.Windows.Automation/ValuePatternIdentifiers.cs, 
+	  System.Windows.Automation/WindowPatternIdentifiers.cs: 
+	  New files.
+	* System.Windows.Automation/SelectionItemPatternIdentifiers.cs, 
+	  System.Windows.Automation/ScrollPatternIdentifiers.cs, 
+	  System.Windows.Automation/AutomationElementIdentifiers.cs: static
+	  fields implemented.
+
+2009-04-08  Chris Toshok  <toshok@ximian.com>
+
+	* Microsoft.Internal/TextBoxView.cs: this shouldn't be public.
+
+2009-04-05  Chris Toshok  <toshok@ximian.com>
+
+	* Makefile.am (system_windows_sources): add
+	Mono/EasingFunctionWrapper.cs
+
+2009-04-04  Chris Toshok  <toshok@ximian.com>
+
+	* Makefile.am (system_windows_sources): add the easing keyframe
+	types.
+
+2009-04-03  Chris Toshok  <toshok@ximian.com>
+
+	* Makefile.am (system_windows_sources): add all the Easing types.
+
+2009-04-01  Chris Toshok  <toshok@ximian.com>
+
+	* Makefile.am (GMCS): add -d:NET_3_0 for desktop code.
+
+2009-03-30  Chris Toshok  <toshok@ximian.com>
+
+	* Makefile.am (system_windows_sources): add
+	MouseWheelEvent{Args,Handler}.cs
+
+2009-03-30  Chris Toshok  <toshok@ximian.com>
+
+	* Makefile.am: add the resources to the desktop assembly too.
+
+2009-03-27  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Makefile.am: Do not install 2.1 in the GAC but in the plugin dir
+
+2009-03-18  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* System.Windows.mdp: Update.
+
+2009-03-12  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Makefile.am: Add security attributes using the linker after the
+	raw build (a bit modified patch from JB).
+
+2009-03-06  Andreia Gaita  <avidigal@novell.com>
+
+	* Makefile.am, System.Windows.mdp: Added ToggleRef class.
+
+2009-03-04  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* MS.Internal:
+	* Makefile.am:
+	* MS.Internal/Dummy.cs:
+	* System.Windows.Hosting:
+	* System.Windows.Hosting/Dummy.cs: Added dummy internal
+	  classes to namespaces where MS has internal classes.
+
+2009-02-26  Alan McGovern  <amcgovern@novell.com>
+
+	* System.Windows.mdp: Nuke a dead file.
+
+2009-02-26  Alan McGovern  <amcgovern@novell.com>
+
+	* System.Windows.mdp: Add some missing files to the solution
+	  files
+
+2009-02-08  Chris Toshok  <toshok@ximian.com>
+
+	* Makefile.am (system_windows_sources): add
+	Mono/MoonlightValueConverter.cs.
+
+2009-02-08  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Makefile.am: Add System.Windows.Automation.Peers/TextBlockAutomationPeer.cs
+
+2009-02-06  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Makefile.am: Remove System.Windows.Interop/BrowserHost.cs
+
+2009-02-04  Alan McGovern  <amcgovern@novell.com>
+
+	* System.Windows.mdp: Hook up the managed hittesting code to
+	  the native hit testing code.
+
+2009-02-02  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* System.Windows.mdp: Updated to use new MD features
+	  (ChangeLog and log message policy).
+
+2009-01-22  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* System.Windows.mdp: Remove dead file.
+
+2009-01-21  Alan McGovern  <amcgovern@novell.com>
+
+	* System.Windows.mdp: Add a Popup test which causes mono to crash,
+	currently marked with Ignore
+
+2009-01-20  Chris Toshok  <toshok@ximian.com>
+
+	* Makefile.am (system_windows_sources): add the new Mono/ classes,
+	and remove ApplicationInternal.cs.
+
+2009-01-19  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* System.Windows.mdp: Update.
+
+2009-01-18  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Makefile.am: Add internal, DO based, UnmanagedMatrix to match
+	libmoon implementation of Matrix.
+
+2009-01-13  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Makefile.am: Add IScrollInfo
+
+2009-01-12  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Makefile.am: Remove UriTypeConverter.cs (it's in System.dll now) and
+	RenderTargetBitmap.cs from build.
+
+2009-01-09  Alan McGovern  <amcgovern@novell.com>
+
+	* System.Windows.Data/BindingExpressionBase.cs: Fix the IValueConverter
+	stuff properly.
+
+2009-01-09  Alan McGovern  <amcgovern@novell.com>
+
+	* System.Windows.Data/BindingExpressionBase.cs: Complete implementation
+	of IValueConverter. Two way binding tests are now working.
+
+2009-01-09  Alan McGovern  <amcgovern@novell.com>
+
+	* System.Windows.Data/BindingExpressionBase.cs: Default culture is
+	always en-US, not the current culture.
+
+2009-01-08  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Makefile.am: Remove FontFamilyConverter from build.
+
+2009-01-07  Chris Toshok  <toshok@ximian.com>
+
+	* Makefile.am: fix our embedding of themes/generic.xaml, and also
+	use the supplied MS one (we should likely c&p it into our tree and
+	add in the styles from msdn)
+
+2009-01-05  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* AutomationPeer.cs: Implement a few methods (to call *Core)
+	* ButtonBaseAutomationPeer.cs: New.
+	* FrameworkElementAutomationPeer.cs: Implement Owner
+	* RangeBaseAutomationPeer.cs: New.
+	* RepeatButtonAutomationPeer.cs: New.
+	* SliderAutomationPeer.cs: New.
+	* ThumbAutomationPeer.cs: New.
+	* Makefile.am: Add new files to the build.
+
+2009-01-02  Jeffrey Stedfast  <fejj@novell.com>
+
+	* Microsoft.Internal/TextBoxView.cs: New class.
+
+2008-12-22  Andreia Gaita  <avidigal@novell.com>
+
+	* Makefile.am, System.Windows.mdp: Added Mono/DispatcherTimer.cs
+
+2008-12-19  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Makefile.am: Added new files, removed files which aren't supposed to
+	  be here.
+	* System.Windows.mdp,
+	  System.Windows.Automation/AutomationProperties.cs,
+	  System.Windows.Automation.Peers/TextBoxAutomationPeer.cs,
+	  System.Windows.Automation/AutomationElementIdentifiers.cs: More
+	  bits.
+
+2008-12-19  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Makefile.am: Updated.
+
+2008-12-19  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* System.Windows.Automation.Peers/AutomationOrientation.cs,
+	  System.Windows.Automation.Peers/AutomationPeer.cs,
+	  System.Windows.Automation.Peers/FrameworkElementAutomationPeer.cs,
+	  System.Windows.Automation.Provider/IMultipleViewProvider.cs,
+	  System.Windows.Automation/ElementNotAvailableException.cs,
+	  System.Windows.Automation/ElementNotEnabledException.cs,
+	  System.Windows.Automation/ScrollPatternIdentifiers.cs,
+	  System.Windows.Automation/SelectionItemPatternIdentifiers.cs: Stub
+	  out and fill in more bits to get even more bits compiling.
+	* System.Windows.mdp: Updated.
+
+2008-12-19  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* System.Windows.mdp: Updated.
+
+2008-12-17  Chris Toshok  <toshok@ximian.com>
+
+	* Makefile.am: add in all the Mono.Moonlight files that were moved
+	here.
+
+	* */*.cs: move from Mono.Moonlight/ here.
+
+2008-12-17  Stephane Delcroix  <sdelcroix@novell.com>
+
+	* System.Windows.Controls.Primitives/Selector.cs: filing some blanks
+
+2008-12-17  Alan McGovern  <amcgovern@novell.com>
+
+	* System.Windows.Data/BindingExpressionBase.cs: Comment out the native
+	IntPtr as it's not used
+
+2008-12-17  Alan McGovern  <amcgovern@novell.com>
+
+	* System.Windows.Data/BindingExpression.cs:
+	* System.Windows.Data/BindingExpressionBase.cs:
+	BindingExpression/BindingExpressionBase should not be passed to/from
+	native code anymore.
+
+2008-12-17  Alan McGovern  <amcgovern@novell.com>
+
+	* System.Windows.Data/BindingExpressionBase.cs: I don't know why
+	'EndsWith' was used instead of 'Equals' when comparing property
+	names.
+
+2008-12-17  Alan McGovern  <amcgovern@novell.com>
+
+	* System.Windows.Data/BindingExpressionBase.cs: This constructor should
+	be internal, not protected.
+
+2008-12-17  Alan McGovern  <amcgovern@novell.com>
+
+	* System.Windows.Data/BindingExpressionBase.cs: Completed support for
+	1way/2way bindings with INotifyPropertyChanged sources.
+
+2008-12-16  Alan McGovern  <amcgovern@novell.com>
+
+	* System.Windows.Data/BindingExpressionBase.cs: Ensure that the value is
+	correctly typecast when updating the source object on a two way
+	binding.
+
+2008-12-16  Alan McGovern  <amcgovern@novell.com>
+
+	* System.Windows.Data/BindingExpressionBase.cs: Do type conversions when
+	setting the value in a two way binding.
+
+2008-12-16  Alan McGovern  <amcgovern@novell.com>
+
+	* System.Windows.Data/BindingExpression.cs:
+	* System.Windows.Data/BindingExpressionBase.cs: Move databinding to
+	managed code.
+
+2008-12-11  Alan McGovern  <amcgovern@novell.com>
+
+	* System.Windows.Data/BindingExpressionBase.cs: Ensure the types match
+	when databinding a valuetype property. For example a float should be
+	converted to a Double when databinding.
+
+2008-12-10  Jeffrey Stedfast  <fejj@novell.com>
+
+	* System.Windows.Data/Binding.cs: Updated to use native methods
+	for some more stuff.
+
+2008-12-10  Alan McGovern  <amcgovern@novell.com>
+
+	* Makefile.am:
+	* System.Windows.mdp: Partial implementation of the PasswordBox control
+
+2008-12-03  Alan McGovern  <amcgovern@novell.com>
+
+	* System.Windows.Data/BindingExpression.cs: If a Binding has bound to a
+	datacontext, refresh the binding when the context is altered.
+
+2008-12-03  Alan McGovern  <amcgovern@novell.com>
+
+	* System.Windows.Data/BindingExpressionBase.cs: When the binding path is
+	an empty string, we directly return the DataSource. Also, we don't
+	recurse up through parent framework elements to select a datacontext.
+
+2008-12-01  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Makefile.am: We need to compile and link the MS control resources
+	otherwise we're missing (and throwing) when accessing the exception
+	strings.
+
+2008-12-01  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* System, System/ChangeLog: Deleted empty directory.
+	* System.Windows.mdp: Updated with new files.
+
+2008-12-01  Alan McGovern  <amcgovern@novell.com>
+
+	* System.Windows.Data/BindingExpression.cs:
+	* System.Windows.Data/BindingExpressionBase.cs: Rename variables to
+	match the unmanaged API.
+
+2008-12-01  Stephane Delcroix  <sdelcroix@novell.com>
+
+	* Makefile.am: add HyperlinkButton from MSCONTROLS in the build
+
+2008-11-28  Alan McGovern  <amcgovern@novell.com>
+
+	* System.Windows.Data/Binding.cs:
+	* System.Windows.Data/BindingExpression.cs:
+	* System.Windows.Data/BindingExpressionBase.cs: DataBinding now works
+	for one-way, one-time and two-way bindings with managed objects.
+
+2008-11-28  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Makefile.am: Make make check actually work.
+
+2008-11-27  Sebastien Pouliot  <sebastien@ximian.com> 
+
+	* System.Windows.Controls/FileDialogFileInfo.cs: Remove.
+	* Makefile.am: Remove FileDialogFileInfo.cs from build.
+
+2008-11-27  Alan McGovern  <amcgovern@novell.com>
+
+	* System.Windows.Data/Binding.cs:
+	* System.Windows.Data/BindingExpression.cs:
+	* System.Windows.Data/BindingExpressionBase.cs: Allow the Binding class
+	to be mapped between managed and unmanaged code.
+
+2008-11-27  Alan McGovern  <amcgovern@novell.com>
+
+	* System.Windows.mdp: Add some missing files to the MDP
+
+2008-11-25  Sebastien Pouliot  <sebastien@ximian.com> 
+
+	* Makefile.am: Add ValidationError.cs and ValidationErrorEventArgs.cs
+	to build.
+
+2008-11-25  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Makefile.am: Exclude *Converter types that were not part of the 
+	final SL2 release.
+
+2008-11-24  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* System.Windows/DependencyObject.cs: Fix support for FontStretch,
+	FontStyle, FontWeight which were enums in 1.0/1.1 and are now structs 
+	in 2.0. Fix InvalidCastException in unit tests.
+	* System.Windows/FontStyleKind.cs: Fix value for Italic to match
+	the unmanaged value.
+
+2008-11-21  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* System.Windows/UIElement.cs: Un-ifdef OnCreateAutomationPeer
+	* System.Windows.Automation.Peers/AutomationPeer.cs: New. Stub to
+	make it possible to complete the API.
+	* System.Windows.Controls/Control.cs: Add some missing On* methods
+	so controls can override them.
+	* Makefile.am: Add AutomationPeer to build.
+
+2008-11-21  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* System.Windows.mdp: Updated.
+
+2008-11-21  Stephane Delcroix  <sdelcroix@novell.com>
+
+	* Makefile.am: build VSM from WPF.Toolkit
+
+2008-11-20  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* System.Windows.Controls/Control.cs: Add stubs for IsEnabled and
+	Focus to let the control build. Remove extra stuff not present in SL2
+	final.
+	* Makefile.am: Add Slider from MS controls to the build.
+
+2008-11-19  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Makefile.am, System.Windows.mdp: Added InputMethod, ICommand,
+	  HostingRenderTargetBitmap. Corcompare fixes.
+
+2008-11-18  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Makefile.am, System.Windows.mdp: Corcompare work.
+
+2008-11-18  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Makefile.am, System.Windows.mdp: More corcompare work.
+
+2008-11-18  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Makefile.am, Microsoft.Internal,
+	  Microsoft.Internal/IManagedFrameworkInternalHelper.cs, MS.Internal,
+	  MS.Internal/IManagedFrameworkInternalHelper.cs, System.Windows.mdp:
+	  Corcompare work.
+
+2008-11-14  Alan McGovern  <amcgovern@novell.com>
+
+	* System.Windows.Data/BindingExpressionBase.cs: Add partial support for
+	two way binding and for using Binding.Converter
+
+2008-11-14  Alan McGovern  <amcgovern@novell.com>
+
+	* System.Windows.Data/BindingExpressionBase.cs: If the property doesn't
+	exist, report failure.
+
+2008-11-14  Alan McGovern  <amcgovern@novell.com>
+
+	* Makefile.am:
+	* System.Windows.Data/Binding.cs:
+	* System.Windows.Data/BindingExpression.cs:
+	* System.Windows.Data/BindingExpressionBase.cs: Add initial support for
+	DataBinding.
+
+2008-11-11  Chris Toshok  <toshok@ximian.com>
+
+	* Makefile.am: only include System.Runtime.Serialization.dll in
+	the 2.1 profile, so we can build the desktop version against mono
+	2.0.  the 2.1 profile requires mono 2.2. re: kangaroo.
+
+2008-09-15  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Makefile.am: Add a reference to System.Runtime.Serialization.dll
+	for IsolatedStorageSettings serialization.
+
+2008-09-04  Stephane Delcroix  <sdelcroix@novell.com>
+
+	* Makefile.am: add ref to System.Xml for parsing DeepZoom images
+
+2008-08-23  Geoff Norton  <gnorton@novell.com>
+
+	* Makefile.am: add a reference to System.Net.dll when compiling
+	with smcs.
+
+2008-08-21  Chris Toshok  <toshok@ximian.com>
+
+	* Makefile.am (system_windows_sources): add Border.cs
+
+2008-08-18  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Makefile.am: Add System.IO.IsolatedStorage/IsolatedStorageSettings.cs
+	stub to the build.
+
+2008-08-17  Chris Toshok  <toshok@ximian.com>
+
+	* Makefile.am: split up the 2.1/3.0 work in automake ifdefs so we
+	only build/install what we need to.
+
+2008-08-15  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* System.Windows.mdp: Implement MediaElement.SetSource (stream)
+	* Makefile.am: Added StreamCallbacks.
+
+2008-08-14  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Makefile.am, System.Windows.mdp: Implemented StylusDevice, some
+	  gui-compare fixes.
+
+2008-08-14  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Makefile.am, System.Windows.mdp: Removed classes and members which
+	  are no longer in SL2B2.
+
+2008-08-13  Larry Ewing  <lewing@novell.com>
+
+	* System.Windows.Interop/SilverlightHost.cs: implement Content.
+
+2008-08-13  Geoff Norton  <gnorton@novell.com>
+
+	 * System.Windows.Markup/XamlReader.cs: Initial implementation of 
+	XamlReader.Load
+
+2008-08-13  Jeffrey Stedfast  <fejj@novell.com>
+
+	* System.Windows.Markup/XamlParseException.cs: Fixed to use ints
+	instead of uints to match the SL2 API.
+
+2008-08-13  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Makefile.am, System.Windows.mdp: Added *TileSource.cs
+
+2008-08-13  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Makefile.am, System.Windows.mdp: Updated.
+
+2008-08-13  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Makefile.am: Added RenderTargetBitmap.
+	* System.Windows.mdp: Updated.
+
+2008-08-13  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* System.Windows.Interop/Content.cs: Changed some parameter names, base
+	  types, method signatures, etc to match SL.
+
+2008-08-13  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Internal.cs: Deleted, no longer used.
+
+2008-08-13  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	
+
+2008-08-13  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Makefile.am: Split ApplicationInternal out into a separate file and
+	  enable generation for it.
+
+2008-08-12  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* System.Windows.mdp, Makefile.am: Generate public ctor, internal ctor
+	  and GetKind for classes inheriting from DependencyObject.
+
+2008-08-12  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Makefile.am: Added DependencyProperty.g.cs.
+
+2008-08-11  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* System.Windows.mdp: Updated.
+
+2008-08-11  Fernando Herrera  <fherrera@novell.com>
+
+	* Makefile.am: add StackPanel and IValueConverter to the build.
+	* System.Windows.Data/IValueConverter.cs: Added IValueConverter
+	Interface.
+	* System.Windows.Data/Binding.cs: Add Converter property.
+
+2008-08-10  Chris Toshok  <toshok@ximian.com>
+
+	* Makefile.am (system_windows_sources): add some more
+	MS.SilverlightControls stuff to the build, and remove another
+	overlapping .cs file from our sources.
+
+2008-08-10  Chris Toshok  <toshok@ximian.com>
+
+	* System.Collections.ObjectModel/ObservableCollection_T.cs: remove
+	the generic constraint, and add back in INotifyPropertyChanged.
+
+2008-08-09  Chris Toshok  <toshok@ximian.com>
+
+	* Makefile.am (system_windows_sources): include the MS Controls
+	sources in this source list, so they get pulled into
+	System.Windows.dll.
+
+	* System/UriTypeConverter.cs:
+	* System.Windows.Input/KeyboardNavigation.cs:
+	* System.Windows/RoutedPropertyChangedEventHandler_T.cs:
+	* System.Windows/RoutedPropertyChangedEventArgs_T.cs: remove these
+	as they're duplicated in the MS source drop.
+	
+2008-08-08  Fernando Herrera  <fherrera@novell.com>
+
+	* Makefile.am: Add DesignerProperties.cs ItemCollection.cs,
+	 ItemsControl.cs, ItemsPanelTemplate.cs,ControlTemplate.cs,
+	TemplatePart.cs	
+
+2008-08-05  Manuel Ceron  <ceronman@gmail.com>
+
+	* System.Windows.Markup/XmlLanguage.cs: fixed == and != overloads.
+
+2008-08-05  Chris Toshok  <toshok@ximian.com>
+
+	* Makefile.am (system_windows_sources): add GeneralTransform.cs.
+
+2008-08-05  Chris Toshok  <toshok@ximian.com>
+
+	* System.Windows.Data/BindingExpressionBase.cs: stub.
+
+2008-08-05  Chris Toshok  <toshok@ximian.com>
+
+	* Makefile.am (system_windows_sources): add KeyboardNavigation.cs
+
+2008-08-05  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* System.Windows.mdp, Makefile.am: Added XamlReader.
+	* System.Windows.Markup/XamlReader.cs: Stub this one out for now.
+
+2008-08-03  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* System.Windows.mdp: Updated.
+
+2008-07-30  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* System.Windows.mdp: Updated.
+
+2008-07-30  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Makefile.am, System.Windows.mdp: Updated.
+
+2008-07-29  Jeffrey Stedfast  <fejj@novell.com>
+
+	* System.Windows.Markup/XmlLanguage.cs: Implemented.
+
+2008-07-28  Chris Toshok  <toshok@ximian.com>
+
+	* Makefile.am (system_windows_sources): add the
+	System.Windows.Threading directory.
+
+2008-07-26  Chris Toshok  <toshok@ximian.com>
+
+	* Makefile.am (system_windows_sources): remove
+	KeyboardEventArgs/KeyboardEventHandler.
+
+2008-07-23  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* System.Windows.mdp, Makefile.am: Updated.
+
+2008-07-23  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* System.Windows.mdp, Makefile.am: Removed MediaAttribute(Collection).
+
+2008-07-23  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* System.Windows.mdp, Makefile.am: Updated.
+
+2008-07-23  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* System.Windows.mdp, Makefile.am: Updated.
+
+2008-07-23  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Makefile.am, System.Windows.mdp: Updated.
+
+2008-07-23  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* System.Windows.mdp, Makefile.am: Updated.
+
+2008-07-23  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Makefile.am: Implement Font(Style|Weight|Stretch).
+	* System.Windows.mdp: Updated.
+
+2008-07-23  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* System, System/UriTypeConverter.cs: Added (stubbed).
+	* System.Windows.mdp, Makefile.am: Updated.
+
+2008-07-23  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* MS.Internal, Makefile.am,
+	  MS.Internal/IManagedFrameworkInternalHelper.cs: Implemented
+	  MS.Internal/ManagedFrameworkInternalHelper.cs.
+
+2008-07-22  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* System.Windows.mdp: Updated.
+
+2008-07-22  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* System.Windows.mdp: Updated.
+	* Makefile.am: Added PropertyMetadata.cs.
+
+2008-07-16  Michael Dominic K.  <mdk@mdk.am>
+
+	* System.Windows.Media.Animation/Storyboard.cs: Adding
+	TargetNameProperty.
+
+2008-07-16  Michael Dominic K.  <mdk@mdk.am>
+
+	* System.Windows/DependencyObject.cs: Adding a setter for Name.
+
+2008-07-15  Jb Evain  <jbevain@novell.com>
+
+	* Makefile.am: add new file.
+
+2008-06-10  Stephane Delcroix  <sdelcroix@novell.com>
+
+	* System.Windows.Interrop/SilverlightHost.cs:
+	* System.Windows.Interrop/Content.cs:
+	* System.Windows.Interrop/Settings.cs: new 2.0 classes
+
+2008-06-10  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* System.Windows.mdp: Updated.
+
+2008-05-30  Miguel de Icaza  <miguel@novell.com>
+
+	* Add stubs to get enough to get a sample Button on a page to
+	load.    Does not work yet.
+
+2008-05-07  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Makefile.am: For 2.1 delay-sign the assembly using silverlight.pub.
+	For 3.0 sign, without delay, using Mono's key.
+
+2008-05-04  Miguel de Icaza  <miguel@novell.com>
+
+	* Update all classes to not derive from MS.Internal.Collection,
+	instead the new PresentationFrameworkCollection.
+
+	* Mono/Report.cs: New error reporting framework, we should use
+	this to consolidate error reporting. 
+
+	* Application.cs: Add meat to the actual implementation, we now
+	startup, still a handful of methods must be implemented. 
+
+	* System.Windows/XapHackProxyImpl.cs: Continuation of the horrid
+	cross appdomain hack.
+
+	* Add a few more managed mirrors for the unmanaged classes. 
+
+2008-05-02  Manuel Ceron  <ceronman@unicauca.edu.co>
+
+	* Internal.cs: Collections.Count now returns 
+	NativeMethods.collection_get_count
+
+2008-04-17  Andrew Jorgensen  <ajorgensen@novell.com>
+
+	* Makefile.am: Use DESTDIR when installing
+
+2008-04-17  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Makefile.am: Minor make check fix. Renamed 'make check' to 'make
+	  check-code' to not conflict with other uses of 'make check'.
+
+2008-04-16  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* System.Windows.mdp: Updated to (mostly) compile.
+
+2008-04-16  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* System.Windows.mdp: Added.
+
+2008-04-13  Jb Evain  <jbevain@novell.com>
+
+	* Makefile, System.Windows.dll.sources: agclr is
+	renamed System.Windows.
+	Merged from the Moonlight 2 branch.
+
+2007-11-20  Jeffrey Stedfast  <fejj@novell.com>
+
+	* System.Windows.Interop/BrowserHost.cs (add_Resize): Removed old
+	hack.
+
+2007-11-16  Jeffrey Stedfast  <fejj@novell.com>
+
+	* System.Windows.Interop/BrowserHost.cs (add_Resize): Invoke the
+	Resize handler being added if the toplevel canvas has already been
+	loaded.
+
+2007-11-08  Jeffrey Stedfast  <fejj@novell.com>
+
+	* System.Windows.Interop/BrowserHost.cs: Implemented Resize event.
+
+2007-10-04  Zoltan Varga  <vargaz@gmail.com>
+
+	* System.IO/SimpleUnmanagedMemoryStream.cs: Fix a warning.
+
+2007-09-27  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Internal.cs: Don't ref ourself if we're created using a *_new
+	  function, the creation itself already gives us a ref.
+
+2007-09-21  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* agclr.dll.sources: Added ManagedXamlLoader.cs
+
+2007-08-17  Jb Evain  <jbevain@novell.com>
+
+	* Assembly/AssemblyInfos.cs: re-enable patch from Miguel.
+	For non-plugin usage, use mono public key to sign the assembly.
+
+2007-08-11  Jb Evain  <jbevain@novell.com>
+
+	* Mono/EventHanderList.cs: copied from System.dll, as it doesn't
+		exists in 2.1.
+	  agclr.dll.sources: add Mono/EventHandlerList
+	  System.Windows/DependencyObject.cs: use the new EventHandlerList.
+
+2007-08-04  Chris Toshok  <toshok@ximian.com>
+
+	* agclr.dll.sources: add System.Windows.Media/VisualBrush.cpp
+
+2007-08-01  Miguel de Icaza  <miguel@novell.com>
+
+	* Makefile (thisdir): Do not link with System.Xml, not needed.
+	In preparation to use smcs
+
+	* Internal.cs: Fix visibility.
+
+2007-07-31  Jeffrey Stedfast  <fejj@novell.com>
+
+	* agclr.dll.sources: Add StyleSimulations to the build.
+
+2007-07-30  Chris Toshok  <toshok@ximian.com>
+
+	* agclr.dll.sources: add the 3 KeyFrameCollection classes, and
+	remove KeyFrameCollection.
+
+2007-07-29  Chris Toshok  <toshok@ximian.com>
+
+	* agclr.dll.sources: rename ResourceCollection.cs to
+	ResourceDictionary.cs.
+
+2007-07-20  Miguel de Icaza  <miguel@novell.com>
+
+	* Internal.cs (RemoveAt): implement.
+
+2007-07-03  Miguel de Icaza  <miguel@novell.com>
+
+	* Internal.cs: Propagate errors from mutated collections on
+	iterators. 
+
+2007-06-29  Rodrigo Kumpera  <rkumpera@novell.com>
+
+	*DependencyObject.cs: Added MediaElement to CreateObject switch.
+
+2007-06-28  Miguel de Icaza  <miguel@novell.com>
+
+	* Move Kind.cs, Value.cs and NativeMethods to the agmono assembly
+	as well as some events from Events.cs that are now public and part
+	of the NativeMethods APIS.
+
+	This is only the initial move, we will later move some more stuff
+	that we need.
+
+2007-06-26  Miguel de Icaza  <miguel@novell.com>
+
+	* Internal.cs: Implement most of the public interface for
+	MS.Internal.Collection. 
+
+2007-06-26  Jeffrey Stedfast  <fejj@novell.com>
+
+	* Internal.cs: Updated to use dependency_object_get_object_type()
+	(which is the new name for dependency_object_get_kind).
+
+2007-06-25  Miguel de Icaza  <miguel@novell.com>
+
+	* Internal.cs: Make this beast implement ICollection, still a few
+	more insterfaces more to go (ICollection<T>, IList, IList<T>)
+
+2007-06-21  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* agclr.dll.sources: Updated.
+
+2007-06-21  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Everywhere: Remove protected from GetKind.
+
+2007-06-21  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* agclr.dll.sources: Updated.
+	* System.Windows.Ink: Added.
+
+2007-06-21  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* agclr.dll.sources: Update.
+
+2007-06-20  Jeffrey Stedfast  <fejj@novell.com>
+
+	* Internal.cs (Current): We can't reuse the Collection-type Kind
+	as the kind of object we're looking for since if it fails to find
+	a pre-cached managed object for that IntPtr, it will try to
+	instantiate a new one. Instead, we need the /actual/ object type,
+	so request that from the NativeMethods.
+
+2007-06-20  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* agclr.dll.sources: Updated.
+
+2007-06-19  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* agclr.dll.sources: Updated.
+
+2007-06-19  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* agclr.dll.sources: Update.
+
+2007-06-19  Miguel de Icaza  <miguel@novell.com>
+
+	* Internal.cs: Implement collection iterators, the object version
+	for now.
+
+2007-06-19  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* agclr.dll.sources: Updated.
+
+2007-06-19  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* scripts: Added.
+
+2007-06-19  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* System.Windows/PropertyMetadata.cs: Deleted, not present in SL.
+
+2007-06-18  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* agclr.dll.sources: Update.
+
+2007-06-18  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Internal.cs: Fix construction.
+
+2007-06-18  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* agclr.dll.sources: added TextBlock.cs, System.Windows.Documents
+	  public types and related (missing) System.Windows enums.
+
+2007-06-15  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* agclr.dll.sources: Add System.Windows.Controls.Image and MediaBase
+
+2007-06-15  Sebastien Pouliot  <sebastien@ximian.com> 
+
+	* Internal.cs: Add Remove to Collection<T>
+
+2007-06-15  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* agclr.dll.sources: Add System.Windows.Controls.Control
+
+2007-06-14  Alan McGovern <amcgovern@novell.com> 
+
+	* DependencyObject.cs: Added NameProperty
+
+2007-06-14  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* agclr.dll.sources: Add TimelineCollection.
+
+2007-06-14  Alan McGovern <amcgovern@novell.com> 
+
+	* Fixed typos in files from previous commit
+	* Animation.cs: Implemented
+
+2007-06-14  Alan McGovern <amcgovern@novell.com> 
+
+	* Implemented   ColorAnimation,
+			DoubleAnimation, 
+			PointAnimation,
+			BeginStoryBoard,
+			EventTrigger
+
+2007-06-14  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Internal.cs: Constructor fixes, part 3.
+
+2007-06-13  Miguel de Icaza  <miguel@novell.com>
+
+	* Support for Storyboard class, still need the C API from Chris to
+	test this.
+
+2007-06-13  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Internal.cs: Second pass at constructor fixing.
+
+2007-06-13  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Test/Test.usertasks: Implement GetKind.
+
+2007-06-09  Miguel de Icaza  <miguel@novell.com>
+
+	* Everywhere: bind to our existing C++ methods.
+
+2007-06-08  Miguel de Icaza  <miguel@novell.com>
+
+	* Internal.cs: Derive from DependencyObject, add Add method. 
+
+2007-06-07  Miguel de Icaza  <miguel@novell.com>
+
+	* Drop the use of the native XAML parser
+
+	* Add Value.cs
+
+2007-06-05  Sebastien Pouliot  <sebastien@ximian.com> 
+
+	* agclr.dll.sources: Added System.Windows.Media.Alignment[X|Y] enums,
+	MediaAttribute[Collection] and QuadraticBezierSegment classes.
+
+2007-06-04  Sebastien Pouliot  <sebastien@ximian.com> 
+
+	* agclr.dll.sources: Added System.Windows.Media.EllipseGeometry,
+	GeometryCollection, GeometryGroup, LineGeometry, PathFigure,
+	PathFigureCollection, PathGeometry and PathSegmentCollection
+
+2007-06-03  Sebastien Pouliot  <sebastien@ximian.com> 
+
+	* agclr.dll.sources: Added System.Windows.Media.*Brush and related 
+	classes (to compile).
+
+2007-06-03  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* agclr.dll.sources: Added System.Windows.Media.Matrix and [Matrix|
+	Rotate|Scale|Skew|Translate]Transform
+
+2007-06-01  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* agclr.dll.sources: Added System.Windows.Downloader and MonoTODO
+
+2007-06-01  Sebastien Pouliot  <sebastien@ximian.com> 
+
+	* agclr.dll.sources: Added System.Windows.Rect and System.Windows.
+	Media.RectangleGeometry
+
+2007-06-01  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* agclr.dll.sources: Added System.Windows.Media.PenLineCap, 
+	PenLineJoin and Stretch
+
+2007-06-01  Sebastien Pouliot  <sebastien@ximian.com> 
+
+	* agclr.dll.sources: Added System.Windows.Shapes.Line, Path, Polygon
+	and Polyline (namespace should be complete)
+
+2007-06-01  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* agclr.dll.sources: Added System.Windows.Shapes.Ellipse, Rectangle
+	and Shape.

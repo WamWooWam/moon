@@ -1,0 +1,42 @@
+2010-01-18  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* xamlg.cs: A file without a x:Class attribute generates a zero-length
+	code-behind file.
+
+2010-01-13  Chris Toshok  <toshok@ximian.com>
+
+	* xamlg.cs: when generating fields for fully
+	qualified types, use global references to keep from conflicting
+	type/namespace names.
+
+2009-04-13  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* xamlg.mdp: Add a project for each tool, and clean up some of
+	  the existing projects.
+
+2009-04-13  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Makefile.am: Fix install directories.
+
+2009-02-19  Geoff Norton  <gnorton@novell.com>
+
+	* xamlg.cs: Fix a off by 1 error if the rooted path ends in a /
+
+2009-01-13  Geoff Norton  <gnorton@novell.com>
+
+	* xamlg.cs:  Add System.Windows.Controls.Primitives namespace as well
+
+2008-12-11  Jackson Harper  <jackson@ximian.com>
+
+	* xamlg.cs:
+	* Makefile.am: Update to use Options.cs
+
+2008-12-10  Stephane Delcroix  <sdelcroix@novell.com>
+
+	* xamlg.cs: parse the -root: argument, insert the relative path
+	in LoadComponent lines
+
+2008-12-10  Stephane Delcroix  <sdelcroix@novell.com>
+
+	* xamlg.cs: only insert the filename (without path) in the 
+	LoadComponent line.

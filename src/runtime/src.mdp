@@ -1,0 +1,439 @@
+<Project name="src" fileversion="2.0" language="CPP" Target="Bin" ctype="CProject">
+  <Policies>
+    <StandardHeader Text="/* -*- Mode: C++; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */&#xA;/*&#xA; * ${FileName}&#xA; *&#xA; * Contact:&#xA; *   Moonlight List (moonlight-list@lists.ximian.com)&#xA; *&#xA; * Copyright ${Year} Novell, Inc. (http://www.novell.com)&#xA; *&#xA; * See the LICENSE file included with the distribution for details.&#xA; */&#xA;" IncludeInNewFiles="True" />
+  </Policies>
+  <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="True" RelativeMakefileName="Makefile.am" BuildTargetName="install" IsAutotoolsProject="True" RelativeConfigureInPath="..">
+    <BuildFilesVar />
+    <DeployFilesVar />
+    <ResourcesVar />
+    <OthersVar />
+    <GacRefVar />
+    <AsmRefVar />
+    <ProjectRefVar />
+    <MessageRegex Name="gcc" />
+  </MonoDevelop.Autotools.MakefileInfo>
+  <Configurations active="Default">
+    <Configuration name="Debug" SourceDirectory="." ctype="CProjectConfiguration">
+      <Output directory="bin/Debug" output="src" />
+      <Build debugmode="True" target="SharedLibrary" />
+      <Execution consolepause="True" runwithwarnings="True" />
+      <Includes>
+        <Include>${ProjectDir}</Include>
+        <Include>${CombineDir}</Include>
+        <Include>${ProjectDir}/asf</Include>
+        <Include>${CombineDir}/cairo/src</Include>
+        <Include>/usr/include/gtk-2.0</Include>
+        <Include>/usr/lib/gtk-2.0/include</Include>
+        <Include>/usr/include/atk-1.0</Include>
+        <Include>/usr/include/cairo</Include>
+        <Include>/usr/include/pango-1.0</Include>
+        <Include>/usr/include/glib-2.0</Include>
+        <Include>/usr/lib/glib-2.0/include</Include>
+        <Include>/usr/include/freetype2</Include>
+        <Include>/usr/include/libpng12</Include>
+        <Include>/usr/include/alsa</Include>
+        <Include>/mono/main/install/include</Include>
+        <Include>/mono/main/install/lib/pkgconfig/../../include/mono-1.0</Include>
+      </Includes>
+      <CodeGeneration WarningLevel="All" WarningsAsErrors="False" OptimizationLevel="0" ExtraCompilerArguments="-x none" ExtraLinkerArguments="" DefineSymbols="DEBUG MONODEVELOP HAVE_SYS_TIME_H HAVE_CONFIG_H" ctype="CCompilationParameters" />
+    </Configuration>
+    <Configuration name="Release" ctype="CProjectConfiguration">
+      <Output directory="bin/Release" output="src" />
+      <Build debugmode="False" target="Bin" />
+      <Execution consolepause="True" runwithwarnings="True" />
+      <CodeGeneration WarningLevel="Normal" WarningsAsErrors="False" OptimizationLevel="3" ExtraCompilerArguments="" ExtraLinkerArguments="" DefineSymbols="MONODEVELOP" ctype="CCompilationParameters" />
+    </Configuration>
+  </Configurations>
+  <Contents>
+    <File subtype="Code" buildaction="Nothing" name="cbinding.h" />
+    <File subtype="Code" buildaction="Compile" name="cbinding.cpp" />
+    <File subtype="Code" buildaction="Compile" name="dependencyproperty.g.cpp" />
+    <File subtype="Code" buildaction="Compile" name="animation.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="animation.h" />
+    <File subtype="Code" buildaction="Compile" name="brush.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="brush.h" />
+    <File subtype="Code" buildaction="Compile" name="canvas.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="canvas.h" />
+    <File subtype="Code" buildaction="Compile" name="clock.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="ChangeLog" />
+    <File subtype="Code" buildaction="Nothing" name="clock.h" />
+    <File subtype="Code" buildaction="Compile" name="collection.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="collection.h" />
+    <File subtype="Code" buildaction="Compile" name="color.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="color.h" />
+    <File subtype="Code" buildaction="Compile" name="control.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="control.h" />
+    <File subtype="Code" buildaction="Compile" name="debug.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="debug.h" />
+    <File subtype="Code" buildaction="Compile" name="dependencyobject.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="dependencyobject.h" />
+    <File subtype="Code" buildaction="Compile" name="dirty.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="dirty.h" />
+    <File subtype="Code" buildaction="Compile" name="downloader.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="downloader.h" />
+    <File subtype="Code" buildaction="Nothing" name="enums.h" />
+    <File subtype="Code" buildaction="Nothing" name="error.h" />
+    <File subtype="Code" buildaction="Compile" name="frameworkelement.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="frameworkelement.h" />
+    <File subtype="Code" buildaction="Nothing" name="fullscreen.h" />
+    <File subtype="Code" buildaction="Nothing" name="genkindcs.sh" />
+    <File subtype="Code" buildaction="Nothing" name="geometry.h" />
+    <File subtype="Code" buildaction="Compile" name="geometry.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="glyphs.h" />
+    <File subtype="Code" buildaction="Compile" name="glyphs.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="libmoon.h" />
+    <File subtype="Code" buildaction="Compile" name="list.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="list.h" />
+    <File subtype="Code" buildaction="Nothing" name="Makefile.am" />
+    <File subtype="Code" buildaction="Compile" name="media.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="media.h" />
+    <File subtype="Code" buildaction="Nothing" name="moon-path.h" />
+    <File subtype="Code" buildaction="Compile" name="mediaplayer.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="mediaplayer.h" />
+    <File subtype="Code" buildaction="Compile" name="namescope.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="namescope.h" />
+    <File subtype="Code" buildaction="Compile" name="openfile.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="openfile.h" />
+    <File subtype="Code" buildaction="Compile" name="panel.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="panel.h" />
+    <File subtype="Code" buildaction="Compile" name="playlist.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="playlist.h" />
+    <File subtype="Code" buildaction="Compile" name="point.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="point.h" />
+    <File subtype="Code" buildaction="Nothing" name="rect.h" />
+    <File subtype="Code" buildaction="Compile" name="rect.cpp" />
+    <File subtype="Code" buildaction="Compile" name="runtime.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="runtime.h" />
+    <File subtype="Code" buildaction="Compile" name="shape.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="shape.h" />
+    <File subtype="Code" buildaction="Compile" name="stylus.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="stylus.h" />
+    <File subtype="Code" buildaction="Compile" name="textblock.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="textblock.h" />
+    <File subtype="Code" buildaction="Compile" name="transform.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="transform.h" />
+    <File subtype="Code" buildaction="Compile" name="trigger.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="trigger.h" />
+    <File subtype="Code" buildaction="Compile" name="type.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="type.h" />
+    <File subtype="Code" buildaction="Nothing" name="type.h.in" />
+    <File subtype="Code" buildaction="Compile" name="uielement.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="uielement.h" />
+    <File subtype="Code" buildaction="Compile" name="uri.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="uri.h" />
+    <File subtype="Code" buildaction="Nothing" name="validators.h" />
+    <File subtype="Code" buildaction="Compile" name="value.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="value.h" />
+    <File subtype="Code" buildaction="Nothing" name="value.h.in" />
+    <File subtype="Code" buildaction="Compile" name="xaml.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="xaml.h" />
+    <File subtype="Code" buildaction="Nothing" name="zip/ioapi.c" />
+    <File subtype="Code" buildaction="Nothing" name="zip/unzip.c" />
+    <File subtype="Code" buildaction="Nothing" name="zip/crypt.h" />
+    <File subtype="Code" buildaction="Nothing" name="zip/ioapi.h" />
+    <File subtype="Code" buildaction="Nothing" name="zip/unzip.h" />
+    <File subtype="Code" buildaction="Nothing" name="pipeline.h" />
+    <File subtype="Code" buildaction="Compile" name="pipeline.cpp" />
+    <File subtype="Code" buildaction="Compile" name="pipeline-ffmpeg.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="pipeline-ffmpeg.h" />
+    <File subtype="Code" buildaction="Compile" name="utils.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="utils.h" />
+    <File subtype="Code" buildaction="Nothing" name="region.h" />
+    <File subtype="Code" buildaction="Compile" name="region.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="eventargs.h" />
+    <File subtype="Code" buildaction="Compile" name="eventargs.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="alpha-premul-table.inc" />
+    <File subtype="Code" buildaction="Compile" name="yuv-converter.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="yuv-converter.h" />
+    <File subtype="Code" buildaction="Compile" name="type-generated.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="http-streaming.h" />
+    <File subtype="Code" buildaction="Compile" name="http-streaming.cpp" />
+    <File subtype="Code" buildaction="Compile" name="xap.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="xap.h" />
+    <File subtype="Code" buildaction="Nothing" name="deployment.h" />
+    <File subtype="Code" buildaction="Compile" name="deployment.cpp" />
+    <File subtype="Code" buildaction="Compile" name="audio-alsa.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="audio-alsa.h" />
+    <File subtype="Code" buildaction="Compile" name="audio-pulse.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="audio-pulse.h" />
+    <File subtype="Code" buildaction="Compile" name="audio.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="audio.h" />
+    <File subtype="Code" buildaction="Compile" name="dependencyproperty.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="dependencyproperty.h" />
+    <File subtype="Code" buildaction="Nothing" name="contentcontrol.h" />
+    <File subtype="Code" buildaction="Compile" name="grid.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="grid.h" />
+    <File subtype="Code" buildaction="Nothing" name="moon-curves.h" />
+    <File subtype="Code" buildaction="Compile" name="mp3.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="mp3.h" />
+    <File subtype="Code" buildaction="Compile" name="usercontrol.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="usercontrol.h" />
+    <File subtype="Code" buildaction="Compile" name="error.cpp" />
+    <File subtype="Code" buildaction="Compile" name="enums.cpp" />
+    <File subtype="Code" buildaction="Compile" name="size.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="size.h" />
+    <File subtype="Code" buildaction="Nothing" name="thickness.h" />
+    <File subtype="Code" buildaction="Nothing" name="src.mdp" />
+    <File subtype="Code" buildaction="Compile" name="contentcontrol.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="style.h" />
+    <File subtype="Code" buildaction="Compile" name="style.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="template.h" />
+    <File subtype="Code" buildaction="Compile" name="template.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="tilesource.h" />
+    <File subtype="Code" buildaction="Compile" name="applier.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="applier.h" />
+    <File subtype="Code" buildaction="Nothing" name="bitmapimage.h" />
+    <File subtype="Code" buildaction="Compile" name="border.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="border.h" />
+    <File subtype="Code" buildaction="Compile" name="cornerradius.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="cornerradius.h" />
+    <File subtype="Code" buildaction="Compile" name="deepzoomimagetilesource.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="deepzoomimagetilesource.h" />
+    <File subtype="Code" buildaction="Compile" name="multiscaleimage.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="multiscaleimage.h" />
+    <File subtype="Code" buildaction="Nothing" name="multiscalesubimage.h" />
+    <File subtype="Code" buildaction="Compile" name="resources.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="resources.h" />
+    <File subtype="Code" buildaction="Compile" name="textbox.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="textbox.h" />
+    <File subtype="Code" buildaction="Compile" name="thickness.cpp" />
+    <File subtype="Code" buildaction="Compile" name="tilesource.cpp" />
+    <File subtype="Code" buildaction="Compile" name="moonlightconfiguration.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="moonlightconfiguration.h" />
+    <File subtype="Code" buildaction="Compile" name="pipeline-logo.cpp" />
+    <File subtype="Code" buildaction="Compile" name="pipeline-asf.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="pipeline-asf.h" />
+    <File subtype="Code" buildaction="Compile" name="mediaelement.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="mediaelement.h" />
+    <File subtype="Code" buildaction="Compile" name="validators.cpp" />
+    <File subtype="Code" buildaction="Compile" name="provider.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="provider.h" />
+    <File subtype="Code" buildaction="Nothing" name="keyboard.h" />
+    <File subtype="Code" buildaction="Compile" name="keyboard.cpp" />
+    <File subtype="Code" buildaction="Compile" name="popup.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="popup.h" />
+    <File subtype="Code" buildaction="Compile" name="application.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="application.h" />
+    <File subtype="Code" buildaction="Compile" name="bitmapimage.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="fontfamily.h" />
+    <File subtype="Code" buildaction="Nothing" name="mkcolor.cs" />
+    <File subtype="Code" buildaction="Nothing" name="propertypath.h" />
+    <File subtype="Code" buildaction="Compile" name="multiscalesubimage.cpp" />
+    <File subtype="Code" buildaction="Compile" name="security.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="security.h" />
+    <File subtype="Code" buildaction="Compile" name="timeline.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="timeline.h" />
+    <File subtype="Code" buildaction="Compile" name="timesource.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="timesource.h" />
+    <File subtype="Code" buildaction="Compile" name="bitmapsource.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="bitmapsource.h" />
+    <File subtype="Code" buildaction="Compile" name="imagesource.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="imagesource.h" />
+    <File subtype="Code" buildaction="Compile" name="writeablebitmap.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="writeablebitmap.h" />
+    <File subtype="Code" buildaction="Compile" name="easing.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="easing.h" />
+    <File subtype="Code" buildaction="Nothing" name="fontsource.h" />
+    <File subtype="Code" buildaction="Nothing" name="morton-layout-table.inc" />
+    <File subtype="Code" buildaction="Compile" name="timemanager.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="timemanager.h" />
+    <File subtype="Code" buildaction="Compile" name="fontmanager.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="fontmanager.h" />
+    <File subtype="Code" buildaction="Compile" name="fonts.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="fonts.h" />
+    <File subtype="Code" buildaction="Nothing" name="fontstretch.h" />
+    <File subtype="Code" buildaction="Nothing" name="fontstyle.h" />
+    <File subtype="Code" buildaction="Nothing" name="fontweight.h" />
+    <File subtype="Code" buildaction="Nothing" name="tabnavigationwalker.h" />
+    <File subtype="Code" buildaction="Compile" name="tabnavigationwalker.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="managedtypeinfo.h" />
+    <File subtype="Code" buildaction="Compile" name="bitmapcache.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="bitmapcache.h" />
+    <File subtype="Code" buildaction="Compile" name="effect.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="effect.h" />
+    <File subtype="Code" buildaction="Nothing" name="incomplete-support.h" />
+    <File subtype="Code" buildaction="Nothing" name="incomplete-support.xaml" />
+    <File subtype="Code" buildaction="Compile" name="layoutinformation.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="layoutinformation.h" />
+    <File subtype="Code" buildaction="Nothing" name="ptr.h" />
+    <File subtype="Code" buildaction="Compile" name="pal/gtk/clipboard-gtk.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="pal/gtk/clipboard-gtk.h" />
+    <File subtype="Code" buildaction="Compile" name="pal/gtk/im-gtk.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="pal/gtk/im-gtk.h" />
+    <File subtype="Code" buildaction="Compile" name="pal/gtk/pal-gtk.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="pal/gtk/pal-gtk.h" />
+    <File subtype="Code" buildaction="Compile" name="pal/gtk/pixbuf-gtk.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="pal/gtk/pixbuf-gtk.h" />
+    <File subtype="Code" buildaction="Compile" name="pal/gtk/window-gtk.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="pal/gtk/window-gtk.h" />
+    <File subtype="Code" buildaction="Compile" name="pal/gtk/windowless-gtk.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="pal/gtk/windowless-gtk.h" />
+    <File subtype="Code" buildaction="Compile" name="pal/pal.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="pal/pal.h" />
+    <File subtype="Code" buildaction="Compile" name="pal/window.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="pal/window.h" />
+    <File subtype="Code" buildaction="Nothing" name="fullscreen/fullscreen.cs" />
+    <File subtype="Code" buildaction="Nothing" name="fullscreen/fullscreen.sh" />
+    <File subtype="Code" buildaction="Nothing" name="fullscreen/fullscreen.xaml" />
+    <File subtype="Code" buildaction="Nothing" name="drm.h" />
+    <File subtype="Code" buildaction="Nothing" name="drm.xaml" />
+    <File subtype="Code" buildaction="Nothing" name="fullscreen.xaml" />
+    <File subtype="Code" buildaction="Compile" name="projection.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="projection.h" />
+    <File subtype="Code" buildaction="Nothing" name="textoptions.h" />
+    <File subtype="Code" buildaction="Nothing" name="xaml-to-header.cs" />
+    <File subtype="Code" buildaction="Nothing" name="pipeline-mp4.h" />
+    <File subtype="Code" buildaction="Compile" name="pipeline-mp4.cpp" />
+    <File subtype="Code" buildaction="Compile" name="printing.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="printing.h" />
+    <File subtype="Code" buildaction="Nothing" name="notificationwindow.h" />
+    <File subtype="Code" buildaction="Compile" name="notificationwindow.cpp" />
+    <File subtype="Code" buildaction="Compile" name="webbrowser.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="webbrowser.h" />
+    <File subtype="Code" buildaction="Compile" name="asxparser.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="asxparser.h" />
+    <File subtype="Code" buildaction="Nothing" name="framerate-display.xaml" />
+    <File subtype="Code" buildaction="Compile" name="messaging.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="messaging.h" />
+    <File subtype="Code" buildaction="Compile" name="pal/capture/v4l2/pal-v4l2-video-capture.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="pal/capture/v4l2/pal-v4l2-video-capture.h" />
+    <File subtype="Code" buildaction="Compile" name="pal/capture/pal-linux-capture.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="pal/capture/pal-linux-capture.h" />
+    <File subtype="Code" buildaction="Compile" name="pal/messaging/glib/pal-glib-msg.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="pal/messaging/glib/pal-glib-msg.h" />
+    <File subtype="Code" buildaction="Compile" name="managedtypeinfo.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="inputmethod.h" />
+    <File subtype="Code" buildaction="Nothing" name="inputscope.h" />
+    <File subtype="Code" buildaction="Compile" name="network.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="network.h" />
+    <File subtype="Code" buildaction="Nothing" name="network-curl.h" />
+    <File subtype="Code" buildaction="Compile" name="network-curl.cpp" />
+    <File subtype="Code" buildaction="Compile" name="richtextbox.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="richtextbox.h" />
+    <File subtype="Code" buildaction="Compile" name="textelement.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="textelement.h" />
+    <File subtype="Code" buildaction="Compile" name="pal/gtk/config-dialog-gtk.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="pal/gtk/config-dialog-gtk.h" />
+    <File subtype="Code" buildaction="Compile" name="consent.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="consent.h" />
+    <File subtype="Code" buildaction="Nothing" name="authors.h" />
+    <File subtype="Code" buildaction="Compile" name="capture.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="capture.h" />
+    <File subtype="Code" buildaction="Compile" name="context.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="context.h" />
+    <File subtype="Code" buildaction="Nothing" name="designmode.h" />
+    <File subtype="Code" buildaction="Nothing" name="factory.h" />
+    <File subtype="Code" buildaction="Nothing" name="framerate-display.h" />
+    <File subtype="Code" buildaction="Compile" name="surface.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="surface.h" />
+    <File subtype="Code" buildaction="Compile" name="surface-cairo.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="surface-cairo.h" />
+    <File subtype="Code" buildaction="Compile" name="pal/network/dbus/pal-dbus-network.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="pal/network/dbus/pal-dbus-network.h" />
+    <File subtype="Code" buildaction="Compile" name="pal/network/pal-linux-network.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="pal/network/pal-linux-network.h" />
+    <File subtype="Code" buildaction="Compile" name="weakrefmanager.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="weakrefmanager.h" />
+    <File subtype="Code" buildaction="Compile" name="pal/gtk/debug-ui-gtk.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="pal/gtk/debug-ui-gtk.h" />
+    <File subtype="Code" buildaction="Compile" name="pal/gtk/install-dialog-gtk.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="pal/gtk/install-dialog-gtk.h" />
+    <File subtype="Code" buildaction="Compile" name="pal/gtk/nocodec-ui-gtk.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="pal/gtk/nocodec-ui-gtk.h" />
+    <File subtype="Code" buildaction="Nothing" name="contentpresenter.h" />
+    <File subtype="Code" buildaction="Nothing" name="context-cairo.h" />
+    <File subtype="Code" buildaction="Nothing" name="context-gallium.h" />
+    <File subtype="Code" buildaction="Nothing" name="context-gl.h" />
+    <File subtype="Code" buildaction="Nothing" name="gchandle.h" />
+    <File subtype="Code" buildaction="Nothing" name="richtextlayout.h" />
+    <File subtype="Code" buildaction="Nothing" name="surface-gallium.h" />
+    <File subtype="Code" buildaction="Nothing" name="surface-gallium-egl.h" />
+    <File subtype="Code" buildaction="Nothing" name="surface-gl.h" />
+    <File subtype="Code" buildaction="Nothing" name="textlayout.h" />
+    <File subtype="Code" buildaction="Nothing" name="textpointer.h" />
+    <File subtype="Code" buildaction="Nothing" name="textselection.h" />
+    <File subtype="Code" buildaction="Compile" name="contentpresenter.cpp" />
+    <File subtype="Code" buildaction="Compile" name="context-cairo.cpp" />
+    <File subtype="Code" buildaction="Compile" name="context-gallium.cpp" />
+    <File subtype="Code" buildaction="Compile" name="context-gl.cpp" />
+    <File subtype="Code" buildaction="Compile" name="gchandle.cpp" />
+    <File subtype="Code" buildaction="Compile" name="richtextlayout.cpp" />
+    <File subtype="Code" buildaction="Compile" name="surface-gallium.cpp" />
+    <File subtype="Code" buildaction="Compile" name="surface-gallium-egl.cpp" />
+    <File subtype="Code" buildaction="Compile" name="surface-gl.cpp" />
+    <File subtype="Code" buildaction="Compile" name="textlayout.cpp" />
+    <File subtype="Code" buildaction="Compile" name="textpointer.cpp" />
+    <File subtype="Code" buildaction="Compile" name="textselection.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="icon128.h" />
+    <File subtype="Code" buildaction="Nothing" name="png-to-header.cs" />
+    <File subtype="Code" buildaction="Nothing" name="pal/cocoa/clipboard-cocoa.h" />
+    <File subtype="Code" buildaction="Compile" name="pal/cocoa/clipboard-cocoa.m" />
+    <File subtype="Code" buildaction="Nothing" name="pal/cocoa/config-dialog-cocoa.h" />
+    <File subtype="Code" buildaction="Compile" name="pal/cocoa/config-dialog-cocoa.m" />
+    <File subtype="Code" buildaction="Nothing" name="pal/cocoa/debug-ui-cocoa.h" />
+    <File subtype="Code" buildaction="Compile" name="pal/cocoa/debug-ui-cocoa.m" />
+    <File subtype="Code" buildaction="Nothing" name="pal/cocoa/im-cocoa.h" />
+    <File subtype="Code" buildaction="Compile" name="pal/cocoa/im-cocoa.m" />
+    <File subtype="Code" buildaction="Nothing" name="pal/cocoa/install-dialog-cocoa.h" />
+    <File subtype="Code" buildaction="Compile" name="pal/cocoa/install-dialog-cocoa.m" />
+    <File subtype="Code" buildaction="Nothing" name="pal/cocoa/MLEvent.h" />
+    <File subtype="Code" buildaction="Compile" name="pal/cocoa/MLEvent.m" />
+    <File subtype="Code" buildaction="Nothing" name="pal/cocoa/MLView.h" />
+    <File subtype="Code" buildaction="Compile" name="pal/cocoa/MLView.m" />
+    <File subtype="Code" buildaction="Nothing" name="pal/cocoa/pal-cocoa.h" />
+    <File subtype="Code" buildaction="Compile" name="pal/cocoa/pal-cocoa.m" />
+    <File subtype="Code" buildaction="Nothing" name="pal/cocoa/pixbuf-cocoa.h" />
+    <File subtype="Code" buildaction="Compile" name="pal/cocoa/pixbuf-cocoa.m" />
+    <File subtype="Code" buildaction="Nothing" name="pal/cocoa/window-cocoa.h" />
+    <File subtype="Code" buildaction="Compile" name="pal/cocoa/window-cocoa.m" />
+    <File subtype="Code" buildaction="Nothing" name="pal/cocoa/windowless-cocoa.h" />
+    <File subtype="Code" buildaction="Compile" name="pal/cocoa/windowless-cocoa.m" />
+    <File subtype="Code" buildaction="Compile" name="factory.cpp" />
+    <File subtype="Code" buildaction="Compile" name="pal/capture/pal-linux-audio-capture.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="pal/capture/pal-linux-audio-capture.h" />
+    <File subtype="Code" buildaction="Nothing" name="medialog.h" />
+    <File subtype="Code" buildaction="Compile" name="medialog.cpp" />
+    <File subtype="Code" buildaction="Compile" name="cpu.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="cpu.h" />
+    <File subtype="Code" buildaction="Compile" name="context-cgl.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="context-cgl.h" />
+    <File subtype="Code" buildaction="Compile" name="context-egl.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="context-egl.h" />
+    <File subtype="Code" buildaction="Compile" name="context-opengl.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="context-opengl.h" />
+    <File subtype="Code" buildaction="Compile" name="audio-opensles.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="audio-opensles.h" />
+    <File subtype="Code" buildaction="Compile" name="gkeyfile.c" />
+    <File subtype="Code" buildaction="Nothing" name="gkeyfile.h" />
+    <File subtype="Code" buildaction="Nothing" name="jpeg.h" />
+    <File subtype="Code" buildaction="Nothing" name="jpeg.xaml" />
+    <File subtype="Code" buildaction="Compile" name="surface-cgl.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="surface-cgl.h" />
+    <File subtype="Code" buildaction="Compile" name="surface-egl.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="surface-egl.h" />
+    <File subtype="Code" buildaction="Compile" name="surface-opengl.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="surface-opengl.h" />
+    <File subtype="Code" buildaction="Compile" name="pal/pal-threads.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="pal/pal-threads.h" />
+    <File subtype="Code" buildaction="Compile" name="pal/fonts/fontconfig/pal-fontconfig.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="pal/fonts/fontconfig/pal-fontconfig.h" />
+    <File subtype="Code" buildaction="Compile" name="pal/cocoa/fonts-cocoa.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="pal/cocoa/MLTimerContext.h" />
+    <File subtype="Code" buildaction="Compile" name="pal/cocoa/MLTimerContext.m" />
+    <File subtype="Code" buildaction="Nothing" name="pal/cocoa/MLWindow.h" />
+    <File subtype="Code" buildaction="Compile" name="pal/cocoa/MLWindow.m" />
+    <File subtype="Code" buildaction="Nothing" name="pal/android/android_native_app_glue.h" />
+    <File subtype="Code" buildaction="Compile" name="pal/android/clipboard-android.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="pal/android/clipboard-android.h" />
+    <File subtype="Code" buildaction="Compile" name="pal/android/fonts-android.cpp" />
+    <File subtype="Code" buildaction="Compile" name="pal/android/im-android.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="pal/android/im-android.h" />
+    <File subtype="Code" buildaction="Compile" name="pal/android/pal-android.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="pal/android/pal-android.h" />
+    <File subtype="Code" buildaction="Compile" name="pal/android/pixbuf-android.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="pal/android/pixbuf-android.h" />
+    <File subtype="Code" buildaction="Compile" name="pal/android/window-android.cpp" />
+    <File subtype="Code" buildaction="Nothing" name="pal/android/window-android.h" />
+  </Contents>
+  <compiler ctype="GppCompiler" />
+</Project>

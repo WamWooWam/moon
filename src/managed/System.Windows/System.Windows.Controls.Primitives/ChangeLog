@@ -1,0 +1,545 @@
+2010-06-30  Alan McGovern  <amcgovern@novell.com>
+
+	* Selector.cs: Don't try to handle ItemContainerStyle change
+	  events in Selector as ComboBox and ListBox have different
+	  semantics for some reason and it's impossible to do it
+	  simply. Unregresses the ComboBox test.
+
+2010-06-30  Alan McGovern  <amcgovern@novell.com>
+
+	* Selector.cs: When changing Selector.ItemContainerStyle
+	  ensure we replace all uses of the old style with the new
+	  style regardless of whether the item is its own container.
+
+2010-06-30  Alan McGovern  <amcgovern@novell.com>
+
+	* Selection.cs: Be less aggressive when updating the selection
+	  properties on Selector. This fixes parts of cs2 where we'd
+	  set a Binding on one of the selection properties and then
+	  clear it too soon by setting the property to the value it
+	  already had.
+
+2010-06-30  Alan McGovern  <amcgovern@novell.com>
+
+	* Selector.cs: Don't ignore 'ignoreSelectedValue' here.
+
+2010-06-29  Alan McGovern  <amcgovern@novell.com>
+
+	* Selector.cs: ItemContainerStyle is only propagated to
+	  generated containers, not to ComboBoxItems the user adds
+	  directly.
+
+2010-06-25  Alan McGovern  <amcgovern@novell.com>
+
+	* LayoutInformation.cs: For lack of a better place, store the
+	  current LayoutExceptionElement on the deployment using the
+	  attached property
+	  LayoutInformation::CurrentExceptionElementProperty.
+
+2010-06-18  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Selector.cs: Updated to SL4 final API.
+
+2010-05-31  Alan McGovern  <amcgovern@novell.com>
+
+	* Selector.cs: Throw exceptions properly when
+	  IsSynchronisedWithCurrentItem is set to true. Copy the value
+	  of ICV.CurrentItem to SelectedItem when we're syncing as
+	  opposed to copying SelectedItem to ICV.CurrentItem. Fixes
+	  more of 232.
+
+2010-05-31  Alan McGovern  <amcgovern@novell.com>
+
+	* Selector.cs: If there's a reset event, we need to either
+	  select the old item (if it exists) or the CurrentItem of the
+	  ICV if we have an ICV now.
+
+2010-05-26  Alan McGovern  <amcgovern@novell.com>
+
+	* Selector.cs: If we get a collection reset event, just
+	  attempt to reselect the current selection.
+
+2010-05-25  Alan McGovern  <amcgovern@novell.com>
+
+	* Selector.cs:
+	* Selection.cs: Update the implementation of
+	  Selector.SelectedItems to pass more of drt 232. Basically we
+	  need to keep two copies of the list, one which is publicly
+	  accessible by the user and one which is our private 'master'
+	  list. We listen for changes to the public one and then
+	  mirror them in the master list if they're valid. The public
+	  list is always synced to the master one after any
+	  modifications to the selection so that if the user does
+	  something mad, we can revert that.
+
+2010-05-24  Alan McGovern  <amcgovern@novell.com>
+
+	* Selector.cs: Fix drt cs2!
+
+2010-05-24  Alan McGovern  <amcgovern@novell.com>
+
+	* Selector.cs: Call base.OnItemsSourceChanged first instead of
+	  last. Otherwise the 'Items' list will be empty which will
+	  cause any calls to Selection.Select to fail.
+
+2010-05-24  Alan McGovern  <amcgovern@novell.com>
+
+	* Selector.cs:
+	* Selection.cs: Be consistent with how we deal with the case
+	  where the SelectedValueWalker is null so that everywhere
+	  uses the same logic. Fixes more of cs2.
+
+2010-05-24  Alan McGovern  <amcgovern@novell.com>
+
+	* Selector.cs:
+	* Selection.cs: Fix more of drt cs2.
+
+2010-05-21  Alan McGovern  <amcgovern@novell.com>
+
+	* Selector.cs: Add support for the new SelectedValue and
+	  SelectedValuePath properties.
+
+	* Selection.cs: Keep the new SelectedValue property in sync
+	  aswell.
+
+2010-05-21  Alan McGovern  <amcgovern@novell.com>
+
+	* Selector.cs:
+	* Selection.cs: Merge two methods which handle selection
+	  changes in Selector.cs to (hopefully) simplify the code a
+	  bit.
+
+2010-05-20  Alan McGovern  <amcgovern@novell.com>
+
+	* Selector.cs: Update SelectedItem immediately if we're
+	  syncing with an ICV so that we don't wait for the first
+	  "CurrentChanged" event to select the item. When the
+	  selection is changed to null we need to synchronize that
+	  with the ICV, so pull that code outside of the null check.
+
+2010-05-17  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* GeneratorPosition.cs: Fix error CS0843 with newer compilers -
+	just like CSC would not compile it previously
+
+2010-04-13  Alan McGovern  <amcgovern@novell.com>
+
+	* Selector.cs: Added in missing default values.
+
+2010-03-05  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Selector: Update to SL4 beta API.
+
+2010-02-26  Mario Carrion  <mcarrion@novell.com>
+
+	* Popup.cs: Overriding OnCreateAutomationPeer.
+
+	r: toshok
+
+2010-02-18  Alan McGovern  <amcgovern@novell.com>
+
+	* Selector.cs: ClearContainerForItemOverride should not clear
+	  the SelectedItem anymore.
+
+2010-02-18  Alan McGovern  <amcgovern@novell.com>
+
+	* Selection.cs: Add support for the case where the user
+	  directly modifies ListBox.SelectedItems.
+
+2010-02-17  Alan McGovern  <amcgovern@novell.com>
+
+	* Selector.cs: Nuke ItemsControl.GetContainerItem along with
+	  ListBoxItem.Item. This is all handled by
+	  ItemContainerGenerator now. Move all the calls to
+	  GetContainerItem to the corresponding ItemContainerGenerator
+	  calls. 
+
+2010-02-17  Alan McGovern  <amcgovern@novell.com>
+
+	* Selector.cs: Port to the new ItemContainerGenerator API when
+	  setting IsSelected on ListBoxItems.
+
+2010-02-09  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Popup.cs:
+	* Selector.cs:
+	* LayoutInformation.cs: Fix compiler warnings.
+
+2010-01-28  Alan McGovern  <amcgovern@novell.com>
+
+	* Selection.cs: If null is passed into the Select method, that
+	  means we should deselect everything. Otherwise if an item is
+	  passed in which is *not* in the ItemsControl.Items list, we
+	  should deselect it if it's already selected. This happens
+	  when the user removes an item from the Items list which is
+	  selected.
+
+	* Selector.cs: When we replace a selected item, we need to
+	  deselect it rather than clearing all selected items.
+
+2010-01-27  Alan McGovern  <amcgovern@novell.com>
+
+	* Selector.cs:
+	* Selection.cs: Land initial support for multi-selection in
+	  ListBox. moon-units will follow... eventually.
+
+2010-01-27  Alan McGovern  <amcgovern@novell.com>
+
+	* Selector.cs:
+	* Selection.cs: Create a helper class 'Selection' which will
+	  be used to make it easier to keep SelectedItem and
+	  SelectedIndex updated when handling the ListBox multiselect
+	  logic.
+
+2010-01-13  Alan McGovern  <amcgovern@novell.com>
+
+	* IRecyclingItemContainerGenerator.cs: cosmetic changes.
+
+2010-01-06  Jeffrey Stedfast  <fejj@novell.com>
+
+	* Selector.cs: Implemented IsSynchronizedWithCurrentItem support.
+
+2009-12-22  Alan McGovern  <amcgovern@novell.com>
+
+	* Selector.cs: 1) IsSelected should not be set to false when
+	  clearing a container.
+	2) The Content property of the container should only be set to
+	  null if the container was autogenerated
+	3) Keep SelectedItem/SelectedIndex updated when
+	  adding/removing items from the Items collection.
+
+2009-12-21  Alan McGovern  <amcgovern@novell.com>
+
+	* Selector.cs: GetContainerItem should return UIElement
+	  instead of ListBoxItem so that the method can be used with
+	  ItemsControl.
+
+2009-12-16  Jeffrey Stedfast  <fejj@novell.com>
+
+	* ItemsChangedEventArgs.cs: Made ctor internal.
+
+2009-12-04  Jeffrey Stedfast  <fejj@novell.com>
+
+	* GeneratorPosition.cs: Implemented.
+
+2009-12-01  Alan McGovern  <amcgovern@novell.com>
+
+	* Selector.cs: Add comment explaining a bug when focusing
+	  elements inside Selector.
+
+2009-11-23  Jackson Harper  <jackson@ximian.com>
+
+	* ItemsChangedEventArgs.cs: Flesh out this stub a little bit more.
+
+2009-10-05  Alan McGovern  <amcgovern@novell.com>
+
+	* Popup.cs: Store the starting_generation and only_unemitted
+	  flags on the EmitContext so that the values are used when we
+	  call DoEmitCurrentContext from managed code. r: toshok
+
+2009-09-28  Alan McGovern  <amcgovern@novell.com>
+
+	* Selector.cs: ComboBox.ItemContainerStyle and
+	  ListBox.ItemContainerStyle both should update the container
+	  item Style value when they change. r: spouliot
+
+2009-09-23  Chris Toshok  <toshok@ximian.com>
+
+	* Popup.cs: simplify this a bunch.  remove autogenerated events,
+	and use a similar pattern as Events.cs for the OnOpened handler,
+	which we register with the new Events.AddOnEventHandler method.
+	(OnOpened): Call
+	NativeMethods.event_object_do_emit_current_context from that
+	method
+
+	r: spouliot, andriea
+
+2009-09-17  Jeffrey Stedfast  <fejj@novell.com>
+
+	* Popup.cs: Removed unused variable.
+
+	r:kangaroo
+
+2009-09-10  Jackson Harper  <jackson@ximian.com>
+
+	* Selector.cs: Add the SetAttributeDelayed attribute to the
+	selected index property. This allows you to add children to a
+	selector and set its initial selected index in xaml.
+
+	r: spouliot
+
+2009-09-04  Alan McGovern  <amcgovern@novell.com>
+
+	* Selector.cs: If a ListBoxItem with IsSelected = true is
+	  added to a Selector, that value is respected and
+	  SelectedItem/Index is updated. r: sde
+
+2009-09-03  Alan McGovern  <amcgovern@novell.com>
+
+	* Selector.cs: Remove code duplication - DisplayMemberPath
+	  handling should only exist in ItemsControl. This fixes
+	  DisplayMemberPath handling for ListBox too. r: sde
+
+2009-09-02  Alan McGovern  <amcgovern@novell.com>
+
+	* Selector.cs: Only clear the selected item if its visual
+	  container exists. If the visual container does *not* exist
+	  then the container is just being created as part of
+	  PrepareContainerForItemOverride in ComboBox so we can get
+	  the correct ItemTemplate. r: toshok
+
+2009-08-28  Alan McGovern  <amcgovern@novell.com>
+
+	* Popup.cs: Need to null check the catcher when trying to
+	  update it. r: spouliot.
+
+2009-08-28  Alan McGovern  <amcgovern@novell.com>
+
+	* Popup.cs: Updating the catcher from the LayoutUpdated event
+	  leads to an infinite loop. Just update it when it's opened.
+	  r: jeff
+
+2009-08-26  Alan McGovern  <amcgovern@novell.com>
+
+	* Selector.cs: ComboBox and ListBox should behave the exact
+	  same way when a ListBoxItem is clicked, so share the
+	  implementation. r: jackson
+
+2009-08-26  Alan McGovern  <amcgovern@novell.com>
+
+	* Selector.cs: ComboBox.IsSelectionActiveProperty and
+	  ListBox.IsSelectionActiveProperty are the same DP reference,
+	  so declare it on Selector and expose it in the subclasses.
+	  Cleanup usage of this property aswell. r: spouliot
+
+2009-08-25  Alan McGovern  <amcgovern@novell.com>
+
+	* Selector.cs: When an item is selected before the container
+	  item has been created, we need to set the 'IsSelected' flag
+	  on the container when it loads. Fixes the initial selection
+	  for both ComboBox and ListBox. r: jackson
+
+2009-07-27  Larry Ewing  <lewing@novell.com>
+
+	* Popup.cs: handle a possible source of errors.
+
+2009-07-26  Larry Ewing  <lewing@novell.com>
+
+	* Popup.cs: Add some logic to update the catcher position on
+	Layout changes.
+
+2009-07-26  Larry Ewing  <lewing@novell.com>
+
+	* Popup.cs: add another hack on top of the click catcher hack.  Is
+	this really how it is supposed to work.
+
+2009-06-26  Alan McGovern  <amcgovern@novell.com>
+
+	* Selector.cs: Fix some ListBox focus/selection related bugs.
+	  Move ComboBox.OnSelectedItemChanged and
+	  ListBox.OnSelectedItemChanged to Selector as they have
+	  indentical codepaths after the last refactorings.
+
+2009-06-25  Alan McGovern  <amcgovern@novell.com>
+
+	* Selector.cs: When clearing the container, set the selected
+	  item to null if that item used to be selected.
+
+2009-06-25  Alan McGovern  <amcgovern@novell.com>
+
+	* Selector.cs: Move the handling of the ScrollViewer template
+	  element and default values of ScrollbarVisibility to the
+	  Selector class so it can be shared between ComboBox and
+	  ListBox. Fix some default value issues too.
+
+2009-06-25  Alan McGovern  <amcgovern@novell.com>
+
+	* Selector.cs: cleanup - make 'changing' a property.
+
+2009-06-24  Alan McGovern  <amcgovern@novell.com>
+
+	* Selector.cs: Add another method to selector to allow
+	  subclasses to easily set the IsSelected property when the
+	  SelectedItem changes.
+
+2009-06-24  Alan McGovern  <amcgovern@novell.com>
+
+	* Selector.cs: The only way to get the initial focus correct
+	  for the drop down list in ComboBox is if it receives
+	  notification of when its ComboBoxItems are loaded.
+
+2009-06-11  Alan McGovern  <amcgovern@novell.com>
+
+	* Popup.cs: Make Popup.[Opened|Closed] asynchronous.
+
+2009-06-02  Chris Toshok  <toshok@ximian.com>
+
+	* LayoutInformation.cs (GetRawLayoutData): the MS test harness
+	actually calls this undocumented private method... stub it out so
+	that the test doesn't time out.
+
+2009-05-25  Alan McGovern  <amcgovern@novell.com>
+
+	* Selector.cs: SelectedItem is non-parenting, so it's
+	not a core property.
+
+2009-05-22  Alan McGovern  <amcgovern@novell.com>
+
+	* Selector.cs: Use DependencyProperty.RegisterCore for
+	these DPs.
+
+2009-05-21  Alan McGovern  <amcgovern@novell.com>
+
+	* Selector.cs: SelectedIndex is actually updated on the
+	virtual OnItemsChanged method, not in InvokeItemsChanged.
+
+2009-05-21  Alan McGovern  <amcgovern@novell.com>
+
+	* Selector.cs: SelectedItemProperty is non-parenting.
+	
+2009-05-20  Alan McGovern  <amcgovern@novell.com>
+
+	* Selector.cs: Ensure that SelectedIndex and SelectedItem
+	are kept in sync. It is possible for Selected* to become
+	out of sync with the actual value they should have, but
+	this matches MS behaviour.
+
+2009-05-20  Alan McGovern  <amcgovern@novell.com>
+
+	* Selector.cs: OnItemsChanged is raised in ItemsControl,
+	not Selector.
+	  
+2009-05-01  Alan McGovern  <amcgovern@novell.com>
+
+	* Selector.cs: When raising the SelectionChanged event, we
+	  need to always pass the old/new selected *item*, not the
+	  SelectedIndex.
+
+2009-04-23  Alan McGovern  <amcgovern@novell.com>
+
+	* Popup.cs: Allow popups to use a transparent canvas to catch
+	  clicks outside of the popup area. ComboBox uses this to
+	  close its popup.
+
+2009-04-23  Alan McGovern  <amcgovern@novell.com>
+
+	* Selector.cs: Move the Notify* methods into Selector as both
+	  Listbox and ComboBox require the same API.
+
+2009-04-17  Alan McGovern  <amcgovern@novell.com>
+
+	* Selector.cs: Make IsSelectionActive work. Also make showing
+	  the popup work. Currently no items are being displayed in
+	  the popup as the ItemsPresenter is never getting loaded.
+
+2009-04-17  Alan McGovern  <amcgovern@novell.com>
+
+	* Popup.cs: Correctly mark Popup.Child as its Content
+	  property.
+
+2009-04-16  Alan McGovern  <amcgovern@novell.com>
+
+	* Selector.cs: Implement ClearContainerForItemOverride and fix
+	  some more virtual -> override issues.
+
+2009-04-16  Alan McGovern  <amcgovern@novell.com>
+
+	* Selector.cs: Nothing appears to make
+	  Selector.GetIsSelectionActive return true. The documentation
+	  offers no hints either.
+
+2009-04-16  Alan McGovern  <amcgovern@novell.com>
+
+	* Selector.cs: Route the collection changed event through the
+	  Selector, fixes three tests.
+
+2009-04-15  Alan McGovern  <amcgovern@novell.com>
+
+	* Selector.cs: If the new value is null, Selector should not
+	  revert to the old value.
+
+2009-04-13  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* ScrollEventHandler.cs: Delete files we got from MS' controls
+	  drop, and update project file to compile.
+
+2009-04-02  Alan McGovern  <amcgovern@novell.com>
+
+	* Popup.cs: Popups are treated as top level elements which are
+	  rendered on top of all other elements. To handle this a list
+	  of all toplevel elements (layers) is kept in the surface.
+	  Mouse events are captured within a toplevel element and not
+	  visible to other toplevel elements.
+
+2009-03-06  Andreia Gaita  <avidigal@novell.com>
+
+	* Popup.cs: Switch to using ObjectFromIntPtr to lookup objects.
+
+2009-02-26  Chris Toshok  <toshok@ximian.com>
+
+	* Selector.cs (SelectedIndexProperty): the default of this is -1.
+
+2009-02-04  Chris Toshok  <toshok@ximian.com>
+
+	* Selector.cs: add a couple of missing methods, and stop with the
+	local caching of DP values.
+
+2009-01-21  Alan McGovern  <amcgovern@novell.com>
+
+	* Popup.cs: Should be sending the native handle, the surface is
+	automagically taken care of.
+
+2009-01-20  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Popup.cs: Fix build
+
+2009-01-20  Alan McGovern  <amcgovern@novell.com>
+
+	* Popup.cs: When IsOpen is changed, we need to fire either Opened or
+	Closed.
+
+2009-01-19  Alan McGovern  <amcgovern@novell.com>
+
+	* Popup.cs: Create an unmanaged peer for the Popup class
+
+2009-01-16  Alan McGovern  <amcgovern@novell.com>
+
+	* Selector.cs: Simplified the caching implementation.
+
+2009-01-16  Alan McGovern  <amcgovern@novell.com>
+
+	* Selector.cs: Attempt to match the MS caching mechanism for
+	SelectedItem and SelectedValue
+
+2009-01-16  Alan McGovern  <amcgovern@novell.com>
+
+	* Selector.cs: When changing the SelectedItem, the SelectedIndex changes
+	automatically. Only one SelectionChanged event is fired. Similarly
+	for when SelectedIndex changes.
+
+2009-01-15  Alan McGovern  <amcgovern@novell.com>
+
+	* Selector.cs: SelectionChanged is now fired when either the Index or
+	SelectedObject is changed
+
+2009-01-15  Alan McGovern  <amcgovern@novell.com>
+
+	* Selector.cs: Begin implementing ComboBox. First 3 tests now pass.
+
+2009-01-13  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* IScrollInfo.cs: Internal interface to mimic WPF. This is needed 
+	for API compatibility with ScrollContentPresenter (gui-compare)
+
+2009-01-09  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Selector.cs: Add internal ctor and GetIsSelectionActive
+
+2008-12-19  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Selector.cs: More bits.
+
+2008-08-10  Chris Toshok  <toshok@ximian.com>
+
+	* System.Windows.Controls.Primitives/Popup.cs: stub this class
+	out.

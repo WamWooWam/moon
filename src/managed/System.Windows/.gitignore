@@ -1,0 +1,10 @@
+/*.exe
+/Makefile
+/Makefile.in
+/*.mdb
+/*.user*
+/*.pidb
+/bin	
+/System.Windows.g.resources
+/Mono/Kind.cs
+/System.Windows/WeakRefs.g.cs

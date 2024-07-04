@@ -1,0 +1,94 @@
+2010-07-21  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* System.xml: Make sure HTTPS support is not removed
+
+2010-06-22  Jb Evain  <jbevain@novell.com>
+
+	* System.Core.xml: protect some dlr methods.
+
+2010-06-22  Jb Evain  <jbevain@novell.com>
+
+	* mscorlib.xml: protect more types needed by smcs.
+
+2010-06-03  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* mscorlib.xml: Keep System.IO.IsolatedStorage.IsolatedStorage intact
+
+2010-04-29  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* mscorlib.xml: Compiler/runtime changes on trunk requires a few
+	more ctors to be available. Remove File.ReadAllBytes entry since
+	it is part of SL4 definitions.
+
+2010-03-22  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* System.xml: Preserve some internal types that are used, via 
+	reflection, by the client http stack
+
+2010-03-10  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* System.Net.xml: Preserve System.Net.Policy.CrossDomainPolicyManager
+	and ICrossDomainPolicy types for the http stack(s)
+
+2010-03-05  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* System.ServiceModel.xml: Protect two internal classes MS accesses through
+	IVTE attributes.
+
+2010-03-05  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* System.Core.xml: Added to manually preserve System.Security.Cryptography.Aes
+	- this class has moved from System.Core to mscorlib in SL4, but we'll keep it
+	in System.Core a little longer.
+
+2010-02-06  Chris Toshok  <toshok@ximian.com>
+
+	* mscorlib.xml: preserve get_SetupInformationNoCopy.
+
+2010-01-11  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* System.Net.xml: Preserve the new stream wrappers
+
+2009-12-21  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* mscorlib.xml: Let Moonlight reuse File.ReadAllBytes
+
+2009-09-24  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* a11y.xml: Add Marshal.ReadIntPtr, triggered by the use of
+	an updated gtk-sharp. Reported by Stephen Shaw <sshaw@decriptor.com>
+
+	r: spouliot
+
+2009-09-23  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* System.Net.xml: Preserve internals of System.Net.Sockets.
+	SocketAsyncEventArgs
+
+	r: toshok
+
+2009-09-16  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* a11y.xml: Sort types (regenerated from new
+	changes in the tuner).
+
+2009-09-10  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* a11y.xml: new file that contains the internal
+	API used by the MoonAtkBridge (and gtk-sharp for moon, which
+	is compiled under the same assembly).
+
+	r: spouliot
+
+2009-05-26  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* System.Net.xml: Add more *_2_1.cs classes
+
+2009-05-14  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* System.Net.xml: Add DnsEndPoint
+
+2009-05-11  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* System.Net.xml: New. Keep internals of System.Net.
+	WebHeaderCollection for S.W.B.dll

@@ -1,0 +1,41 @@
+2010-07-21  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* respack.cs: Resources are Uri escaped. Also don't lowercase twice.
+
+2010-03-02  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* respack.cs: Add support for writing resx files (detected by output file
+	extension) and @response.file
+
+	* Makefile.am: Add reference to System.Windows.Forms.dll for the resx writer.
+
+2009-11-30  Jeffrey Stedfast  <fejj@novell.com>
+
+	* respack.cs: Changed Compress/Decompress to be Pack/Unpack to fit
+	the nomenclature a bit better (which also make it clearer what it
+	is doing) and fixed the docs to explain that "unpacking" means to
+	extract a resource just in case it wasn't already clear.
+
+2009-04-13  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* respack.mdp: Add a project for each tool, and clean up some
+	  of the existing projects.
+
+2009-04-13  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Makefile.am: Fix install directories.
+
+2009-03-25  Jackson Harper  <jackson@ximian.com>
+
+	* respack.cs: Make error message not crash.
+	
+2009-01-21  Jackson Harper  <jackson@ximian.com>
+
+	* respack.cs: Create directories for resources if needed when
+	decompressing.
+
+2009-01-14  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* respack.cs: Always embed in lowercase. This fixes running mono-built
+	xap files on SL.
+

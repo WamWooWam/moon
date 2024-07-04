@@ -1,0 +1,301 @@
+	
+This is Moonlight, an open source implementation of Silverlight 1.0, 2.0, 
+3.0 and 4.0 for Unix systems.   
+
+See http://www.mono-project.com/Moonlight for more information. 
+
+Installation
+============
+
+	For standard Unix configuration/installation instructions, see the INSTALL file.
+
+Requirements
+============
+
+	At this time, Moonlight trunk (this release) requires you to use
+	trunk to get the required dependency (e.g. latest Mono.Cecil) and
+	compilers (e.g. the new 'mcs' compiler). To build mono, do like this:
+
+		git clone git://github.com/mono/mono.git system-mono
+		cd system-mono && ./autogen.sh && make && sudo make install
+		
+	Note that here we checkout mono to a different directory than below.
+
+	To build Moonlight, you'll also need to get the source code for mono
+	and mono-basic repositories from a specific revision from trunk.
+
+	Do this like this:
+            git clone git://github.com/mono/moon.git moon
+            git clone git://github.com/mono/mono.git mono
+            cd mono && git reset --hard f41f710 && cd ..
+            git clone git://github.com/mono/mono-basic.git mono-basic
+            cd mono-basic && git reset --hard 4ef1fbe && cd ..
+
+	To build pixel shader support, you need to get a specific
+	revision of the mesa repository.
+
+	Do this like this:
+            git clone git://anongit.freedesktop.org/mesa/mesa
+            cd mesa && git reset --hard 3ed0a099c && cd ..
+
+	The revision the codecs currently are at is: 15e2b1b2 (only applicable to buildbots
+	and developers on the Moonlight team). For SVN users, the revision is: 10364
+
+	The package wnck-sharp is also required, it can be found in the gnome-desktop-sharp
+	repository on github:
+		https://github.com/mono/gnome-desktop-sharp
+	Alternatively, on ubuntu/debian, the gnome-desktop-sharp2 package provides it.
+
+Compiling Mono for Moonlight
+============================
+
+	Automatic Mode (recommended)
+	===========================
+
+	This is recommended if you haven't built Mono before. This is also recommended if you
+	have clean mono and mcs checkouts that you are going to use just for Moonlight.
+
+	In this mode, you don't have to build Mono before building Moonlight, so you just do
+
+                cd moon
+                ./autogen.sh
+                make && make install
+
+
+	This will configure your Mono source tree with the minimum options required
+	to build it for Moonlight. At the moment, these are:
+
+		--with-moonlight=only --with-profile4=no --enable-minimal=aot,interpreter
+		--with-ikvm-native=no --with-mcs-docs=no --disable-nls --disable-mono-debugger
+		--with-sgen=no
+
+	This Mono configuration will not be suitable for anything except Moonlight.
+
+	If you want to use SGen with Moonlight, you'll need use the following option when
+	running autogen.sh:
+
+		--with-sgen=yes
+
+	Warning: Moonlight+Sgen has not been fully tested yet, and is likely unstable.
+	*Enable this at your own risk*
+
+	Build only Mode (advanced)
+	==========================
+
+	This is recommended if you have built Mono before and you would like Moonlight to use
+	your existing Mono source tree. This is for advanced users only - make sure you know
+	what you're doing.
+
+	In this mode, Moonlight will not touch your existing Mono configuration, it will build
+	the parts it needs. Since it doesn't do a full build of mono+mcs, it's faster than a
+	normal mono+mcs build.
+
+	Before building moon, you need to make sure your mono configuration includes the
+	following options:
+
+		--with-moonlight=yes
+	
+	And you need to configure mono-basic like this:
+	
+		--with-moonlight-yes --moonlight-sdk-path=<mono checkout>/mcs/class/lib/moonlight_raw
+
+	To build moon in this mode, configure it with the following options:
+
+		--with-manual-mono=build
+
+	If you want to use SGen with Moonlight, you'll need to use the following option:
+
+		--with-sgen=yes --with-moon-gc=sgen
+
+	Warning: Moonlight+SGen has not been fully tested yet, and is likely unstable.
+	*Enable this at your own risk*
+
+
+	Manual Mode (really advanced)
+	=============================
+
+	On this mode, moon will not configure or build mono, you have to do it yourself.
+	To activate this mode, configure moon with --with-manual-mono=yes
+
+
+
+Configuration options
+=====================
+
+	If your mono/mcs checkout is not in the same place where you have your moon
+	source, you can configure moon with:
+
+		--with-mcs-path=/path/to/mcs
+
+
+	If you want to use ffmpeg with Moonlight, you need at least r20911 of ffmpeg and r30099 of libswscale:
+
+		svn co -r 20911 svn://svn.mplayerhq.hu/ffmpeg/trunk && cd trunk/libswscale && svn up -r 30099
+
+Installing and Testing
+======================
+
+	If you want to test your newly installed Moonlight, do this:
+
+		make test-plugin
+
+	This will install it into your ~/.mozilla/plugins which will let
+	both Firefox and Chrome pick it.
+
+
+Profiling
+=========
+
+	A custom profiler is available which allows you to track which objects
+	are being kept alive by strong GCHandles and also see the stacktrace
+	for every gchandle that was not freed.
+
+	This profiler is only built if you pass --with-object-tracking=yes to
+	autogen and then subsequently be enabled as follows:
+
+	export MOON_PROFILER=gchandle
+
+	On application shutdown, right before the appdomain is freed, a GCHandle
+	'leak' report will be printed. This will show all the objects being
+	retained in memory because they have a strong gchandle attached to them.
+	If you want to see where the gchandles were allocated you just have to
+	export the following variable. This example will print the stacktraces of
+	all the unfreed strong gchandles for the Uri type:
+
+	export GCHANDLES_FOR_TYPE=Uri
+
+	If multiple strong handles are targetting the same CLR object, these
+	will be grouped together. This makes it easy to see if 10,000 handles
+	are targetting the same object or if its 10,000 different objects.
+
+
+Runtime Options
+===============
+
+	There are a couple of runtime-parameters that affect Moonlight behavior
+	and turn on/off certain features. Those options are specified through
+	the MOONLIGHT_OVERRIDES env variable. The more interesting ones are:
+
+	* shapecache=yes/no 
+
+		Use some extra memory for caching shapes.  Increases
+		memory usage but helps with performance (off by
+		default). The shape cache size is 6MB max.
+
+	* render=ftb/btf
+
+		Use front-to-back or back-to-front rendering (ftb is
+ 		the default).
+
+	* cache=show/hide 
+
+		Show the (shape) cache usage statistics. In plugin
+		mode they're available through the right-click popup
+		menu (hide by default). 
+
+	* converter=yuv/ffmpeg 
+
+		Use native mmx/sse2 conversion code or ffmpeg to do
+		the yuv -> rgb colorspace conversion (by default we
+		use the native yuv code).
+
+	To launch Firefox with shape caching and ffmpeg converters use:
+
+		$> MOONLIGHT_OVERRIDES="shapecache=yes,converter=ffmpeg" firefox
+
+
+	Other options include:
+
+	* ms-codecs=yes/no
+	* ffmpeg-codecs=yes/no
+
+		Controls which sets of codecs to use, the Microsoft
+		ones or the ffmpeg ones.
+
+	* timesource=manual/system
+
+		Defaults to `system'.   
+
+
+	Also if --with-debug=yes option was provided to configure script, the
+	MOONLIGHT_DEBUG env variable controls which debug output is printed
+	on the console. Valid values are: 
+
+        	alsa, alsa-ex, audio, audio-ex, pulse, pulse-ex, httpstreaming, 
+        	markers, markers-ex, mms, mediaplayer, mediaplayer-ex, pipeline, 
+        	pipeline-error, framereaderloop, ui, ffmpeg, codecs, dependencyobject, 
+        	downloader, font, layout, media, mediaelement, mediaelement-ex, 
+        	buffering, asf, playlist, playlist-warn, text, xaml
+
+
+	Moonlight currently contains two ASX parsers. The default
+	parser is a custom parser that accounts for some of ASX's
+	oddities such as quotes in attribute strings and non case
+	sensitive element names (ie <foo></FOO>). The older parser
+	uses a true xml parser, so will not handle these oddities
+	well, however it has been more heavily tested. To use the
+	older expat based playlist parser set the env variable
+	MOONLIGHT_USE_EXPAT_ASXPARSER=1.
+
+	There are two XAML parsers available in Moonlight. An
+	unmanaged one that is used for Silverlight 1, 2 and 3
+	applications and a managed one that is used for silverlight 4
+	(and above) applications.  The parser is determined at runtime
+	after the app manifest is read.  The unmanaged parser is
+	always used to parse the app manifest.  After that the correct
+	parser is determined based on Deployment::RuntimeVersion.
+
+	You can force moonlight to use the managed parser on all sites
+	by setting the MOON_USE_MANAGED_XAML_PARSER environment
+	variable.
+
+	You can force moonlight to use the unmanaged parser on all
+	sites by setting the MOON_DONT_USE_MANAGED_XAML_PARSER
+	environment variable.
+
+
+Licensing
+=========
+
+	The C and C++ code that makes up the engine is dual-licensed
+	under the LGPL v2 license and is also available commercially
+	for developers interested in using Moonlight on embedded
+	systems or other systems where the end-user can not upgrade
+	the LGPL code on his own.
+
+	The C# tests in test/2.0/Microsoft.Silverlight.Testing are
+	copyrighted by Microsoft and released by them under the 
+	open source MS-PL license.
+	
+	The C# controls in class/Microsoft.SilverlightControls/ and
+	class/WPF.Toolkit are copyrighted by Microsoft and released by
+	them under the open source MS-PL license.
+
+
+Technical Details
+=================
+
+	For implementation details and notes, see the NOTES file.
+
+
+Test Suite
+==========
+
+	To run the test suite, make sure that the output from
+	configure indicates that the tests will be run.  Once this is
+	done, you can run the tests like this:
+
+	To run the Moonlight Unit Tests:
+
+		cd moon/test/2.0/moon-unit
+		make test
+		
+
+Firefox 3
+=========
+
+	The original Silverlight.js shipped by Microsoft was incompatible
+	with Firefox 3.  We have released a greasemonkey script 
+	(data/silverlight-ff3-quirks.user.js) that will patch this behaviour
+	for some sites.
+

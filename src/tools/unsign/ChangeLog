@@ -1,0 +1,12 @@
+2009-04-13  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* unsign.mdp: Add a project for each tool, and clean up some
+	  of the existing projects.
+
+2009-03-16  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* unsign.cs: Hack up support for resigning an assembly with a
+	  completely different key.
+
+	* ChangeLog: Added.
+

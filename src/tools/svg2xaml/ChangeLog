@@ -1,0 +1,111 @@
+2009-04-13  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* svg2xaml.mdp:
+	* svg2xaml-gui.mdp: Add a project for each tool, and clean up
+	  some of the existing projects.
+
+2009-04-13  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Makefile.am: Fix install directories.
+
+2008-01-12  Geoff Norton  <gnorton@novell.com>
+
+	* Makefile.am: Add support for linking against rsvg2-sharp 
+	if its available.
+
+2007-09-26  Andrew Jorgensen  <ajorgensen@novell.com>
+
+	* Makefile.am: Added missing files for dist tarball
+
+2007-06-29  Andreia Gaita  <avidigal@novell.com>
+
+	* svg2xaml.xslt, svg2xaml_standalone.xslt:
+	Add parent element (*.RenderTransform) to 
+	inherited transformations.
+	
+2007-06-29  Andreia Gaita  <avidigal@novell.com>
+
+	* svg2xaml.xslt, svg2xaml_standalone.xslt:
+	Parse and output matrix transformations.
+
+2007-06-28  Andreia Gaita  <avidigal@novell.com>
+
+	* svg2xaml.xslt, svg2xaml_standalone.xslt:
+	Yet another msxsl:node-set null problem...
+	
+2007-06-28  Andreia Gaita  <avidigal@novell.com>
+
+	* svg2xaml.xslt, svg2xaml_standalone.xslt:
+	Fix problem with trying to do a msxsl:node-set
+	in the defaults parameter when it was empty.
+
+2007-06-28  Andreia Gaita  <avidigal@novell.com>
+
+	* svg2xaml.xslt, svg2xaml_standalone.xslt:
+	Parse url(#bla) and xlink:href="#bla" references
+	to elements on the <defs> node.
+
+2007-06-28  Andreia Gaita  <avidigal@novell.com>
+
+	* svg2xaml.xslt, svg2xaml_standalone.xslt:
+	Start parsing the defs node for global defaults.
+	Not finished yet. Detect "url" reference and 
+	import the previously parsed node with that name
+	(id).
+	fix the Canvas.RenderTransform tag. Catch and 
+	ignore text nodes. Fix name-value splitting.
+	Add some example svg to test the transformation.
+
+2007-06-28  Andreia Gaita  <avidigal@novell.com>
+
+	* Makefile.am: add the xslt as a resource
+
+2007-06-27  Andreia Gaita  <avidigal@novell.com>
+
+	* svg2xaml.xslt, svg2xaml_standalone.xslt:
+	fix the check for default fills, it was getting
+	everything black :p
+
+2007-06-27  Andreia Gaita  <avidigal@novell.com>
+
+	* MainWindow.cs, svg2xaml.cs, Makefile:
+	Embed svg2xaml.xslt into both apps instead of 
+	loading it from the filesystem.
+	* svg2xaml.xslt, svg2xaml_standalone.xslt:
+	fix width and height calculations from the 
+	r property (bozo almost looks good now, just 
+	missing the eyes)
+
+2007-06-27  Andreia Gaita  <avidigal@novell.com>
+
+	* svg2xaml.xslt, svg2xaml_standalone.xslt: add 
+	matches for lines, rects and polygons, remove
+	not used matches, pass defaults from svg:a into
+	children, fix transform values.
+
+2007-06-27  Andreia Gaita  <avidigal@novell.com>
+
+	* sv2xaml.cs, svg2xaml.mdp: command-line tool to
+	convert svg to xaml
+	* svg2xaml-gui.mdp: new name of the gui app and 
+	project 
+	* svg2xaml.mds: add a nice solution for both apps,
+	while I'm at it.
+
+2007-06-27  Andreia Gaita  <avidigal@novell.com>
+
+	* svg2xaml.mdp, Makefile, Main.cs, MainWindow.cs
+	  gtk-gui/generated.cs, gtk-gui/gui.stetic,
+	  gtk-gui/MainWindow.cs: 
+	  
+	  Little svg2xaml application to load and convert a 
+	  svg file to a xaml file. Note: the mdp doesn't use 
+	  the makefile.
+
+2007-06-27  Andreia Gaita  <avidigal@novell.com>
+
+	* svg2xaml.xslt: initial checkin. 
+	* svg2xaml_standalone.xslt: initial checkin. 
+	Same as svg2xaml.xsl, but doesn't use microsoft
+	xslt extensions (node-set), so it can work with
+	other versions of the xslt spec.

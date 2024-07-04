@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<linker>
+	<assembly fullname="mscorlib">
+		<type fullname="System.AppDomain" preserve="all">
+			<method name="get_SetupInformationNoCopy" />
+			<method name="SetCompatibilitySwitch" />
+		</type>
+		<type fullname="System.IO.FileSystemInfo" preserve="all" />
+		<type fullname="System.IO.IsolatedStorage.IsolatedStorage" preserve="all" />
+		<type fullname="System.MonoCQItem" preserve="all" />
+		<type fullname="System.Environment">
+			<method name="get_StackTrace" />
+		</type>
+		<type fullname="System.Reflection.Assembly" preserve="all" />
+		<type fullname="System.Reflection.CustomAttributeData">
+			<method signature="System.Void .ctor(System.Reflection.ConstructorInfo,System.Reflection.Assembly,System.IntPtr,System.UInt32)" />
+		</type>
+		<type fullname="System.Reflection.CustomAttributeNamedArgument">
+			<method signature="System.Void .ctor(System.Reflection.MemberInfo,System.Object)" />
+		</type>
+		<type fullname="System.Reflection.CustomAttributeTypedArgument">
+			<method signature="System.Void .ctor(System.Type,System.Object)" />
+		</type>
+		<type fullname="System.Reflection.Module" preserve="all" />
+		<type fullname="System.Reflection.MonoAssembly" preserve="all" />
+		<type fullname="System.Reflection.MonoModule" preserve="all" />
+		<type fullname="System.Reflection.MonoGenericClass" preserve="all" />
+		<type fullname="System.Reflection.Emit.TypeBuilderInstantiation" preserve="all" />
+		<type fullname="System.Resources.RuntimeResourceSet" preserve="all" />
+		<type fullname="System.Runtime.InteropServices.Marshal" />
+		<type fullname="System.Security.SecurityCriticalAttribute" preserve="all" />
+		<type fullname="System.Security.SecuritySafeCriticalAttribute" preserve="all" />
+		<type fullname="System.Security.SecurityTransparentAttribute" preserve="all" />
+
+		<type fullname="Mono.CompilerServices.SymbolWriter.LocalVariableEntry" preserve="all" />
+		<type fullname="Mono.CompilerServices.SymbolWriter.CodeBlockEntry" preserve="all" />
+		<type fullname="Mono.CompilerServices.SymbolWriter.ScopeVariable" preserve="all" />
+		<type fullname="Mono.CompilerServices.SymbolWriter.IMethodDef" preserve="all" />
+		<type fullname="Mono.CompilerServices.SymbolWriter.LineNumberEntry" preserve="all" />
+	</assembly>
+</linker>

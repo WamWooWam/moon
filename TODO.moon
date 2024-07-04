@@ -1,0 +1,81 @@
+
+Feel free to add items to this TODO list
+
+* SupportedCulture:
+
+	This requires special handling on the XAML processor.
+	
+	There are no visible properties from SupportedCulture, instead the
+	XAML processor should read the content as in:
+	
+	   <SupportedCulture>cultureName</SupportedCulture> 
+	
+	And use that to instantiate the supported cultures somewhere, not
+	clear where.
+
+* SPECS:
+
+	Need information on the relative Uris that
+	Application.GetResourceStream accepts and their meaning.
+
+Silverlight 2 Support
+=====================
+
+	To get Silverlight 2 support to work, we need a few bits:
+
+	Application.LoadComponent:
+
+		This requires changes to the XAML parser to allow the
+		XAML parser to use an object that has been already
+		created as its toplevel, and populate it with data
+		from parsing a XAML file.
+
+	Surface::Attach:
+
+	      Currently it only allows the passed object to be a
+	      Canvas, with SL2 the passed object can be a UserControl.
+
+	      Maybe we could wrap the object in a Canvas to keep
+	      things simple?
+
+Cleanup
+========
+
+	We are currently using `PluginHost.Handle' to track the handle
+	to the plugin, and in a couple of places we also use the
+	AppDomain to pass information, its not clear why this code was
+	added:
+
+	    AppDomain.CurrentDomain.GetData ("PluginInstance");
+
+
+        In plugin/moonlight.cs, separate the appdomain management from
+        the Loader class.
+
+	Move plugin/moonlight.cs CreateApplication into its own helper
+	class.
+
+* Consolidation
+
+	Now that Mono.Moonlight.dll has been rolled into
+	System.Windows.dll, and the AppDomain hacks have been removed
+	from moonlight.exe, we should be able to further reduce our
+	managed footprint and per-domain costs by removing
+	moonlight.exe altogether.
+
+* AppDomains
+
+	Most of the AppDomain infrastructure (MarshalByRef,
+	Serialization, Remoting) is unavailable in SL 2.0, currently
+	we keep it all hidden with our linker, but it might be worth
+	exploring dropping this infrastructure if not required.
+
+	Need to pass the object initialization arguments to the
+	Application.Startup method, currently we pass an emty list, it
+	should be the list of arguments from the <object> tag.
+
+* xaml.cpp:
+
+	How to register SupportedCultureCollection, as there is no
+	"SupportedCulture" really. 
+

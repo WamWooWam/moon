@@ -1,0 +1,33 @@
+2010-02-03  Andreia Gaita  <avidigal@novell.com>
+
+	* Makefile.am: remove the generators dir from tools, as part
+	of making the generator step automatic
+
+2009-05-21  Rusty Howell  <rhowell@novell.com>
+
+	 * Makefile.am: Changed moonvisi to DIST_SUBDIRS for 'make dist'
+
+2009-05-20  Rusty Howell  <rhowell@novell.com>
+
+	 * Makefile.am: Added moonvisi to SUBDIRS for 'make dist'
+
+2009-05-04  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Makefile.am: Add sockpol
+
+2009-04-13  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* tools.mdp: Add a project for each tool, and clean up some of
+	  the existing projects.
+
+2009-03-24  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* tools.mdp: Updated.
+
+2009-02-02  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* tools.mdp: Updated to use new MD features (ChangeLog and
+	  log message policy).
+
+	* ChangeLog: Added.
+

@@ -1,0 +1,63 @@
+2009-04-13  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* xaml2html.mdp: Add a project for each tool, and clean up
+	  some of the existing projects.
+
+2009-04-13  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Makefile.am: Fix install directories.
+
+2008-12-12  Jackson Harper  <jackson@ximian.com>
+
+	* xaml2html.cs: Update to use ndesk.options.
+
+2008-10-16  Jb Evain  <jbevain@novell.com>
+
+	* sl2template.html: update SL2 mime type.
+
+2008-08-22  Raja R Harinath  <harinath@hurrynot.org>
+
+	* Makefile.am (xaml2html.exe): Pick up sl2template.html from $(srcdir).
+	(EXTRA_DIST): Distribute sl2template.html.
+
+2008-07-30  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* xaml2html.cs: Make xap surfaces bigger, pending looking into every
+	  xaml file in the xap file for the exact size.
+
+2008-07-22  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* xaml2html.cs, sl2template.html, Makefile.am: Changed the sl2 template
+	  to include error handling.
+
+2008-07-22  Jackson Harper  <jackson@ximian.com>
+
+	* xaml2html.cs: Add support for .xap files.  If you specify a
+	.xaml file instead of a .xaml file you will get a SL2.0 html
+	wrapper.
+
+2008-04-22  Michael Dominic K.  <mdk@mdk.am>
+
+	* xaml2html.cs: Try to be smart and find the master canvas Width/Height
+	and use it as the ML object/plugin width/height.
+
+2008-04-22  Michael Dominic K.  <mdk@mdk.am>
+
+	* xaml2html.cs: Make the html page background color light-gray so that
+	it's a little bit different than canvas background. Makes it easier to
+	ie. generate masters manually and debug things.
+
+2008-03-12  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* xaml2html.cs: Add support to process multiple files and, 
+	optionally, chain them (using refresh).
+	* Makefile.am: Remove manual reference to System.dll (since it's
+	one of the few automatic we have).
+
+2008-03-12  Michael Dominic K.  <mdk@mdk.am>
+
+	* xaml2html.cs:
+	* xaml2html.in:
+	* Makefile.am: Adding a trivial tool to convert a .xaml file
+	into an .html with embeded xaml.
+

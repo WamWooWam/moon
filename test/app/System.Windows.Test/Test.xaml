@@ -1,0 +1,95 @@
+﻿<Grid xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:test="clr-namespace:System.Windows.Test;assembly=System.Windows.Test">
+    <Grid.Resources>
+        <Storyboard x:Key="MyAnimation">
+            <DoubleAnimation From="0"
+                             To="360"
+                             RepeatBehavior="Forever"
+                             Duration="00:00:01.00"
+                             Storyboard.TargetName="MyEllipse"
+                             Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"/>
+        </Storyboard>
+    </Grid.Resources>
+    <Ellipse x:Name="MyEllipse"
+             Width="64"
+             Height="64"
+             Margin="16"
+             HorizontalAlignment="Right"
+             VerticalAlignment="Top"
+             RenderTransformOrigin="0.5,0.5">
+        <Ellipse.Fill>
+            <LinearGradientBrush>
+                <GradientStop Color="Red" Offset="0"/>
+                <GradientStop Color="Blue" Offset="1"/>
+            </LinearGradientBrush>
+        </Ellipse.Fill>
+        <Ellipse.RenderTransform>
+            <RotateTransform/>
+        </Ellipse.RenderTransform>
+    </Ellipse>
+
+    <Button x:Name="MyButton" 
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            ToolTipService.ToolTip="Balls">
+        <Button.Effect>
+            <DropShadowEffect Color="Black" Direction="320" ShadowDepth="5" BlurRadius="10" Opacity="0.5" />
+        </Button.Effect>
+        <Button.Projection>
+            <PlaneProjection RotationX="-35" RotationY="-35" RotationZ="15"  />
+        </Button.Projection>
+        <Image Width="64"
+               Height="64"
+               Source="https://cdn.discordapp.com/emojis/846719535696314388.webp"
+               Margin="8"/>
+    </Button>
+
+    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="16">
+        <TextBlock TextAlignment="Center"
+                   FontFamily="Comic Sans MS"
+                   FontSize="16">
+            I'm a<Bold xml:space="preserve"> XAML </Bold><Run Foreground="Red" xml:space="preserve">file!</Run>
+        </TextBlock>
+
+        <TextBox Text="Type here!"/>
+    </StackPanel>
+
+    <Canvas>
+
+        <Rectangle Fill="#80FF0000"
+                   Stroke="Black"
+                   StrokeThickness="2"
+                   Width="64"
+                   Height="64"
+                   Canvas.Left="32"
+                   Canvas.Top="32"/>
+
+        <Rectangle Fill="#80FFFF00"
+                   Stroke="Black"
+                   StrokeThickness="2"
+                   Width="64"
+                   Height="64"
+                   Canvas.Left="48"
+                   Canvas.Top="48"/>
+        
+        <Rectangle Fill="#8000FF00"
+                   Stroke="Black"
+                   StrokeThickness="2"
+                   Width="64"
+                   Height="64"
+                   Canvas.Left="64"
+                   Canvas.Top="64"/>
+        
+        <Rectangle Fill="#800000FF"
+                   Stroke="Black"
+                   StrokeThickness="2"
+                   Width="64"
+                   Height="64"
+                   Canvas.Left="80"
+                   Canvas.Top="80"/>
+    </Canvas>
+
+    <test:UserControl1></test:UserControl1>
+    
+    
+</Grid>

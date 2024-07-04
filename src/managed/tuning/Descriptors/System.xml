@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<linker>
+	<assembly fullname="System">
+		<type fullname="System.ComponentModel.TypeConverter" preserve="all" />
+		<type fullname="System.ComponentModel.*Converter">
+			<method signature="System.Void .ctor()" />
+		</type>
+		<type fullname="System.Net.HttpRequestCreator" preserve="all" />
+		<type fullname="System.Net.HttpWebRequest" preserve="all" />
+		<type fullname="System.Net.HttpWebResponse" preserve="all" />
+		<type fullname="System.Net.WebHeaderCollection" preserve="all" />
+		<type fullname="System.Net.WebRequest" preserve="all" />
+		<type fullname="Mono.Security.Protocol.Tls.HttpsClientStream" preserve="all" />
+	</assembly>
+</linker>

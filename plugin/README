@@ -1,9 +1,0 @@
-there should be a lot more info here, but for the time being, to test
-out the plugin, run the following command:
-
-$ make test-plugin
-
-If you want to clean up your plugin directory, you can type this to
-remove moonlight:
-
-$ make untest-plugin

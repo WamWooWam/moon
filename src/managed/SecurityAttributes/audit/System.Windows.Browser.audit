@@ -1,0 +1,146 @@
+!SSC-EF189AEB1112960A2DE6E31E9BF27091
+System.Boolean System.Windows.Browser.HtmlPage::get_IsPopupWindowAllowed()
+	r142142		spouliot - pinvoke into plugin_instance_get_allow_html_popup_window which returns a boolean variable
+
+!SSC-599958E14BA123E7BE253441215B8861
+System.Boolean System.Windows.Browser.ScriptObject::AddNativeMapping(System.IntPtr,System.Windows.Browser.ScriptObject)
+	20110321	spouliot - 731ee115 - #if-def out some unreachable code when DEBUG is defined
+	20101108	spouliot - no source change / compiler (lock related) change?
+	r153088		spouliot - add/track a new ScriptObjectToggleRef [SecurityCritical] (unexposed) based on the IntPtr and ScriptObject
+
+!SSC-83213808039B3381057EE404E7FB18E1
+System.Boolean System.Windows.Browser.ScriptObject::GetPropertyFromUnmanagedSafe(System.IntPtr,System.String,System.IntPtr[],System.Int32,Mono.Value&,System.String&)
+	20110125	spouliot - no source change / likely compiler related
+	r157803		spouliot - call LookupScriptObject without a 'false' parameter (previously used to 'createIfNotFound)
+	r153088		spouliot - lookup the ScriptObject corresponding to the 'obj_handle' parameter and call GetPropertyFromUnmanaged on it (using the other parameters) all wrapped in a catch(Exception)
+
+!SSC-1EAA39F908245346743B40AC235A09F2
+System.Boolean System.Windows.Browser.ScriptObject::HasPropertyInternal(System.String)
+	20110112	spouliot - 130ffbf - pinvoke into html_object_has_property using 'PluginHost.Handle', 'Handle' (validated) and 'name' (validated)
+
+!SSC-32C51B4E2AC55E7F2DA85A7216F5CA50
+System.Boolean System.Windows.Browser.ScriptObject::InvokeFromUnmanagedSafe(System.IntPtr,System.String,System.IntPtr[],System.Int32,Mono.Value&,System.String&)
+	20110125	spouliot - no source change / likely compiler related
+	r157803		spouliot - call LookupScriptObject without a 'false' parameter (previously used to 'createIfNotFound)
+	r153088		spouliot - lookup the ScriptObject corresponding to the 'obj_handle' parameter and call InvokeFromUnmanaged on it (using the other parameters) all wrapped in a catch(Exception)
+
+!SSC-E31F2AF28196C223FE2AF6F360E30341
+System.Boolean System.Windows.Browser.ScriptObject::SetPropertyFromUnmanagedSafe(System.IntPtr,System.String,System.IntPtr[],System.Int32,Mono.Value&,System.String&)
+	20110125	spouliot - no source change / likely compiler related
+	r157803		spouliot - call LookupScriptObject without a 'false' parameter (previously used to 'createIfNotFound)
+	r153088		spouliot - lookup the ScriptObject corresponding to the 'obj_handle' parameter and call SetPropertyFromUnmanaged on it (using the other parameters) all wrapped in a catch(Exception)
+
+!SSC-530413AB4E63F329B7E42DA71D814FAD
+System.Object System.Windows.Browser.HtmlWindow::Eval(System.String)
+	r142142		spouliot - added extra checks and unit tests
+
+!SSC-D823ED8DADD7216DEDEE4C8C8649D98B
+System.Object System.Windows.Browser.ManagedObject::Invoke(System.String,System.Object[])
+	r153088		spouliot - call ScriptObjectHelper [SecurityCritical] ObjectFromValue to get an object from the (return) Value of the call to base.Invoke
+
+!SSC-8DE81DE324D945C724E969BAA0EC9939
+System.Object System.Windows.Browser.ScriptObject::GetProperty(System.String,System.Object[])
+	20110105	spouliot - e5e0fca - add a null check on 'properties' since it is now lazyly allocated
+	r153088		spouliot - calls Invoke [SecurityCritical] on the 'scriptAlias' property getter using the arguments 'args'
+
+!SSC-9E55269F02C68456B6FAD330D0544372
+System.Object System.Windows.Browser.ScriptObject::GetPropertyInternal(System.IntPtr,System.String)
+	20110429	spouliot - b709809 - compare against the Kind property (Value) instead of its 'k' field
+	20110321	spouliot - 8059aa6 - use using/Dispose pattern to free Value 'res' (instead of value_free_value)
+	20101013	spouliot - 7795670 - non-generic version, same pinvoke then, if not invalid, call ScriptObjectHelper [SecurityCritical] FromValue on the 'res' (this will be the return value) and pinvoke value_free_value on (temporary) 'res'
+	r142142		spouliot - added validations, pinvoke into html_object_get_property
+
+!SSC-C2EEE7CF4097688D98FA152005E6268B
+System.Object System.Windows.Browser.ScriptObject::InvokeInternal(System.String,System.Object[])
+	20110429	spouliot - b709809 - compare against the Kind property (Value) instead of its 'k' field
+	20110321	spouliot - 8059aa6 - use using/Dispose pattern to free Value 'res' (instead of value_free_value)
+	20101013	spouliot - 7795670 - non-generic version, call ScriptObjectHelper [SecurityCritical] ToValue on all 'args' before the pinvoke, then ScriptObjectHelper [SecurityCritical] FromValue on 'res' (this will be the return value) and pinvoke value_free_value on (temporary) 'res'
+	r142747		spouliot - visibility changed to internal (to match SL2 API)
+	r142142		spouliot - added validations, pinvoke into html_object_invoke
+
+!SSC-4708583C7F1C0036C9035B86563E7964
+System.Object System.Windows.Browser.ScriptObject::InvokeSelfInternal(System.Object[])
+	20110429	spouliot - b709809 - compare against the Kind property (Value) instead of its 'k' field
+	20110321	spouliot - 8059aa6 - use a try/finally to call Dispose an Value 'res' (instead of value_free_value) and call Dispose on every arguments
+	20110105	spouliot - 36332fc - renamed from InvokeInternal
+	20101013	spouliot - 7795670 - non-generic version, call ScriptObjectHelper [SecurityCritical] ToValue on all 'args' before the pinvoke, then ScriptObjectHelper [SecurityCritical] FromValue on 'res' (this will be the return value) and pinvoke value_free_value on (temporary) 'res'
+	r142747		spouliot - visibility changed to internal (to match SL2 API)
+	r142142		spouliot - added validations, pinvoke into html_object_invoke_self
+
+!SSC-6F6BCD85E342439DA5C638E0009A1F9A
+System.Void Mono.ScriptObjectEventInfo::.ctor(System.Windows.Browser.ScriptObject)
+	20110411	spouliot - pinvoke into html_object_retain using 'PluginHost.Handle' and 'Callback.Handle' (where Callback is non-null)
+
+!SSC-EA36C6CC2046C92AA8365ED5D11FD940
+System.Void Mono.ScriptObjectEventInfo::Finalize()
+	20110411	spouliot - pinvoke into html_object_release using 'PluginHost.Handle' and 'Callback.Handle' if the later is not IntPtr.Zero
+
+!SSC-29E6CE4087BBF7B6A4055E65C6E85987
+System.Void Mono.ScriptObjectHelper::.cctor()
+	20110411	spouliot - fa6f28a4 - call HtmlPage.get_UnsafeWindow [SecurityCritical] and get_UnsafeBrowserInformation [SecurityCritical] since some information is required internally even if EnableHtmlAccess is false
+
+!SSC-817A7D608E14172B80DD49513C03937F
+System.Void System.Windows.Browser.HtmlPage::.cctor()
+	20110125	spouliot - ec76419 - 'IsEnabled' is now determined (and cached) from here
+	r143068		spouliot - calls ScriptableObjectGenerator.Generate
+
+!SSC-4B645AA0E8244C1D74EF0B760CF7A9F8
+System.Void System.Windows.Browser.HtmlPage::RegisterScriptableObject(System.String,System.Object)
+	r143068		spouliot - calls ScriptableObjectGenerator.Generate
+
+!SSC-E0925BDC8201BDA121B2D00F3B199AAE
+System.Void System.Windows.Browser.ManagedObject::.ctor(System.Object)
+	20110411	spouliot - - calls new CreateListOpsInstance [SecurityCritical] to create a type-specified generic instance of System.Windows.Browser.ManagedObject+ListOps`1
+
+!SSC-28A84558112E22F3E93E06B60AE527C6
+System.Void System.Windows.Browser.ManagedObject::SetProperty(System.String,System.Object[])
+	r153088		spouliot - calls Invoke [SecurityCritical] on the 'name' property setter using the arguments 'args'
+
+!SSC-E0E1F2CBFB3D4BC1733CC5608A1FAE1E
+System.Void System.Windows.Browser.ScriptObject::FreeNativeMapping(System.Windows.Browser.ScriptObject)
+	r153088		spouliot - remove a ScriptObjectToggleRef [SecurityCritical] (unexposed) related to the ScriptObject parameter from the tracked references
+
+!SSC-554DC710B817B690E23FB949AC85DC83
+System.Void System.Windows.Browser.ScriptObject::set_Handle(System.IntPtr)
+	20101108	spouliot - no source change / compiler (lock related) change?
+	20100924	spouliot - 223d4b8 - FIXME (temporary, it leaks) pinvoke into html_object_retain using PluginHost.Handle and 'value'
+
+!SSC-C9DF04133C4D9E9BC89444A9C30E86A5
+System.Void System.Windows.Browser.ScriptObject::SetDefaultHandle()
+	r154365		spouliot - logic moved from default .ctor to new method in order to follow coreclr inheritance rules
+	r153088		spouliot - pinvoke into moonlight_scriptable_object_create using PluginHost.Handle and delegates to safe methods to be used
+
+!SSC-C5F92A0D7CD4440E6980AF3474EE61F9
+System.Void System.Windows.Browser.ScriptObject::SetPropertyInternal(System.IntPtr,System.String,System.Object)
+	20110321	spouliot - 8059aa6 - use using/Dispose pattern to free Value 'res'
+	r142142		spouliot - added validations, pinvoke into html_object_get_property
+
+!SSC-13A14EB30D0624FC0014028B0EEC5D22
+System.Windows.Browser.BrowserInformation System.Windows.Browser.HtmlPage::get_BrowserInformation()
+	20110210	spouliot - fa6f28a - calls UnsafeWindow [SecurityCritical] in order to work when EnableHtmlAccess is false
+
+!SSC-F73EDF5A3745D06CA4A90AAB12C31926
+System.Windows.Browser.HtmlElement System.Windows.Browser.HtmlPage::get_Plugin()
+	20110125	spouliot - no source change / compiler?
+	20110112	spouliot - no source change / compiler?
+	r142142		spouliot - pinvoke into plugin_instance_get_browser_host
+
+!SSC-8525E641E229BD3AB5E9A90B6B9906D2
+System.Windows.Browser.HtmlWindow System.Windows.Browser.HtmlPage::get_Window()
+	20110210	spouliot - fa6f28a - calls UnsafeWindow [SecurityCritical] in order to work when EnableHtmlAccess is false
+
+!SSC-3E9CF9B1E92061B7FCE58A763C9FE7E5
+System.Windows.Browser.HtmlWindow System.Windows.Browser.HtmlPage::PopupWindow(System.Uri,System.String,System.Windows.Browser.HtmlPopupWindowOptions)
+	20110223	spouliot - d61ec05 - always use target == "_blank" if IsEnabled is false. Fix typo and return the popup (not the current) window object 
+	r150931		spouliot - pinvoke into surface_get_user_initiated_counter (autogenerated) using Deployment.Current.Surface.Native
+
+!SSC-9BC1E5E0CC43F61F1D49CD7C3A666F95
+System.Windows.Browser.ScriptObject System.Windows.Browser.HostServices::get_JsonSerializer()
+	20100817	spouliot - 79885578 - call Deployment.RegisterAssembly [SecurityCritical] on this (SWB.dll) assembly, evaluate the content (resources) of 'json.js' and expose it as '_managedServices'
+
+!SSC-5088CDA44D63F9233A98F26E97216BF3
+System.Windows.Browser.ScriptObject System.Windows.Browser.ScriptObject::LookupScriptObject(System.IntPtr)
+	20101108	spouliot - no source change / compiler (lock related) change?
+	r157803		spouliot - signature changed (boolean parameter removed). ScriptObject are not created (here) anymore but are fetched from 'cachedObjects' if not found in 'toggleRefs'
+	r153088		spouliot - retrieve a ScriptObjectToggleRef [SecurityCritical] (unexposed) from an IntPtr, optionally creating a ScriptObject is not found
+

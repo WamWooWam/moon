@@ -1,0 +1,4363 @@
+2010-07-28  Andreia Gaita  <avidigal@novell.com>
+
+	* Deployment.cs: New AddAssembly private method to add assemblies on
+	  demand, and implement RegisterAssembly using it. The JsonSerializer
+	  needs to load resources from the System.Windows.Browser assembly,
+	  which isn't loaded by default by the deployment, so it uses
+	  RegisterAssembly when it needs to load things.
+
+2010-07-27  Jackson Harper  <jackson@ximian.com>
+
+	* Deployment.cs:
+	* ResourceDictionary.cs: Make sure we don't try to hydrate values,
+	we are converting these to Values in the loader.
+
+2010-07-26  Jackson Harper  <jackson@ximian.com>
+
+	* Application.cs: We don't need to create a Value when hydrating
+	anymore.  That is the XamlLoader's problem.
+
+2010-07-21  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Application.cs: GetResourceStream: Only the uri when fetching embedded
+	resources, otherwise it breaks the #GB18030* tests since we end up
+	looking for files in the filesystem using the escaped characters.
+
+2010-07-14  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* DependencyObject.g.cs: Regenerated
+	* UIElement.cs: Manually deal with Manipulation* events since they
+	throw NIE when not in design-mode
+
+2010-07-09  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* FrameworkElement.cs: Make sure we don't leak exceptions to native code.
+
+	* DependencyObject.cs: 
+	* TemplateBindingExpression.cs: Remove [Add|Remove]PropertyChangedHandler,
+	since it hides unsafe delegates from gendarme.
+
+2010-07-01  Jeffrey Stedfast  <fejj@novell.com>
+
+	* Deployment.cs (SystemTypefaces): New internal property binding
+	to get the system's GlyphTypefaceCollection.
+
+2010-07-01  Alan McGovern  <amcgovern@novell.com>
+
+	* DependencyObject.cs:
+	* FrameworkTemplate.cs: Hide the actual "_native" field and
+	  only access it through the property.
+
+2010-07-01  Alan McGovern  <amcgovern@novell.com>
+
+	* Application.cs: As every method in
+	  INativeDependencyObjectWrapper is stateless and 100%
+	  identical for every implementor, implement these as
+	  extension methods to INativeDependencyObjectWrapper and make
+	  the interface itself empty.
+
+	* DependencyObject.cs: These methods no longer get emitted as
+	  virtual :)
+
+2010-06-28  Alan McGovern  <amcgovern@novell.com>
+
+	* FrameworkElement.cs: Add MoonError* parameters to our
+	  measure/arrange/UpdateLayout functions to ensure that errors
+	  are propagated correctly.
+
+2010-06-24  Jackson Harper  <jackson@ximian.com>
+
+	* FrameworkTemplate.cs: Add a new method for setting the xaml
+	buffer from managed.
+
+2010-06-24  Jackson Harper  <jackson@ximian.com>
+
+	* DependencyObject.cs: Expose a function for setting an objects
+	namescope.
+
+2010-07-14  Chris Toshok  <toshok@ximian.com>
+
+	* PresentationFrameworkCollection.cs: make this a bit more
+	efficient.  call GetValueImpl to populate the initial managedList,
+	and use the managed list for all get_Item code.
+
+2010-06-22  Chris Toshok  <toshok@ximian.com>
+
+	* Deployment.cs: make AssemblyRegistration delegate type internal
+	so we can get at it from the Dispatcher code.
+
+2010-06-22  Alan McGovern  <amcgovern@novell.com>
+
+	* TemplateBindingExpression.cs: Rewrite TemplateBindings to
+	  not be leaky. We have to be careful to not store a reference
+	  to the template owner otherwise we end up with a reference
+	  cycle and cannot ever GC the source or target of the
+	  TemplateBinding.
+
+2010-06-21  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Clipboard.cs: Add missing null check on SetText
+
+2010-06-18  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Window.cs:
+	* TextAlignment.cs:
+	* WindowResizeEdge.cs:
+	* DependencyObject.g.cs: Update to SL4 final API.
+
+2010-06-16  Chris Toshok  <toshok@ximian.com>
+
+	* Clipboard.cs: implement all this using our pal api.
+
+2010-06-14  Chris Toshok  <toshok@ximian.com>
+
+	* MessageBox.cs: track pal api changes.
+
+2010-06-04  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Deployment.cs: Remove confusing 'catch hack' for External
+	CallersFromCrossDomain. Reduce duplication code when initializing
+	the deployment. Add start/end boundaries for initializing some
+	properties (so we can throw afterward).
+
+2010-06-03  Sebastien Pouliot  <sebastien@ximian.com> 
+
+	* Application.cs: Enable isolated storage increase
+
+2010-06-03  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Application.cs: Install() now calls Install(false) - i.e.
+	not unattended. Add, #ifdef out, quota increase for OOB apps
+
+2010-06-03  Alan McGovern  <amcgovern@novell.com>
+
+	* DependencyObject.cs: Tighten up the places where we emit
+	  validation errors. Fixes some more of 232.
+
+2010-06-02  Alan McGovern  <amcgovern@novell.com>
+
+	* DependencyObjectCollection.cs:
+	* PresentationFrameworkCollection.cs: use the new extension
+	  method to raise the INCC event and remove old (duplicated)
+	  boilerplate.
+
+2010-06-02  Alan McGovern  <amcgovern@novell.com>
+
+	* DependencyObject.cs: Update our implementation of mentors to
+	  allow us to listen for changes to the mentor and correctly
+	  NULL it out when the mentor is destroyed as if we were to
+	  ref the mentor we'd create a cycle.
+
+2010-06-01  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Clipboard.cs: Ensure [G|S]etText methods are user initiated
+
+2010-06-01  Alan McGovern  <amcgovern@novell.com>
+
+	* DependencyObject.cs: Implement the first section of mentor
+	  based databinding. When doing DataContext based bindings on
+	  DependencyObjects, we get the DataContext from the first
+	  FrameworkElement in the actual tree (not visual tree). This
+	  FE is known as the 'mentor'. 
+
+2010-05-31  Alan McGovern  <amcgovern@novell.com>
+
+	* DependencyObject.cs: We should only seal the binding after
+	  all validation is successful. Add in a missing sanity check
+	  to make sure two way bindings don't have a stupid path.
+
+2010-05-31  Alan McGovern  <amcgovern@novell.com>
+
+	* DependencyObjectCollection.cs: add a MonoTodo for raising
+	  INCC, though this is covered by drt 232.
+
+2010-05-31  Alan McGovern  <amcgovern@novell.com>
+
+	* DependencyObjectCollection.cs: Implement
+	  DependencyObjectCollection <T> well enough to pass the tests
+	  on it in 232
+
+2010-05-25  Alan McGovern  <amcgovern@novell.com>
+
+	* DependencyProperty.cs: Make
+	  DependencyProperty.InvokeCheckedCallback use the correct
+	  semantics for deciding whether or not the callback should be
+	  invoked. It needs to use the same logic as in
+	  "Helper.AreEqual".
+
+2010-05-24  Alan McGovern  <amcgovern@novell.com>
+
+	* DependencyProperty.cs: DPs which are of Type::OBJECT do not
+	  perform a value equality check when deciding if they should
+	  raise the property changed event or not.
+
+2010-05-19  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Application.cs: Cast InitParams to Dictionary<>
+	* StartupEventArgs.cs: Move InitParams initialization to
+	SilverlightHost
+
+2010-05-17  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Application.cs:
+	* CornerRadius.cs:
+	* DependencyPropertyChangedEventArgs.cs:
+	* Rect.cs:
+	* Size.cs:
+		Fix error CS0843 with newer compilers - just like CSC 
+		would not compile it previously
+
+2010-05-17  Alan McGovern  <amcgovern@novell.com>
+
+	* Deployment.cs:
+	* Application.cs:
+	* DependencyProperty.cs:
+	* ResourceDictionary.cs:
+	* PresentationFrameworkCollection.cs: Make our managed Value
+	  struct implement IDisposable and make that call
+	  value_free_value. Change all places which use
+	  Value.FromObject to wrap the returned Value in a using
+	  statement. This should help find all the places where we use
+	  value_free_value incorrectly.
+
+2010-05-13  Jeffrey Stedfast  <fejj@novell.com>
+
+	* Deployment.cs (InitializeDeployment): Only call ExtractXap() if
+	the xapPath isn't a directory (if it's a directory, then it is
+	already extracted).
+
+2010-05-12  Chris Toshok  <toshok@ximian.com>
+
+	* Deployment.cs: remove InitializePluginHost and roll its 2 lines
+	into InitializeDeployment.  also initialize the appdomain's
+	"xap_uri" setting in the non-plugin case.
+
+2010-05-10  Alan McGovern  <amcgovern@novell.com>
+
+	* UIElement.cs: Move TemplateOwner to DependencyObject
+
+	* Expression.cs:
+	* FrameworkElement.cs:
+	* DependencyObject.cs:
+	* TemplateBindingExpression.cs: Move the Expression handling
+	  code from FrameworkElement to DependencyObject so that we
+	  can support the new SL4 databinding capabilities.
+
+2010-05-03  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* MessageBox.cs: Throw UnauthorizedAccessException is called
+	from outside the main UI thread.
+
+2010-04-26  Alan McGovern  <amcgovern@novell.com>
+
+	* DependencyObject.g.cs: Stub out the missing 'Section' class.
+
+2010-04-26  Alan McGovern  <amcgovern@novell.com>
+
+	* DependencyObject.g.cs: The block ctor should be protected
+	  and the TextDecorations property should be declared on
+	  Inline, not TextElement
+
+2010-04-26  Alan McGovern  <amcgovern@novell.com>
+
+	* NotificationWindow.cs: Update NotificationWindow to SL4
+	  compatibility.
+
+2010-04-26  Alan McGovern  <amcgovern@novell.com>
+
+	* ExtensionPart.cs: Make ExtensionPart correctly override
+	  ExternalPart.Source.
+
+2010-04-23  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Deployment.cs: Report 4004 if a MethodAccessException is thrown
+	when loading code (see DRT1003)
+	* ExtensionPart.cs: Remove empty static ctor and unneeded using
+	clauses.
+
+2010-04-21  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Deployment.cs: Remove call to WebRequest.RegisterDefaultStack
+	since the registration is now made by Webrequest itself
+
+2010-04-20  Alan McGovern  <amcgovern@novell.com>
+
+	* WindowStyle.cs:
+	* ExternalPart.cs:
+	* DependencyObject.g.cs: Add new types and DPs so that the SL4
+	  generated DefaultValue tests can compile.
+
+2010-04-19  Alan McGovern  <amcgovern@novell.com>
+
+	* DependencyObject.cs: Different exceptions are thrown when
+	  you call SetValue () or ClearValue() with a readonly DP
+	  depending on whether it's a custom dp or core dp. Fixes one
+	  moon-unit and part of drt 539
+
+2010-04-19  Alan McGovern  <amcgovern@novell.com>
+
+	* FrameworkElement.cs: Nuke the managed style validator. It's
+	  all handled in the native ValueValidator now.
+
+2010-04-15  Alan McGovern  <amcgovern@novell.com>
+
+	* Application.cs: ManagedTypeInfo needs to contain the
+	  Type::Kind for the type. This allows us figure out if one
+	  ManagedPropertyInfo is subclass/superclass of another which
+	  was not possible before.
+
+2010-04-14  Alan McGovern  <amcgovern@novell.com>
+
+	* DependencyObject.cs: Back out the recent ClearValue on
+	  readonly properties change as this doesn't actually apply to
+	  all DPs
+
+2010-04-14  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Application.cs: Update call to application_install according to API change.
+
+2010-04-13  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* DependencyObject.g.cs: Regenerated
+	* NotificationWindow.cs: Add Initialize method and throw an
+	InvalidOperationException if the application is not running
+	out of the browser
+
+2010-04-09  Jeffrey Stedfast  <fejj@novell.com>
+
+	* CheckAndDownloadUpdateCompletedEventArgs.cs: Implemented.
+
+	* Application.cs (CheckAndDownloadUpdateAsync): Implemented. Also
+	fixed to propagate InstallStateChanged and
+	CheckANdDownloadUpdateCompleted events.
+
+2010-04-09  Alan McGovern  <amcgovern@novell.com>
+
+	* DependencyObject.cs: If ClearValue is called with a ReadOnly
+	  dp, throw an ArgumentException.
+
+2010-04-08  Alan McGovern  <amcgovern@novell.com>
+
+	* DependencyProperty.cs: Verify that the supplied default
+	  value is the correct type before using it.
+
+2010-04-07  Jeffrey Stedfast  <fejj@novell.com>
+
+	* Application.cs (IsOutOfBrowser): Updated to use the native
+	accessor for this property instead of using the global runtime
+	function which has been removed.
+
+2010-04-06  Alan McGovern  <amcgovern@novell.com>
+
+	* FrameworkElement.cs: For two way bindings, only update the
+	  binding after base.SetValueImpl has been executed so that we
+	  get the correct value if we call GetValue () on the FE
+	  inside UpdateSourceObject.
+
+2010-04-03  Sebastien Pouliot  <sebastien@ximian.com> 
+
+	* StartupEventArgs.cs: Fix duplicate entry (replace) and allow
+	entries with empty values. Fix DRT#199
+
+2010-04-03  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Deployment.cs: Rework error handling, reduce code duplication
+	and release resources (MemoryStream and WebResponse). Fix 
+	remaining issues in DRT#355
+
+2010-04-02  Sebastien Pouliot  <sebastien@ximian.com> 
+
+	* Deployment.cs: Accept anything newer than 2.0.30524 (but not
+	30524 itself). Fix another failure in DRT#355
+
+2010-04-02  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Deployment.cs: Fix NRE if EmitError is called before the
+	application is created. Fix two failures in DRT#355
+
+2010-04-01  Alan McGovern  <amcgovern@novell.com>
+
+	* FrameworkElement.cs: RaiseBindingValidationError is a
+	  bubbling event - so recurse up the visual tree when invoking
+	  it.
+
+2010-03-30  Alan McGovern  <amcgovern@novell.com>
+
+	* DependencyObject.g.cs: StylusPoint is a DO in native and a
+	  struct in managed, so give it the same magic marshalling
+	  treatment that Matrix gets.
+
+2010-03-29  Alan McGovern  <amcgovern@novell.com>
+
+	* SystemColors.cs: Move the SystemColor enum out of the
+	  SystemColors class to simplify our managed/native interop.
+
+	* DependencyProperty.cs: Add enums to our type system so that
+	  we don't lose type information when attempting to parse them
+	  from xaml.
+
+
+2010-03-29  Alan McGovern  <amcgovern@novell.com>
+
+	* SystemColors.cs: Move the SystemColor enum out of the
+	  SystemColors class to simplify our managed/native interop.
+
+	* DependencyProperty.cs: Add enums to our type system so that
+	  we don't lose type information when attempting to parse them
+	  from xaml.
+
+
+2010-03-26  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Application.cs
+	* DependencyObject.cs
+	* DependencyObject.g.cs
+	* RoutedEventArgs.cs
+	* SizeChangedEventArgs.cs:
+		Call SafeNativeMethods so the default ctor are not
+		decorated with a [SecuritySafeCritical] attribtue	
+
+2010-03-26  Alan McGovern  <amcgovern@novell.com>
+
+	* ChangeLog:
+	* SystemColors.cs: Revert r154268 for now. It's causing
+	  regressions.
+
+2010-03-24  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Application.cs: Forward HasElevatedPermissions property to
+	SecurityManager (inside mscorlib) so all code can query the 
+	current trust level. Change ApplicationLifetimeObjects to use
+	an internal collection that mimic SL behavior (it's mostly
+	read-only expect at parse time).
+	* ApplicationLifetimeObjectsCollection.cs: New. Internal
+	collection that switch to read-only at application starup.
+
+2010-03-23  Chris Toshok  <toshok@ximian.com>
+
+	* DependencyProperty.cs (RegisterAny): retrieve
+	Deployment.Current.Types once here to make traces a little less
+	annoying.
+
+2010-03-23  Alan McGovern  <amcgovern@novell.com>
+
+	* DependencyProperty.cs: Cache the value of
+	  hasHiddenDefaultValue so that we don't have to constantly
+	  check native code.
+
+2010-03-23  Alan McGovern  <amcgovern@novell.com>
+
+	* DependencyProperty.cs: Add a new property
+	  'HiddenDefaultValue' to DependencyProperty so that managed
+	  land knows when it's not supposed to call the native
+	  get_default_value function and return DP.UnsetValue instead.
+
+2010-03-23  Alan McGovern  <amcgovern@novell.com>
+
+	* FrameworkElement.cs:
+	* DependencyProperty.cs:
+	* CustomDependencyProperty.cs:
+	* TemplateBindingExpression.cs: 1) Refactor the managed
+	  DependencyProperty.GetValue () to take a Type::Kind
+	  parameter so the correct default value metadata is returned.
+	2) Ensure we instantiate a new PropertyMetadata every time we
+	  call GetMetadata (Type) as the default value can change
+	  depending on the Type argument.
+
+2010-03-23  Alan McGovern  <amcgovern@novell.com>
+
+	* FrameworkElement.cs:
+	* DependencyProperty.cs:
+	* CustomDependencyProperty.cs:
+	* TemplateBindingExpression.cs: 1) Refactor the managed
+	  DependencyProperty.GetValue () to take a Type::Kind
+	  parameter so the correct default value metadata is returned.
+	2) Ensure we instantiate a new PropertyMetadata every time we
+	  call GetMetadata (Type) as the default value can change
+	  depending on the Type argument.
+
+2010-03-18  Alan McGovern  <amcgovern@novell.com>
+
+	* DependencyProperty.cs:
+	* ResourceDictionary.cs: 1) Regenerate the default value tests
+	  for SL3.
+	2) Add in a lot of missing DefaultValue attributes to native
+	  DPs and fixed some cases where we were using DefaultValue
+	  instead of AutoCreateValue.
+	3) Remove a bunch of places where we set local values in ctors
+	  instead of just using the DefaultValue.
+
+2010-03-16  Alan McGovern  <amcgovern@novell.com>
+
+	* DependencyProperty.cs: Managed land should not generate
+	  default values to cover up for missing
+	  DefaultValue/AutoCreateValue attributes in native.
+
+2010-03-10  Jeffrey Stedfast  <fejj@novell.com>
+
+	* Application.cs: Hooked up the Install and InstallState methods.
+
+2010-03-09  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Application.cs: Mark CheckAndDownloadUpdateAsync with [MonoTODO]
+	* Deployment.cs: Only call NativeMethods.surface_emit_error from
+	main thread.
+
+2010-03-09  Chris Toshok  <toshok@ximian.com>
+
+	* Deployment.cs: we need to figure out SL3 version validation, and
+	we also need to ignore SL4 versions.
+
+2010-03-05  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Clipboard.cs:
+	* DataFormats.cs:
+	* DataObject.cs:
+	* DependencyObjectCollection.cs:
+	* DragEventArgs.cs:
+	* DragEventHandler.cs:
+	* ElevatedPermissions.cs:
+	* FlowDirection.cs:
+	* IDataObject.cs:
+	* LayoutCycleException.cs:
+	* NotificationWindow.cs:
+	* SecuritySettings.cs:
+	* TextTrimming.cs:
+	* Window.cs:
+	* WindowStartupLocation.cs:
+	* WindowState.cs:
+	* UIElement.cs:
+	* Deployment.cs:
+	* Application.cs:
+	* SystemParameters.cs: Updated for SL4 beta API.
+
+	* DependencyObject.g.cs: Regenerated.
+
+2010-03-01  Alan McGovern  <amcgovern@novell.com>
+
+	* FrameworkElement.cs: Update Style tests + implementation to
+	  SL3 compatibility
+
+2010-03-01  Alan McGovern  <amcgovern@novell.com>
+
+	* PropertyMetadata.cs:
+	* DependencyProperty.cs: DependencyProperty.DefaultValue now
+	  always contains the correct default value for a DP. It will
+	  always contain a valid value and not
+	  DependencyProperty.UnsetValue. We also correctly set
+	  PropertyMetadata.DefaultValue so that it contains
+	  DependencyProperty.UnsetValue when it should and when the
+	  property type is a ValueType, it converts DP.UnsetValue/null
+	  to a proper value.
+
+2010-02-24  Jackson Harper  <jackson@ximian.com>
+
+	* DependencyProperty.cs: The property metadata should never be
+	null.
+
+2010-02-19  Alan McGovern  <amcgovern@novell.com>
+
+	* DependencyProperty.cs: Refactor DP.Lookup so that we can
+	  have a TryLookup method which doesn't throw exceptions. This
+	  removes a lot of annoying spew when databinding CLR
+	  properties which don't have a backing DP.
+
+2010-02-18  Alan McGovern  <amcgovern@novell.com>
+
+	* ResourceDictionary.cs: Add some tests for
+	  ResourceDictionary.Source and commit a few minor fixes so
+	  that exceptions are thrown in the right places.
+
+2010-02-17  Alan McGovern  <amcgovern@novell.com>
+
+	* Expression.cs:
+	* FrameworkElement.cs:
+	* TemplateBindingExpression.cs: It's an error in SL3 to attach
+	  the same binding to multiple FrameworkElements at the same
+	  time.
+
+2010-02-16  Chris Toshok  <toshok@ximian.com>
+
+	* Deployment.cs (InitializeDeployment): if culture/uiCulture ==
+	auto we don't do the CurrentCulture assignment.
+
+2010-02-16  Alan McGovern  <amcgovern@novell.com>
+
+	* FrameworkElement.cs: Simplify this logic as it was pretty
+	  confusing the way it was written before.
+
+2010-02-15  Alan McGovern  <amcgovern@novell.com>
+
+	* FrameworkElement.cs: We use SetValue (dp, binding) as an
+	  easy way to refresh the value when a BindingExpression
+	  changes (such as when an element is loaded or the
+	  datacontext changes). We no longer need to clone the binding
+	  expression dictionary. Also ensure that we don't
+	  double-attach the BindingExpression if we're just refreshing
+	  it. Stops olympics from exploding due to collected
+	  delegates.
+
+2010-02-15  Alan McGovern  <amcgovern@novell.com>
+
+	* FrameworkElement.cs: Le sigh! I didn't mean to commit this
+	  in my last patch.
+
+2010-02-15  Alan McGovern  <amcgovern@novell.com>
+
+	* Expression.cs:
+	* FrameworkElement.cs:
+	* TemplateBindingExpression.cs: Merge
+	  TemplateBindingExpression.UpdatingTarget and
+	  BindingExpressionBase.UpdatingSource into
+	  Expression.Updating. The variables mean the same thing and
+	  it simplifies some of our logic.
+
+2010-02-15  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Deployment.cs: Do not use System.Net.Browser from Moonlight's
+	"desktop" assemblies.
+
+2010-02-15  Alan McGovern  <amcgovern@novell.com>
+
+	* Expression.cs:
+	* FrameworkElement.cs:
+	* TemplateBindingExpression.cs: BindingExpressions shouldn't
+	  do setup in their constructor as they can be detached from
+	  one FrameworkElement and attached to another and they should
+	  still work. 
+
+2010-02-11  Alan McGovern  <amcgovern@novell.com>
+
+	* FrameworkElement.cs: Move 'ApplyTemplate' to
+	  FrameworkElement instead of Control as i need to call it for
+	  ScrollContentPresenter.
+
+2010-02-10  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* UIElement.cs: The native GetTransformToUIElement always returns a
+	reffed object, make sure we unref it.
+
+	* FrameworkTemplate.cs: The native GetVisualTree always returns a
+	reffed object, make sure we unref it.
+
+2010-02-10  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Deployment.cs:
+	* Application.cs:
+	* DependencyProperty.cs:
+	* ResourceDictionary.cs:
+	* PresentationFrameworkCollection.cs: don't leak Value instances.
+
+2010-02-09  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Deployment.cs: Re-enable ApplicationBase = XapDir since
+	mono/mcs 2-6 branch is now fixed.
+
+2010-02-09  Jackson Harper  <jackson@ximian.com>
+
+	* Application.cs: Set the resource base when creating a loader.
+
+2010-02-09  Alan McGovern  <amcgovern@novell.com>
+
+	* FrameworkElement.cs: When we set a binding like:
+	  fe.SetBinding (SomeClass.SomeProperty, binding), we only
+	  listen for property changed notifications on 'SomeProperty'
+	  if it's a user registered DP. Otherwise we do the usual
+	  thing and only update the source of the binding inside
+	  FrameworkElement.SetValueImpl.
+
+2010-02-09  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Duration.cs:
+	* Application.cs:
+	* DependencyObject.cs:
+	* FrameworkElement.cs:
+	* DurationConverter.cs:
+	* ResourceDictionary.cs:
+	* DependencyProperty.g.cs:
+	* PropertyPathConverter.cs:
+	* PresentationFrameworkCollection.cs: Fix compiler warnings.
+
+	* DependencyProperty.g.cs: Regenerated.
+
+2010-02-08  Jeffrey Stedfast  <fejj@novell.com>
+
+	* SystemColors.cs: Implemented.
+
+2010-02-08  Alan McGovern  <amcgovern@novell.com>
+
+	* DependencyObject.cs:
+	* TemplateBindingExpression.cs: Add a helper method to allow
+	  managed code to listen for PropertyChanged events on any DP.
+	  Make TemplateBindingExpression use this helper method.
+
+2010-02-08  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Deployment.cs: Disable parts of r150985, it requires a newer mono
+	version to build, but a newer mono version has a bug which makes
+	moon unbuildable (bug #574434).
+
+2010-02-06  Chris Toshok  <toshok@ximian.com>
+
+	* Deployment.cs (InitializeDeployment): set the appdomain's
+	ApplicationBase to the xap directory so Assembly.Load works.
+
+2010-02-04  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Application.cs: Add [MonoTODO] to CheckAndDownloadUpdateAsync.
+	Do not use EntryPointAssembly DP inside GetResourceStream since
+	it can be called outside the main thread.
+
+2010-02-03  Andreia Gaita  <avidigal@novell.com>
+
+	* DependencyProperty.g.cs, Events.g.cs: remove autogenerated files from
+	the repo
+
+2010-02-02  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Duration.cs: Automatic is the default kind.
+
+2010-01-25  Alan McGovern  <amcgovern@novell.com>
+
+	* CheckAndDownloadUpdateCompletedEventArgs.cs: Implement the
+	  missing properties for
+	  CheckAndDownloadUpdateCompleteEventArgs.
+
+2010-01-21  Alan McGovern  <amcgovern@novell.com>
+
+	* PresentationFrameworkCollection.cs: The hack to emit an
+	  Added and Removed event when replacing an item can be
+	  removed now that Silverlight has fixed their bug.
+
+2010-01-21  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Events.g.cs: Regenerated.
+
+2010-01-14  Alan McGovern  <amcgovern@novell.com>
+
+	* DependencyProperty.g.cs: Get rid of some of the bonus API
+	  points we've accumulated.
+
+2010-01-12  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Deployment.cs: Set the default HTTP[S] stack as the browser
+
+2010-01-12  Alan McGovern  <amcgovern@novell.com>
+
+	* FrameworkElement.cs: Implement support for explicitly
+	  updated two way bindings and add tests to cover that.
+
+2009-01-04  Sebastien Pouliot  <sebastien@ximian.com> 
+
+	* DependencyObject.g.cs: Regenerated
+	* DependencyProperty.g.cs: Regenerated
+
+2009-12-31  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* CustomDependencyProperty.cs: Seal internal type (gendarme)
+
+2009-12-21  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Application.cs: Cache the resources data coming from the XAP 
+	itself so we can avoid using FileStream (and "Too many open 
+	files" exceptions).
+
+2009-12-16  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Application.cs: Add a dropref parameter to the ctor, just as every
+	other managed EventObject derived class. This allows us to fix a leak.
+
+2009-12-15  Alan McGovern  <amcgovern@novell.com>
+
+	* Application.cs: Rename ApplyStyle to ConvertSetterValues to
+	  reflect what it actually does. Rename ApplyDefaultStyle to
+	  GetDefaultStyle and make it return the default style
+	  instead.
+
+2009-12-15  Alan McGovern  <amcgovern@novell.com>
+
+	* Application.cs: When converting the setter values, we should
+	  convert the values for all the BasedOn styles too.
+
+	* Style.cs:
+	* DependencyProperty.g.cs: regen
+
+2009-12-14  Jeffrey Stedfast  <fejj@novell.com>
+
+	* InstallState.cs: Implemented.
+
+2009-12-11  Jeffrey Stedfast  <fejj@novell.com>
+
+	* GpuInformation.cs: Make the ctor internal.
+
+2009-12-10  Chris Toshok  <toshok@ximian.com>
+
+	* TemplateBindingExpression.cs (GetValue): pass true for
+	@doToStringConversion.
+
+	* Style.cs (ConvertSetterValue): pass true for
+	@doToStringConversion.
+
+	* Application.cs (convert_keyframe_value_cb): pass true for
+	@doToStringConversion.
+
+2009-12-09  Jackson Harper  <jackson@ximian.com>
+
+	* Stlye.cs: stub BasedOn so people can load the NFL demo.
+
+2009-12-09  Chris Toshok  <toshok@ximian.com>
+
+	* TemplateBindingExpression.cs: this will likely break things, but
+	it turns out we have to convert values for
+	templatebindingexpressions (at the very least for
+	http://imagebot.org/silverlight/postcards/'s usage of
+	string->ImageSource).
+
+2009-12-09  Alan McGovern  <amcgovern@novell.com>
+
+	* DependencyProperty.cs: Ensure that we register the property
+	  type when looking up a native DependencyProperty.
+
+2009-12-08  Jeffrey Stedfast  <fejj@novell.com>
+
+	* DependencyProperty.cs Moved CustomDP's PropertyMetadata field
+	here.
+	(GetMetadata): Implemented.
+
+	* PropertyMetadata.cs (DefaultValue): Implemented.
+
+	* Application.cs (set_Resources): Implemented.
+
+2009-12-04  Jackson Harper  <jackson@ximian.com>
+
+	* Makefile.am:
+	* Application.cs:
+	* CheckAndDownloadUpdateCompletedEventArgs.cs:
+	* CheckAndDownloadUpdateCompletedEventHandler.cs: Add stubbed out
+	method/event/args/handler for checking for application updates.
+
+2009-12-04  Alan McGovern  <amcgovern@novell.com>
+
+	* VisualState.cs: Don't bother storing a copy of the Name
+	  property locally - just use FrameworkElement.NameProperty.
+
+2009-12-03  Jeffrey Stedfast  <fejj@novell.com>
+
+	* ResourceDictionary.cs (Count): Turns out that the generics Count
+	property is always supposed to throw the NotImplementedException.
+	(Remove): Both the string and object variants seem to allow null
+	keys - they simply no-op.
+
+2009-12-03  Jeffrey Stedfast  <fejj@novell.com>
+
+	* UIElement.cs (RemoveHandler): Implemented.
+
+	* ResourceDictionary.cs: Implemented the remaining bits (Keys,
+	Values, CopyTo, etc)
+
+2009-12-02  Jeffrey Stedfast  <fejj@novell.com>
+
+	* ResourceDictionary.cs (IsFixedSize): Implemented.
+	(IDictionary.Add): Implemented.
+	(IDictionary.CopyTo): Stubbed out.
+	(IDictionary.GetEnumerator): Implemented.
+	(IDictionary.Remove): Implemented.
+	(ICollection.IsSynchronized): Implemented.
+	(ICollection.SyncRoot): Implemented.
+	(IEnumerable.GetEnumerator): Implemented.
+
+	* PresentationFrameworkCollection.cs: Updated for
+	NativeMethods.collection_iterator API changes.
+
+2009-12-01  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* DependencyObject.cs: Add comment about corcompare issue.
+
+2009-11-30  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Deployment.cs: Surface getter: make this thread-safe.
+
+2009-11-30  Jackson Harper  <jackson@ximian.com>
+
+	* DependencyProperty.g.cs: Regenerated.
+
+2009-11-27  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* RoutedEventArgs.cs: Free: make sure we don't free the native wrapper
+	more than once.
+
+2009-11-27  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Deployment.cs: Surface isn't a dependency property anymore, add a
+	manual property.
+
+	* DependencyProperty.g.cs: Regenerated.
+
+2009-11-25  Jackson Harper  <jackson@ximian.com>
+
+	* Application.cs: Implement IsRunningOutOfBrowser property.
+
+2009-11-25  Alan McGovern  <amcgovern@novell.com>
+
+	* DependencyObject.g.cs: regen.
+
+2009-11-23  Alan McGovern  <amcgovern@novell.com>
+
+	* UIElement.cs: DOs which are expanded from a ControlTemplate
+	  need to keep track of the 'templateBindingSource' so that we
+	  can attach new TemplateBindings later. This value is stored
+	  in addition to 'IsTemplateItem' as DOs can be expanded from
+	  templates which are not ControlTemplates and only
+	  ControlTemplate passes in a non-NULL value for
+	  templateBindingSource.
+
+2009-11-20  Alan McGovern  <amcgovern@novell.com>
+
+	* Size.cs: Add helper methods: Size.Min (Size) and Size.Max
+	  (Size)
+
+2009-11-20  Sebastien Pouliot  <sebastien@ximian.com> 
+
+	* PresentationFrameworkCollection.cs: Seal both inner types (found
+	using Gendarme's AvoidUnsealedUninheritedInternalTypeRule). Avoid
+	code duplication between Dispose and finalizer. Also avoid 
+	running the finalizer if disposed (found using Gendarme's 
+	UseSuppressFinalizeOnIDisposableTypeWithFinalizerRule). Make non-
+	generic enumerator implement IDisposable (suggested by Gendarme's
+	TypesWithNativeFieldsShouldBeDisposableRule and proven with unit
+	tests).
+	* Style.cs: Reduce visibility of ConvertSetterValue
+
+2009-11-20  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Events.g.cs: Regenerated
+
+2009-11-19  Mario Carrion  <mcarrion@novell.com>
+
+	* UIElement.cs: Static constructor added, raises internal event when
+	VisibilityProperty changes.
+
+	r: toshok
+
+2009-11-19  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* ApplicationUnhandledExceptionEventArgs.cs: Add workaround for
+	VisualStudio bug. Fixes BNC#556797. r:spouliot
+
+2009-11-17  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Events.g.cs: Regenerated.
+
+2009-11-16  Alan McGovern  <amcgovern@novell.com>
+
+	* DependencyProperty.g.cs: Revert r146166 as it has some
+	  bizarre side effects.
+
+2009-11-13  Alan McGovern  <amcgovern@novell.com>
+
+	* DependencyProperty.g.cs: regen.
+
+2009-11-13  Alan McGovern  <amcgovern@novell.com>
+
+	* Events.g.cs:
+	* FrameworkElement.cs: Move the invoking of OnApplyTemplate
+	  from Control to FrameworkElement as ContentPresenter (a
+	  FrameworkElement) needs to have its OnApplyTemplate method
+	  invoked.
+
+2009-11-12  Andreia Gaita  <avidigal@novell.com>
+
+	* Application.cs: forgot to take out the unref on the previous
+	fix
+
+2009-11-12  Andreia Gaita  <avidigal@novell.com>
+
+	* Application.cs: reset the free_mapping flag so it doesn't get
+	freed twice. make Free internal so Deployment can free it when
+	replacing the current app.
+
+	* Deployment.cs: (SetCurrentApplication) Free the current
+	application if it's set when replacing it
+
+2009-11-11  Chris Toshok  <toshok@ximian.com>
+
+	* Deployment.cs (LoadAssemblies): we need to convert from source
+	to absolute uris when dealing with ExtensionParts as well as
+	AssemblyParts.
+	(AssemblyGetResponse): if we fail to load the assembly, assume
+	it's a zip file and try getting the first file out of it.  if
+	that's an assembly, proceed as normal.
+
+2009-11-11  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Application.cs: New events for a11y.
+	r:toshok
+
+2009-11-09  Chris Toshok  <toshok@ximian.com>
+
+	* FrameworkElement.cs (GetBindingExpression): naively implement
+	this 3.0 method.
+
+	r: spouliot
+
+2009-11-09  Chris Toshok  <toshok@ximian.com>
+
+	* UIElement.cs: add the static key event and mouse button event
+	fields and partially implement AddEventHandler method.
+
+	* FrameworkElement.cs: remove the LoadedEvent field, as it's
+	generated now.
+
+	* RoutedEvent.cs (ctor): pass the eventid so we can later retried
+	it in UIElement.AddEventHandler.
+	
+	* Events.g.cs: regen.
+
+	r: rolf
+
+2009-11-08  Chris Toshok  <toshok@ximian.com>
+
+	* Icon.cs, IconCollection.cs, WindowSettings.cs: new files.
+
+	* OutOfBrowserSettings.cs: remove the static ctor.
+
+	r: lewing
+
+2009-11-06  Chris Toshok  <toshok@ximian.com>
+
+	* FrameworkElement.cs (Initialize) add our loaded_hook.
+	(InvokeLoaded): InvokeLoaded no longer takes event args since it
+	doesn't emit the event.
+
+2009-11-06  Sebastien Pouliot  <sebastien@ximian.com> 
+
+	* DependencyObject.cs: Add null-check in DepObjectFindName so
+	every caller (anything that inherits from FrameworkElement and
+	Inline) get the validation.
+	* FrameworkElement.cs: Remove null-check from FindName, it's now
+	part of DependencyObject.DepObjectFindName job to validate.
+
+	r: alan
+
+2009-11-06  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* DependencyObject.cs: Add null-check in RegisterEvent (a null 
+	value would cause bad side effects). Reduce UnregisterAllEvents
+	visibility.
+	* Deployment.cs: Reduce ExtractXap and ReadManifest visibility.
+	Define AssemblyRegistration delegate so we can, safely, inject
+	[SecurityCritical] attribute on AssemblyRegister
+	* ResourceDictionary.cs: Reduce duplication / unneeded code.
+
+	r: jackson
+
+2009-11-05  Alan McGovern  <amcgovern@novell.com>
+
+	* Application.cs:
+	* FrameworkElement.cs: Templates must be expanded as part of
+	  the first step of Measure. To support this, remove the old
+	  ApplyTemplateHook managed path and refactor the
+	  GetTemplateRoot managed path into a more generic
+	  GetDefaultTemplate method. Whenever native code needs to get
+	  a default template from managed, this is invoked to retrieve
+	  it. ApplyTemplate and OnApplyTemplate have been moved to
+	  FrameworkElement itself to simplify the code required to
+	  support templateable framework elements (ItemsPresenter for
+	  example). r: toshok
+
+2009-11-04  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Application.cs: In GetResourceStream(Uri) ensure the file path 
+	is rooted against the XAP directory. Also directly create the
+	FileStream here along with all the validations.
+
+	r: rolf
+
+2009-11-02  Alan McGovern  <amcgovern@novell.com>
+
+	* FrameworkElement.cs: Certain UIElements (Controls and
+	  ContentPresenters) need to apply a template before
+	  MeasureOverride is invoked. Add a callback
+	  (ApplyTemplateHook) to FrameworkElement which is non-null
+	  for Controls and ContentPresenters to that these templates
+	  can be expanded properly. r: rolf
+
+2009-10-28  Chris Toshok  <toshok@ximian.com>
+
+	* StartupEventArgs.cs: ease the desktop case some by always
+	initializing init_params but only filling it in when we're in a
+	plugin.
+
+	r: lewing
+
+2009-10-23  Chris Toshok  <toshok@ximian.com>
+
+	* Deployment.cs: add our internal LayoutUpdated event here.
+
+	* FrameworkElement.cs: make FrameworkElement.LayoutUpdated just
+	proxy the delegate over to Deployment.LayoutUpdated so we maintain
+	1 global list sorted by insertion-time.
+
+	* Events.g.cs: regen.
+
+	r: lewing
+
+2009-10-22  Mario Carrion  <mcarrion@novell.com>
+
+	* FrameworkElement.cs: Internal events and methods added to match:
+	System.Windows.Automation.AutomationProperties.
+
+	r: toshok
+
+2009-10-12  Jeffrey Stedfast  <fejj@novell.com>
+
+	* UIElement.cs: The MouseWheel event is now autogenerated.
+
+	r: toshok
+
+2009-10-07  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Deployment.cs: Add a managed Deployment.Shutdown method.
+
+	* Events.g.cs: Regenerated.
+
+	r: andreia
+
+2009-10-05  Alan McGovern  <amcgovern@novell.com>
+
+	* FrameworkElement.cs: Store the starting_generation and
+	  only_unemitted flags on the EmitContext so that the values
+	  are used when we call DoEmitCurrentContext from managed
+	  code. r: toshok
+
+2009-10-05  Sebastien Pouliot  <sebastien@ximian.com> 
+
+	* RoutedEventArgs.cs: Add internal EventHandled property to be 
+	shared with inheritors
+	* StartupEventArgs.cs: Use String.IsNullOrEmpty instead of a null
+	check
+
+	r: alan
+
+2009-09-29  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Deployment.cs: We might have a native surface even if we don't have
+	an application, so ensure we clear out the native surface in that case
+	too.
+
+	r: andreia
+
+2009-09-30  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* StartupEventArgs.cs: There can be spaces around both commas and
+	equals signs.
+
+	r: alan
+
+2009-09-28  Chris Toshok  <toshok@ximian.com>
+
+	* DependencyObject.cs (UnregisterAllEvents): new method.
+	(Free) call UnregisterAllEvents.
+
+	r: jeff
+
+2009-09-24  Jackson Harper  <jackson@ximian.com>
+
+	* DepepdencyProperty.cs: Make the error message a little more
+	helpful.
+
+2009-09-23  Chris Toshok  <toshok@ximian.com>
+
+	* FrameworkElement.cs: all the on_method dispatchers need to use
+	the same sort of logic as Events.cs, where we look up the native
+	pointer before creating a new managed object for it.
+
+	r: lewing
+
+2009-09-23  Chris Toshok  <toshok@ximian.com>
+
+	* ExceptionRoutedEventArgs.cs,
+	DependencyPropertyChangedEventArgs.cs: clean these up a touch by
+	using compiler generated getter/setters.
+
+	* Application.cs: keep track if we added a mapping for this object
+	in set_NativeHandle, and free the mapping only if we added it.
+
+	* DependencyObject.cs: same.
+
+	* RoutedEventArgs.cs: same.
+
+	* UIElement.cs: remove all the autogenerated events, and use event
+	ids instead of names.
+
+	* TemplateBindingExpression.cs: use accessors for the
+	PropertyChangedEventArgs instead of using the */-> stuff.
+
+	* FrameworkElement.cs: remove autogenerated events.  add an
+	OnEventHandler for the loaded event.  InvokeLoaded takes a
+	RoutedEventArgs parameter now.
+
+	* Events.g.cs: regen.
+
+	* DependencyPropertyChangedEventArgs.cs: add ctor that takes a
+	PropertyChangedEventArgs*.
+
+	* DependencyProperty.cs: use accessors for the
+	PropertyChangedEventArgs instead of using the */-> stuff.
+
+	* DependencyObject.cs (RegisterEvent,UnregisterEvent): use event
+	ids, and add the delegate to EventList so it doesn't get
+	collected.
+
+	r: spouliot, andriea
+
+2009-09-18  Jeffrey Stedfast  <fejj@novell.com>
+
+	* PresentationFrameworkCollection.cs (CollectionIterator.ctor):
+	set this.type to the passed type argument. We need this for later
+	to ensure that we get the expected object type back out again.
+
+	r:spouliot
+
+2009-09-18  Jackson Harper  <jackson@ximian.com>
+
+	* DependencyProperty.g.cs:
+	* DependencyObject.g.cs: Regen
+	* ResourceDictionary.cs: Implement the Source property.
+
+2009-09-18  Jeffrey Stedfast  <fejj@novell.com>
+
+	* CustomDependencyProperty.cs: Get rid of unused member variables.
+
+	* StartupEventArgs.cs: Removed unused variable.
+
+	* Deployment.cs: Removed unused variable.
+
+	* Application.cs: Removed unused variable.
+
+	r:kangaroo
+
+2009-09-14  Jeffrey Stedfast  <fejj@novell.com>
+
+	* Deployment.cs (ReadManifest): Canonicalize the AppManifest.xaml
+	file name.
+	(LoadAssemblies): Canonicalize the Assembly's source path.
+
+	* Application.cs (GetResourceStream): When falling back to loading
+	a Xap resource, make sure to canonicalize the path the same way
+	that we do on the c++ side.
+
+	r: spouliot
+
+2009-09-15  Sebastien Pouliot  <sebastien at ximian.com>
+
+	* MessageBox.cs: Implemented
+
+	r: toshok
+
+2009-09-14  Chris Toshok  <toshok@ximian.com>
+
+	* ExceptionRoutedEventArgs.cs (ctor): add an internal ctor that
+	takes a MoonError, filling in error_exception using
+	NativeMethod.CreateManagedException.
+	(FromErrorEventArgs): get the unmanaged MoonError from the event
+	args and create the ExceptionRoutedEventArgs from it.
+
+2009-09-12  Chris Toshok  <toshok@ximian.com>
+
+	* Deployment.cs (LoadAssemblies): if we have loaded the last
+	assembly, exit early.
+
+	r: lewing
+
+2009-09-11  Larry Ewing  <lewing@novell.com>
+
+	* ApplicationUnhandledExceptionEventArgs.cs:
+	* PropertyPathConverter.cs:
+	* SizeChangedEventArgs.cs:
+	* StyleTypedPropertyAttribute.cs: make sure the we have the right
+	seal on these classes
+
+	r: toshok
+	
+2009-09-11  Larry Ewing  <lewing@novell.com>
+
+	* Deployment.cs: add a missing mid commit edit.
+
+	r: jeff
+	
+2009-09-11  Larry Ewing  <lewing@novell.com>
+
+	* Deployment.cs: (LoadAssemblies): go ahead and load ExternalParts
+	as assemblies.  This lacks the intended caching but will allow
+	some more sl3 applications to run.
+
+	* ExternalPartCollection.cs:
+	* ExternalPart.cs:
+	* ExtensionPart.cs: add new classes.
+
+	r: toshok
+
+2009-09-09  Chris Toshok  <toshok@ximian.com>
+
+	* Deployment.cs (InitializeDeployment): add both culture/uiCulture
+	parameters, and if they're non-null initialize
+	Thread.CurrentThread.CurrentCulture/CurrentUICulture respectively.
+	If there's an exception, rethrow as a MoonException so the error
+	code of 2105 gets transmitted to the plugin (which is needed by
+	drt 352.)
+
+	* Application.cs (OnUnhandledException): we can't just use
+	ex.Message here, we have to use the full string, since drt 352 is
+	actually matching on the exception type name, which isn't included
+	in the message.
+
+	r: andreia
+
+2009-09-08  Chris Toshok  <toshok@ximian.com>
+
+	* FrameworkElement.cs (ClearValue): we don't need to special-case
+	DataContext here.  the normal property changed mechanism is good
+	enough.
+	(SetValueImpl): same here.
+
+	r: andreia
+
+2009-08-30  Andreia Gaita  <avidigal@novell.com>
+
+	* Application.cs: release all the leaking resources
+
+	r: toshok
+
+2009-08-26  Alan McGovern  <amcgovern@novell.com>
+
+	* DataTemplate.cs:
+	* FrameworkTemplate.cs: Allow FrameworkTemplates to be
+	  expanded in managed code. Using that, expand the
+	  ItemsPanelTemplate in ItemsControl when it is available. r:
+	  toshok
+
+2009-08-16  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* RoutedEventArgs.cs: Fix GetKind to do what it should do and what
+	andreia actually reviewed.
+
+2009-08-15  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* RoutedEventArgs.cs: Use toggle ref semantics.
+
+	* SizeChangedEventArgs.cs:
+	* ExceptionRoutedEventArgs.cs: Updated according to API changes in
+	RoutedEventArgs.
+
+	* DependencyObject.cs: Use FreeNativeWrapper instead of duplicating
+	code, and update according to INativeDependencyObjectWrapper changes.
+
+	r: andreia
+
+2009-08-12  Alan McGovern  <amcgovern@novell.com>
+
+	* Application.cs: A ContentControl which has no Template needs
+	  to call into managed land to create a 'default template'.
+	  When the Content is a UIElement, the UIElement is used as
+	  the template root, otherwise a Grid + TextBlock (with
+	  Binding) is used. This is the same as what ContentPresenter
+	  does to its Content property. r: toshok
+
+2009-08-10  Chris Toshok  <toshok@ximian.com>
+
+	* GpuInformation.cs: stub this SL3 class out.
+
+	* Analytics.cs: stub this SL3 class out.
+
+2009-08-05  Alan McGovern  <amcgovern@novell.com>
+
+	* FrameworkElement.cs: Whenever the datacontext changes on a
+	  FrameworkElement, the local bindings need to be invalidated.
+	  Whenever a framework element is loaded, the local bindings
+	  and subtree bindings need to be invalidated.
+
+2009-08-04  Alan McGovern  <amcgovern@novell.com>
+
+	* FrameworkElement.cs: Fix a stupid regression from the last
+	  commit, 'existing' is not the same as the new value.
+
+2009-08-04  Alan McGovern  <amcgovern@novell.com>
+
+	* FrameworkElement.cs: TwoWay bindings must set a non-empty
+	  Path.
+
+2009-07-29  Alan McGovern  <amcgovern@novell.com>
+
+	* UIElement.cs: When eventhandlers are being invoked on a
+	  RoutedEvent, once one handler sets Handled to true,
+	  subsequent handlers should not be invoked.
+
+2009-07-29  Alan McGovern  <amcgovern@novell.com>
+
+	* UIElement.cs: An extra RaiseKeyDown method is unnecessary -
+	  remove it and use InvokeKeyDown properly.
+
+2009-07-29  Alan McGovern  <amcgovern@novell.com>
+
+	* UIElement.cs: 1) TextBox cannot hook into Key press events
+	  in unmanaged code otherwise they never propagate to managed
+	  and the user cannot intercept them. Instead of hooking to
+	  the event in native code, just call native
+	  TextBox::OnKeyDown in the managed override.
+	2) Key press events are actually handled in two different
+	  places. 'Navigation' keypresses like Left/Right/PgUp are
+	  handled when the textbox OnKeyDown virtual method is
+	  invoked. 'Character' keypresses like 'a', 'b', 'c' are
+	  handled after the KeyDown event is emitted
+	3) If a key press does not affect the textbox state (i.e.
+	  pressing 'left' when the caret is already at the very left),
+	  then the keypress is not handled.
+	4) The KeyDown event is emitted even if OnKeyDown is overriden
+	  and the base method is not invoked.
+	5) The tab key should be interpreted as 'Focus next control'
+	  only after the KeyDown event handlers have run and the key
+	  press is not handled.
+
+2009-07-27  Larry Ewing  <lewing@novell.com>
+
+	* Application.cs: fix up
+	MoonTest.System.Windows.ApplicationTest.InvalidLoadComponent.
+
+2009-07-27  Jackson Harper  <jackson@ximian.com>
+
+	* Deployment.cs:
+	* Application.cs: we hydrate with a Value* now because it
+	is legal to have non DOB top level elements that get hydrated.
+	
+2009-07-24  Sebastien Pouliot  <sebastien at ximian.com>
+
+	* Deployment.cs: Don't throw in CreateApplication (instead call 
+	EmitError) so the error gets noticed when used async. Remove
+	ParseInitParams (i.e. revert r135833) since the parameters are
+	only used by application, not the framework.
+
+2009-07-23  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* ExceptionRoutedEventArgs.cs: Add a method to create a
+	managed ExceptionRoutedEventArgs from a native ErrorEventArgs.
+
+2009-07-23  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Deployment.cs: AssemblyRegister: instead of relying on an
+	obscure (and broken) implementation detail on how to determine
+	when all assemblies have been loaded, maintain a real counter
+	of how many assemblies we're still waiting for.
+
+2009-07-23  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* AssemblyPart.cs: Don't add assemblies more than once to
+	Deployment.Assemblies.
+
+2009-07-22  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* AssemblyPart.cs: When loading an assembly, add the assembly
+	to the current deployments list of assemblies.
+
+2009-07-21  Sebastien Pouliot  <sebastien at ximian.com>
+
+	* Deployment.cs: Make sure we try do download an AssemblyPart
+	that starts with a '/' (e.g. webide).
+
+2009-07-21  Alan McGovern  <amcgovern@novell.com>
+
+	* PresentationFrameworkCollection.cs: In order to make
+	  ItemsControl function correctly, it has to box all value
+	  types. This appears to break nothing but feels like a bit of
+	  a hack. Without this, selection is broken in itemscontrol
+	  for value types. 
+
+2009-07-20  Chris Toshok  <toshok@ximian.com>
+
+	* Application.cs (Application::GetGenericXamlStyleFor): pass null
+	for the resource base.
+	(Application::LoadComponent): pass resourceLocator.ToString() for
+	the resource base.  This is essentially the fix for DRT 788.
+	(Application::GetResourceStream): wrap the XapDir stuff in a
+	try{}catch{} block to quiet things down.
+	(Application::get_resource_cb_safe): this takes a resourceBase
+	parameter now.
+	(Application::get_resource_cb): same, and if resourceBase is is
+	non-null/empty, combine it with the resource name, and try to look
+	it up that way first, before falling back to the
+	non-resourceBase'd location.
+
+	* Deployment.cs (Deployment.ReadManifest): pass null for
+	resource_base.
+
+2009-07-16  Sebastien Pouliot  <sebastien at ximian.com>
+
+	* Deployment.cs: Use EmitError when reporting errors in methods 
+	that can be executed asynchronously, since the unmanaged caller 
+	won't see the exception in those cases. Fix DRT #371
+
+2009-07-15  Sebastien Pouliot  <sebastien at ximian.com>
+
+	* Application.cs: If unhandled report the exception back to the 
+	plugin OnError handler. Fix DRT #357
+	* Deployment.cs: Extract a EmitError method so we avoid spreading
+	SSC to more methods.
+
+2009-07-15  Stephane Delcroix  <sdelcroix@novell.com>
+
+	* Application.cs: GetResource returns a ManagedStreamCallbacks ptr
+
+2009-07-15  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* ExceptionRoutedEventArgs.cs: Implement enough to get a decent
+	error message instead of TODO.
+
+2009-07-09  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Duration.cs: Subtract != Add.
+
+2009-07-07  Alan McGovern  <amcgovern@novell.com>
+
+	* DependencyProperty.g.cs: Add an "IsTemplateItem" attached
+	  property.
+
+	* VisualState.cs: Update VSM so that it works now that we have
+	  better namescope handling.
+
+2009-06-26  Chris Toshok  <toshok@ximian.com>
+
+	* DependencyProperty.g.cs: regen.
+
+2009-06-26  Larry Ewing  <lewing@novell.com>
+
+	* CornerRadius.cs: reorder the struct members.
+
+2009-06-24  Chris Toshok  <toshok@ximian.com>
+
+	* FontStyleKind.cs: we need to add Oblique back in here so it can
+	be handled by the managed code in MoonlightTypeConverter.
+
+2009-06-23  Jackson Harper  <jackson@ximian.com>
+
+	* PropertyPathConverter.cs: We should still create property paths
+	for null/empty strings.
+
+2009-06-17  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Deployment.cs: Support both absolute and relative URI (which is not
+	what the default ctor does).
+
+2009-06-16  Andreia Gaita  <avidigal@novell.com>
+
+	* DependencyObject.cs: a little code reuse and slight tweaking of the
+	dropref explanation. Also, drop the native ref on new objects, too.
+
+2009-06-16  Andreia Gaita  <avidigal@novell.com>
+
+	* Application.cs: Dispose properly by removing the application from the
+	ToggleRef list, the same pattern that DO uses. Also, drop the extra ref
+	that it has upon creation, ToggleRef has enough refs on it to go around.
+
+2009-06-16  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* AssemblyPart.cs: Avoid side effects with Deployment (adding to
+	its assembly list). Allow a fast-path for MemoryStream (only).
+	* Deployment.cs: Throw an exception if an assembly cannot be 
+	downloaded. Support absolute URI (can be used for cross domain).
+	Remove unused list (delay_assemblies).
+
+2009-06-16  Alan McGovern  <amcgovern@novell.com>
+
+	* Rect.cs: Fix a few more issues with Rect.Union 
+
+2009-06-12  Alan McGovern  <amcgovern@novell.com>
+
+	* Deployment.cs: Ensure that the handlers for Resized and
+	  FullScreen are only registered once.
+
+2009-06-12  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Deployment.cs: Make sure ExternalCallersFromCrossDomain is set
+	once (e.g. if not part of the manifest). This will seal the value
+	so it won't be possible to change it afterward.
+
+2009-06-11  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Deployment.cs: When looking for the entry point assembly, we
+	have to match names case insensitively. This makes MS DRT
+	#519 and #520 load their entry point assemblies.
+
+2009-06-10  Alan McGovern  <amcgovern@novell.com>
+
+	* Deployment.cs:
+	* Application.cs: Parse enough of the init params to make 352
+	  fail instantly instead of timing out.
+
+2009-06-05  Chris Toshok  <toshok@ximian.com>
+
+	* Deployment.cs: if the assembly file doesn't exist inside the
+	xap, try and load it from the SOO.
+
+2009-06-04  Chris Toshok  <toshok@ximian.com>
+
+	* Deployment.cs: rework a bunch of the error conditions here, and
+	instead of Report.Error, we throw MoonExceptions.
+
+2009-06-05  Alan McGovern  <amcgovern@novell.com>
+
+	* SystemParameters.cs: Add a MonoTodo to HighContrast and make
+	  it return false always. Stops drt 767 from timing out
+
+2009-06-05  Alan McGovern  <amcgovern@novell.com>
+
+	* Rect.cs: Fix our implementation of IsEmpty to correctly
+	  handle the case where we Union against an empty rectangle.
+	  Fixes these two tests and drt 399. Does our unmanaged impl
+	  have the same semantics as this?
+
+2009-06-03  Jackson Harper  <jackson@ximian.com>
+
+	* DependencyProperty.g.cs: Regen
+
+2009-06-02  Chris Toshok  <toshok@ximian.com>
+
+	* Application.cs (ReinitializeStaticData): Application uses some
+	static data that needs to be cleared and reinitialized when we
+	terminate.
+
+	* Deployment.cs (SetCurrentApplication): allow a null here so we
+	can clear out the unmanaged idea of what the current application
+	is.
+	(CreateApplication): reorder things some here to keep from having
+	a dangling application laying around, and make sure we set the
+	current application before we call OnStartup.
+
+2009-06-02  Chris Toshok  <toshok@ximian.com>
+
+	* Deployment.cs (TerminateCurrentApplication): factor this out of
+	CreateApplication and call it from further up in the chain, such
+	that the new application hasn't been unpacked. we were unpacking
+	the new application, then terminating the old one (which removes
+	the new application, not the old one.)
+
+2009-06-01  Chris Toshok  <toshok@ximian.com>
+
+	* GridLength.cs: if the GridLength's are Auto it doesn't matter
+	what their value is.
+
+2009-05-28  Chris Toshok  <toshok@ximian.com>
+
+	* Application.cs (Application.GetResourceStream): we need to
+	escape uris we use to look up resources.
+
+2009-05-27  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* ExceptionRoutedEventArgs.cs: Create a default TODO exception.
+	  Prevents a lot of the MS tests from throwing NRE and timing out.
+
+2009-05-27  Alan McGovern  <amcgovern@novell.com>
+
+	* DependencyProperty.g.cs: Control.Enabled needs to be created
+	  in native code as it's required for hittesting. A disabled
+	  control and its visual children do not receive mouse events
+	  and are not visible to
+	  VisualTreeHelper.FindElementInHostCoordinates.
+
+2009-05-25  Chris Toshok  <toshok@ximian.com>
+
+	* Application.cs (OnUnhandledException): if an exception is raised
+	in the UnhandledException handler, we emit it on the
+	surface (which causes the plugin/JS layer to get it).
+
+2009-05-25  Alan McGovern  <amcgovern@novell.com>
+
+	* DependencyProperty.cs: There are two types of
+	 DependencyProperty. Core properties and custom properties. 
+	 Custom properties do not set the parent on a DO. This makes 
+	 the old 'SetsParent' property redundant, so remove it.
+	
+2009-05-22  Alan McGovern  <amcgovern@novell.com>
+
+	* DependencyProperty.cs
+	* FrameworkElement.cs
+	* VisualState.cs:
+	Use DependencyProperty.RegisterCore for these DPs.
+
+2009-05-20  Alan McGovern  <amcgovern@novell.com>
+
+	* PresentationFrameworkCollection.cs: When replacing an item
+	in the collection we fire a Remove, then Add then Replace event.
+	The only managed consumer of the ItemsChanged event (ItemsControl)
+	exhibits this behaviour.
+
+2009-05-20  Alan McGovern  <amcgovern@novell.com>
+
+	* PresentationFrameworkCollection.cs: When replacing an item
+	in the collection we fire a Remove, then Add then Replace event.
+	The only managed consumer of the ItemsChanged event (ItemsControl)
+	exhibits this behaviour.
+
+2009-05-20  Alan McGovern  <amcgovern@novell.com>
+
+	* FrameworkElement.cs: DataBinding and ManagedXamlLoader use
+	  exactly the same type conversion as Styles and
+	  ObjectKeyFrames - so merge both of them to use
+	  MoonlightTypeConverter. This also fixes several
+	  typeconversion related databinding issues.
+
+2009-05-16  Alan McGovern  <amcgovern@novell.com>
+
+	* Style.cs:
+	* Application.cs:
+	* DependencyProperty.g.cs: Add type converting to
+	  ObjectKeyFrame. The conversion is done during the Resolve
+	  phase. If the type conversion can't be completed an
+	  exception is thrown.
+
+2009-05-15  Alan McGovern  <amcgovern@novell.com>
+
+	* FrameworkElement.cs: Properly handle exceptions when
+	  updating the source in a 2 way binding. Raise the
+	  BindingValidationError event in the right place.
+
+2009-05-11  Chris Toshok  <toshok@ximian.com>
+
+	* Style.cs (ConvertSetterValue): don't whine about null values.
+	they're possible now that {x:Null} is handled by the parser before
+	things get to us.
+
+2009-05-05  Alan McGovern  <amcgovern@novell.com>
+
+	* FrameworkElement.cs:
+	* TemplateBindingExpression.cs: Put in some error handling for
+	  TemplateBinding failures when using incompatible types.
+
+2009-05-05  Alan McGovern  <amcgovern@novell.com>
+
+	* TemplateBindingExpression.cs: When a templatebinding is
+	  attached to ContentControl.Content, we need to ensure that
+	  the ContentControl is set to non-parenting mode.
+
+2009-05-04  Sebastien Pouliot  <sebastien@ximian.com> 
+
+	* AssemblyPart.cs: Return null when asked to load invalid 
+	assemblies (match SL2 behavior).
+	* Deployment.cs: Re-introduce the anonymous delegate since the
+	[SecuritySafeCritical] piece was moved elsewhere. Add a check for
+	cancelled or errors while downloading an assembly. Only supply 
+	the relative Uri to OpenReadAsync since WebClient will make it 
+	absolute using the XAP Uri.
+
+2009-05-04  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Deployment.cs: use Uri(Uri,string) over Uri(Uri,Uri) since
+	the later requires a relative (not what a default Uri provides).
+	Extract LoadXapAssembly and ensure we're loading assemblies
+	from within the XAP directory. Extract SetEntryAssembly since
+	it's duplicate code that calls critical Assembly.GetName.
+	Fix "Python WebIDE" application.
+
+2009-05-03  Chris Toshok  <toshok@ximian.com>
+
+	* FrameworkTemplate.cs: remove AddXamlBinding, it's no longer
+	needed.
+
+	* Expression.cs: make Dispose an abstract method here so we can
+	override it in TemplateBindingExpression.
+
+	* DependencyProperty.cs:
+	s/NativePropertyChangeHandler/UnmanagedPropertyChangeHandler.
+	(CustomUnmanagedPropertyChangedCallbackSafe): make use of the new
+	marshalled struct, and split it up in the call to
+	InvokeChangedCallback.
+
+	* CustomDependencyProperty:
+	s/NativePropertyChangeHandler/UnmanagedPropertyChangeHandler.
+	
+	* DependencyObject.cs (Initialize): Remove the internal/public
+	switch on NET_2_1 since the important assemblies are already
+	InternalsVisibleTo.  Just make it internal.
+
+	* FrameworkElement.cs (InvalidateLocalBindings): just add
+	TemplateBindings back to the list unmolested, since they don't
+	bother with DataContext.
+	(SetTemplateBinding): simplify this.  it attaches the change
+	handler and sets the local value.
+	(RemoveExpression): Dispose is a method on Expression now, so
+	don't only call it for BindingExpressionBases.
+	(SetValueImpl): add a block for TemplateBindingExpressions here.
+	They're one-way only, so if we're setting the value of a bound
+	property from outside the TemplateBinding, remove the expression.
+
+	* TemplateBindingExpression.cs: new implementation, entirely in
+	managed code.
+
+2009-04-30  Chris Toshok  <toshok@ximian.com>
+
+	* TemplateBindingExpression.cs: add a couple of methods to
+	attach/detach the property changed handler.
+
+2009-04-29  Chris Toshok  <toshok@ximian.com>
+
+	* FrameworkElement.cs: track BingingExpressionBase.Updating
+	renaming.
+
+2009-04-29  Geoff Norton  <gnorton@novell.com>
+
+	* Application.cs: Ensure we set the local before we register the native
+	value, otherwise we never create the toggleref on ourself (we try to make
+	it on IntPtr.Zero)
+	* DependencyObject.cs: This call is unnecessary and causes some invalid
+	registrations downstream.
+	* DependencyProperty.cs: We should not take a strong ref to the object
+	as we'd never be able to collect it, lets create the managed object on
+	demand.
+	* Deployment.cs: This is an invalid unref now that Application is properly
+	registering its toggleref handler.
+
+2009-04-28  Geoff Norton  <gnorton@novell.com>
+
+	* DependencyObject.(g).cs: If an object is created in managed code
+	it would have 2 refs, 1 from the new, and 1 from the toggleref.
+	We need to drop one of these so the toggleref manages the object
+
+2009-04-23  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Application.cs: Move "xap_uri" initialization to PluginHost 
+	since WebClient can be used (Deployment.LoadAssemblies) before 
+	the Application instance is created (e.g. python webide).
+
+2009-04-22  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Deployment.cs: Do not use an anomymous method that needs to
+	be decorated with [SecuritySafeCritical] since its name can
+	change over time.
+
+2009-04-20  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Application.cs: Make OnUnhandledException not leak
+	  exceptions under any circumstance.
+
+2009-04-17  Chris Toshok  <toshok@ximian.com>
+
+	* Deployment.cs (InitializeDeployment): in the plugin/xap case,
+	call NativeMethods.deployment_set_is_loaded_from_xap so that the
+	unmanaged code can tell we came from a xap.
+
+2009-04-17  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Application.cs: Set AppDomain "xap_uri" to the application
+	identity URI (needed by isolated storage inside mscorlib).
+
+2009-04-17  Alan McGovern  <amcgovern@novell.com>
+
+	* DependencyObject.g.cs: Correctly mark Popup.Child as its
+	  Content property.
+
+2009-04-17  Geoff Norton  <gnorton@novell.com>
+
+	* Application.cs: Ensure we rewind the source stream when
+	we're done with it.  Fixes #326
+
+2009-04-14  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* StartupEventArgs.cs: Generate all P/Invoke methods.
+
+2009-04-13  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* VisualTransition.cs:
+	* VisualStateGroup.cs:
+	* VisualStateManager.cs:
+	* VisualStateChangedEventArgs.cs:
+	* TemplateVisualStateAttribute.cs: Delete files we got from
+	  MS' controls drop, and update project file to compile.
+
+2009-04-09  Jackson Harper  <jackson@ximian.com>
+
+	* Application.cs: Updated method name.
+
+2009-04-08  Chris Toshok  <toshok@ximian.com>
+
+	* UIElement.cs (RenderTransform): oops, this property type is
+	Transform, not GeneralTransform.
+
+2009-04-08  Alan McGovern  <amcgovern@novell.com>
+
+	* FrameworkElement.cs: When the datacontext is cleared in
+	  managed code, we need to invalidate all the bindings.
+
+2009-04-07  Chris Toshok  <toshok@ximian.com>
+
+	* UIElement.cs: very gross emulation of the behavior we see with
+	SL2's UIElement.RenderTransform.  It has to be done in managed
+	code because the plugin exposes the the null default from
+	unmanaged.  Also, note the "new MatrixTransform()".  this is in
+	fact the way they do it, because if you make changes to the
+	transform (say, transform.Matrix = new Matrix (...)) and then get
+	uielement.RenderTransform again, the changes are not reflected.
+	go team!
+
+2009-04-06  Chris Toshok  <toshok@ximian.com>
+
+	* UIElement.cs (TransformToVisual): remove the ArgumentException
+	from here.  it's not a simple null check, and it's handled in
+	unmanaged code now.
+
+2009-04-06  Geoff Norton  <gnorton@novell.com>
+
+	* Application.cs: Fix up the path canonicalization issues in
+	GetResourceStream
+
+2009-04-05  Chris Toshok  <toshok@ximian.com>
+
+	* DependencyObject.g.cs: regen.
+
+2009-04-04  Chris Toshok  <toshok@ximian.com>
+
+	* DependencyObject.g.cs, DependencyProperty.g.cs: regen.
+
+2009-04-03  Chris Toshok  <toshok@ximian.com>
+
+	* DependencyObject.g.cs, DependencyProperty.g.cs: regen.
+
+2009-04-03  Geoff Norton  <gnorton@novell.com>
+
+	* Deployment.cs: Fixup XAPless initialiation so that we actually
+	construct and Application and connect it to the native instance.
+
+2009-04-03  Aaron Bockover  <abockover@novell.com>
+
+	* Deployment.cs: Added a new InitializeDeployment method that does not
+	require loading a XAP
+
+2009-04-03  Alan McGovern  <amcgovern@novell.com>
+
+	* DependencyProperty.g.cs: TextBox does validation in both the
+	  getter and setter of its TextProperty, so we have to
+	  manually implement it.
+
+2009-04-01  Alan McGovern  <amcgovern@novell.com>
+
+	* FrameworkElement.cs: TextBox only updates a two way binding
+	  when it loses focus, so we need to hook into the LostFocus
+	  event. Add an internal BindingExpressionBase.Dispose method
+	  so that we can ensure we detach from this event when the
+	  binding is removed.
+
+2009-03-30  Chris Toshok  <toshok@ximian.com>
+
+	* UIElement.cs: track change of MouseButton -> MouseLeftButton,
+	and add MouseRightButtonUp/Down and MouseWheel.
+
+2009-03-29  Geoff Norton  <gnorton@novell.com>
+
+	* ExceptionRoutedEventArgs.cs: We need to be able to hook this
+	up from a native ptr
+	* DependencyObject.g.cs, DependencyProperty.g.cs: Regen
+
+2009-03-26  Chris Toshok  <toshok@ximian.com>
+
+	* DependencyProperty.cs (DependencyProperty.RegisterAny): don't
+	register a NativePropertyChangeHandler if the user is only
+	registering a default value (i.e. if
+	metadata.property_changed_callback is null).
+
+2009-03-26  Chris Toshok  <toshok@ximian.com>
+
+	* Deployment.cs: remove the surface_attach call from here.  It's
+	not done in Application.set_RootVisual where it belongs.
+
+	* Application.cs: attach the root visual to the native surface
+	here so we set RootVisual sometime after Startup has been
+	emitted (vertigo does this with ncaa).
+
+2009-03-26  Alan McGovern  <amcgovern@novell.com>
+
+	* UIElement.cs: Implement CreatePeerForElement and FromElement
+	  properly for the automation stuff.
+
+2009-03-24  Alan McGovern  <amcgovern@novell.com>
+
+	* FrameworkElement.cs: If a one-way binding is setting a new
+	  value to its target FrameworkElement, ensure it is not
+	  removed from the list of expressions.
+
+2009-03-18  Chris Toshok  <toshok@ximian.com>
+
+	* FrameworkElement.cs: introduce a flag to keep us from looping
+	endlessly when invalidating a locally bound DataContext.
+
+2009-03-18  Jb Evain  <jbevain@novell.com>
+
+	* Application.cs: simplify complex linq query.
+
+2009-03-17  Jb Evain  <jbevain@novell.com>
+
+	* FrameworkElement.cs (OverridesLayoutMethod): make sure we
+	don't use a callback for FrameworkElement, Canvas and Grid.
+
+2009-03-13  Jb Evain  <jbevain@novell.com>
+
+	* FrameworkElement.cs (OverridesLayoutMethod): fix typo and actually
+	use the name argument instead of a hard-coded name.
+
+2009-03-10  Chris Toshok  <toshok@ximian.com>
+
+	* FrameworkElement.cs (get_Parent): track the move of
+	get_logical_parent from DependencyObject to FrameworkElement.
+
+2009-03-09  Alan McGovern  <amcgovern@novell.com>
+
+	* ResourceDictionary.cs: Add tests for the explicit
+	  implementation and fix bugs revealed by those.
+
+2009-03-06  Chris Toshok  <toshok@ximian.com>
+
+	* PresentationFrameworkCollection.cs (AddImpl): pass false to
+	Value.FromObject.
+	(InsertImpl): same.
+	(SetItemImpl): same.
+	(IndexOfImpl): no change here, but notable because this call site
+	of Value.FromObject *keeps* its true second parameter.
+	
+2009-03-06  Andreia Gaita  <avidigal@novell.com>
+
+	* DependencyObject.cs: Get rid of the GCHandle. Remove ToggleRef
+	objects from the list and free them appropriately when the DO is
+	destroyed
+
+2009-03-05  Alan McGovern  <amcgovern@novell.com>
+
+	* PropertyPath.cs: The PathParameters supplied to PropertyPath
+	  are always guaranteed to be of length 0. There is no point
+	  in storing them, exposing them or comparing them.
+
+2009-03-05  Alan McGovern  <amcgovern@novell.com>
+
+	* PropertyPath.cs: If we set a propertypath with a
+	  DependencyProperty, set the 'path' string to null. This
+	  avoids extra marshalling when it's not needed.
+
+2009-03-05  Alan McGovern  <amcgovern@novell.com>
+
+	* PropertyPath.cs: Add a bunch of additional tests for
+	  PropertyPath. Ensure that the correct exceptions are thrown
+	  when a propertypath is used on a storyboard.
+
+2009-03-03  Chris Toshok  <toshok@ximian.com>
+
+	* DependencyProperty.cs (Lookup): we can't just index into a
+	generic dictionary, as it throws exceptions if the key is missing.
+
+2009-03-03  Chris Toshok  <toshok@ximian.com>
+
+	* FrameworkElement.cs (get_Parent): we want the logical parent,
+	not the visual one.  This fixes a number of unit tests and
+	smoothhd.com-shown behavior wrt the Parent of
+	ContentElement.ContentProperty.
+
+2009-03-03  Alan McGovern  <amcgovern@novell.com>
+
+	* PropertyPath.cs: Complete the implementation of
+	  PropertyPath. If it is constructed with a DependencyProperty
+	  in managed, propagate this to native.
+
+2009-02-26  Chris Toshok  <toshok@ximian.com>
+
+	* Application.cs (apply_default_style_cb): instead of setting the
+	Style property on the FrameworkElement, just call
+	framework_element_set_default_style.
+
+	* FrameworkElement.cs: biggest change is to rename the "bindings"
+	dictionary to "expressions", and change the value type of the
+	Dictionary from BindingExpressionBase to Expression.  We store
+	TemplateBindingExpressions in here now as well.
+	(SetTemplateBinding): similar to SetBinding.  used when we need to
+	explicitly create a templatebinding object (for the case of
+	ContentPresenters without a Content binding as template children
+	of a ContentControl.)  We don't actually hook up the property
+	change notifications yet, though.
+	(InvokeOnApplyTemplate): new virtual method so subclasses can
+	inject behavior before/after OnApplyTemplate is called.
+
+	* TemplateBindingExpression.cs: no need to follow MS's naming of
+	internal fields.
+	(GetValue): override Expression.GetValues.
+
+	* Expression.cs (GetValue): add this and make it abstract.
+
+2009-02-26  Chris Toshok  <toshok@ximian.com>
+
+	* Setter.cs (static .ctor): set
+	ConvertedValueProperty.BoxValueTypes to false, since they need to
+	be fetched in unmanaged code (the resolved style hash lives in
+	unmanaged code, so we need to be able to get, say, WidthProperty,
+	and compare it to 0).
+
+	* DependencyProperty.cs (RegisterAny): when creating the default
+	value, don't box value types.
+	(BoxValueTypes): new internal property so classes can specify that
+	value types get boxed for this particular property.  Defaults to
+	true.
+
+2009-02-20  Jeffrey Stedfast  <fejj@novell.com>
+
+	* PropertyPath.cs: Implemented ctor that takes only an object.
+
+2009-02-18  Geoff Norton  <gnorton@novell.com>
+
+	* StartupEventArgs.cs: initparms can be keyed with spaces after
+	the delimiting commas.
+
+2009-02-18  Chris Toshok  <toshok@ximian.com>
+
+	* Style.cs (ConvertSetterValue): be a little more descriptive in
+	the exception message when the typeconverter returns false from
+	CanConvertFrom.
+
+2009-02-18  Jeffrey Stedfast  <fejj@novell.com>
+
+	* VisualStateGroup.cs (Name): Implemented.
+
+	* Duration.cs (ToString): Capitalize the first character to mimic
+	Silverlight.
+
+2009-02-16  Jeffrey Stedfast  <fejj@novell.com>
+
+	* FontStretchKind.cs: Get rid of Medium, no such value afaict in
+	SL2 plus it was breaking the unit tests because somehow Medium and
+	Normal were not comparing as equal(???).
+
+2009-02-08  Chris Toshok  <toshok@ximian.com>
+
+	* FrameworkElement.cs: add a managed changed handler for
+	DataContextProperty, and make sure we invalidate local bindings in
+	Loaded (we should *really* only be doing this for bindings that
+	weren't attached already), and invalidate subtree bindings
+	whenever our DataContext property changes.
+
+	* DependencyProperty.cs: disgusting hack of a c&p job and poor
+	refactoring so that we can add managed change callbacks to DP's we
+	get with DependencyProperty.Lookup.
+	
+2009-02-06  Chris Toshok  <toshok@ximian.com>
+
+	* FrameworkElement.cs: don't install measure/arrange callbacks
+	unless the type actually overrides them.
+
+2009-02-06  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Point.cs, Rect.cs: Implement IFormattable
+
+2009-02-06  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* DependencyProperty.cs: NativePropertyChangedCallbackSafe:
+	  update signature and marshal back any exceptions which
+	  occurred during the event handling.
+
+2009-02-05  Chris Toshok  <toshok@ximian.com>
+
+	* PresentationFrameworkCollection.cs: move all the *Impl methods
+	to the end, and add ClearImpl and IsReadOnlyImpl virtual methods.
+
+	have all public (non-*Impl) methods that modify the collection
+	check IsReadOnly and throw an exception if modifications are
+	performed and IsReadOnly == true.
+
+2009-02-05  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Application.cs:
+	* FrameworkElement.cs:
+	* DependencyProperty.cs: Ensure no exceptions reach native
+	  code.
+
+2009-02-05  Jb Evain  <jbevain@novell.com>
+
+	* DependencyProperty.g.cs: regen.
+
+2009-02-04  Jackson Harper  <jackson@ximian.com>
+
+	* FrameworkTemplate.cs: Function for attaching xaml bindings.
+
+2009-02-04  Alan McGovern  <amcgovern@novell.com>
+
+	* DependencyObject.g.cs: Hook up the managed hittesting code
+	  to the native hit testing code.
+
+2009-02-02  Geoff Norton  <gnorton@novell.com>
+
+	* Deployment.cs: Initialize the surface level events before 
+	setting the current application to current.
+
+2009-02-02  Chris Toshok  <toshok@ximian.com>
+
+	* Style.cs: remove the ContentProperty attribute - we autogenerate
+	it now
+
+	* DependencyObject.g.cs: regen, with ContentProperty attributes.
+
+2009-02-02  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Setter.cs: Move check/exception from ctor to Property property
+	(since the same thing happens in that case). Change ConvertedValue
+	to internal to please gui-compare.
+
+2009-01-31  Chris Toshok  <toshok@ximian.com>
+
+	* Application.cs: use NativeDependencyObject.FromIntPtr instead of
+	.Lookup, as the latter will return null if the object hasn't been
+	wrapped before.  the former will get the object type and wrap it
+	with the appropriate managed peer.  Fixes style lookups for
+	unmanaged controls (like textbox.)
+
+2009-01-31  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* System.Windows/DependencyObject.g.cs: Regenerated
+
+2009-01-30  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Rect.cs: Use ToString() inside the overloads (rather than throwing)
+	since this affects unit tests assertions. Fix GetHashCode wrt Equals
+
+2009-01-30  Jb Evain  <jbevain@novell.com>
+
+	* DependencyProperty.g.cs: regenerated.
+
+2009-01-29  Geoff Norton  <gnorton@novell.com>
+
+	* Deployment.cs:
+	* DependencyProperty.g.cs: Surface is now a DP and generated
+
+2009-01-29  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Deployment.cs: Unref the application when we're done with it.
+
+2009-01-29  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* PresentationFrameworkCollection.cs: Fix Count DP to be a double.
+	Change IndexOfImpl to virtual and use it inside Remove.
+
+2009-01-27  Jackson Harper  <jackson@ximian.com>
+
+	* Application.cs: Use the correct assembly when loading
+	generic.xaml
+	* Deployment.cs: Use the factory method for creating a managed
+	xaml loader.
+	
+2009-01-26  Andreia Gaita  <avidigal@novell.com>
+
+	* DependencyObject.cs: DOs always dispatch to the main
+	thread, and can't be created on any other thread, so use the static
+	main dispatcher instead of creating a new one every time
+
+2009-01-26  Geoff Norton  <gnorton@novell.com>
+
+	* Application.cs: Deployment processing and parsing lives in Deployment
+	now, as well as Surface and XapDir.
+	* Deployment.cs: Move and clean up a bunch of stuff from Application
+	additionally support loading assemblies from the web host.
+	* AssemblyPart.cs: We add assemblies to the deployment now where they
+	should be instead of the Application.
+
+2009-01-26  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* StartupEventArgs.cs: Parse initParams correctly.
+
+2009-01-26  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* UIElement.cs (TransformToVisual): Lookup for a MatrixTransform,
+	what libmoon is computing, instead of a GeneralTransform, which is
+	abstract and cannot be created (i.e. throwing).
+
+2009-01-26  Chris Toshok  <toshok@ximian.com>
+
+	* DependencyObject.cs (ctor): call event_object_set_object_type
+	here, so we're guaranteed to have the proper Kind associated with
+	the native handle, all the way down into the engine.
+
+2009-01-25  Chris Toshok  <toshok@ximian.com>
+
+	* FrameworkElement.cs (InvokeLoaded): make this virtual again so
+	ContentPresenter can override it to build its visual tree before
+	emitting the event.
+
+	* Application.cs (CreateFromXap): this needs to move to
+	deployment, but in the meantime, at least don't create the
+	deployment here.  we assume Deployment.Current is valid and set to
+	the right value (the plugin does this before creating the
+	application).  Use loader.Hydrate to fill it in.
+
+	* DependencyObject.cs: change GetKind() to always do a type lookup
+	and a return of the native_handle, instead of relying on the
+	virtual method and overriding it (which doesn't work on custom
+	types, since they don't override it)
+
+	* DependencyProperty.cs: s/Types/Deployment.Current.Types/
+	
+	* Deployment.cs: implement this in terms of the new generated
+	pinvokes for the unmanaged Deployment class.  add the Types
+	instance property.
+
+2009-01-24  Geoff Norton  <gnorton@novell.com>
+
+	* AssemblyPart.cs: Let the Application know when we've added an
+	assembly to it so that resources in it can be resolved.
+	* Assembly.cs: Change assemblies to a mutable List<T> since
+	AssemblyPart.Load can add assemblies.
+
+2009-01-23  Geoff Norton  <gnorton@novell.com>
+
+	* Application.cs: Implement GetResourceStream from zip packages.
+
+2009-01-23  Andreia Gaita  <avidigal@novell.com>
+
+	* Application.cs: Set the current SynchronizationContext to the
+	Dispatcher subclass so that things can be routed to the ui thread
+	where needed.
+
+2009-01-22  Chris Toshok  <toshok@ximian.com>
+
+	* Style.cs: if the setter is for an attached property, just look
+	up the type converter on the PropertyType.
+
+2009-01-22  Chris Toshok  <toshok@ximian.com>
+
+	* FrameworkElement.cs: styles are applicable to subclasses too.
+
+2009-01-22  Chris Toshok  <toshok@ximian.com>
+
+	* Application.cs: use the native methods to get/set the surface.
+	also add some sanity debug spew in the case where the startup type
+	does not derive from System.Windows.Application.
+
+2009-01-21  Chris Toshok  <toshok@ximian.com>
+
+	* Style.cs: pass the property name to the type converter.
+
+2009-01-21  Chris Toshok  <toshok@ximian.com>
+
+	* Style.cs: comment out a lot of the spew here, and stop using the
+	gross hacks for Setter.Property and Setter.Value.  we willfully
+	break with tradition (and SL behavior) on those properties.
+
+	* Setter.cs: remove the hacks for now.
+
+2009-01-21  Geoff Norton  <gnorton@novell.com>
+
+	* Application.cs: Avoid throwing a NRE if the stream isn't found.
+
+2009-01-21  Geoff Norton  <gnorton@novell.com>
+
+	* Application.cs: Add a new callback so that we can get resources
+	in unmanaged code.
+
+2009-01-21  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* TextDecorations.cs: Make sure we always return the same Underline
+	TextDecorationCollection instance every time.
+	* TextDecorationCollection.cs: Associate with TextDecorationKind
+
+2009-01-21  Alan McGovern  <amcgovern@novell.com>
+
+	* DependencyObject.g.cs: regenerated
+
+2009-01-20  Larry Ewing  <lewing@novell.com>
+
+	* Rect.cs: make Intersect behave a little better.
+
+2009-01-20  Chris Toshok  <toshok@ximian.com>
+
+	* Application.cs: permit absolute uris that are file:// uris.
+	fixes photosynth.net.
+
+2009-01-20  Chris Toshok  <toshok@ximian.com>
+
+	* DependencyObject.cs: remove CheckNativeAndThread (it's in
+	NativeDependencyObjectHelper), and make moonlight_thread internal,
+	so we can reuse it from Application.
+
+	* Application.cs: add implementation of CheckAccess.
+
+2009-01-20  Chris Toshok  <toshok@ximian.com>
+
+	* DependencyProperty.g.cs, DependencyObject.g.cs: regen.
+
+	* FrameworkElement.cs:
+	DependencyObject/NativeDependencyObjectHelper, and a little
+	refactoring.
+
+	* Setter.cs: add ConvertedValue, and make the DP's internal so we
+	can get their values without using the accessors (which have that
+	bizarre behavior in SL).
+
+	* Application.cs: implement the INativeDependencyObjectWrapper
+	interface so we can be parsed, and also hook up the style
+	delegates so unmanaged land can tell us when to do stuff.
+
+	* DependencyProperty.cs, RoutedEventArgs.cs, UIElement.cs:
+	DependencyObject/NativeDependencyObjectHelper.
+
+	* DependencyObject.cs: remove much of this class, moving it to
+	Mono/NativeDependencyObjectHelper.cs Also implement the
+	INativeDependencyObjectWrapper interface.
+
+	* DataTemplate.cs: need to case from
+	INativeDependencyObjectWrapper when we're returning a
+	DependencyObject.
+
+	* Style.cs: add code to do the type conversions (and caching of
+	converted values) in setters when a style is applied to an object.
+
+	* ApplicationInternal.cs: nuke.
+
+2009-01-20  Alan McGovern  <amcgovern@novell.com>
+
+	* DependencyObject.cs: rename the eventList field to event_list.
+
+2009-03-15  Alan McGovern  <amcgovern@novell.com>
+
+	* UIElement.cs:
+	* FrameworkElement.cs:
+	* DependencyObject.cs: Simplify how native events are connected to in
+	managed code. The managed add/remove event methods just call
+	RegisterEvent/UnregisterEvent defined in DO.cs instead of each event
+	managing the event list itself.
+
+2009-01-19  Geoff Norton  <gnorton@novell.com>
+
+	* Application.cs: The /assembly;component format leading / is optional
+
+2009-01-19  Geoff Norton  <gnorton@novell.com>
+
+	* ResourceDictionary.cs: Really fix RemoveInternal.
+
+2009-01-19  Jb Evain  <jbevain@novell.com>
+
+	* Application.cs: revert 123762.
+
+2009-01-19  Alan McGovern  <amcgovern@novell.com>
+
+	* DependencyObject.g.cs:
+	* DependencyProperty.g.cs: Create an unmanaged peer for the Popup class
+
+2009-01-19  Andreia Gaita  <avidigal@novell.com>
+
+	* System.Windows/Application.cs: Added global exception handler
+	method that routes exceptions to the application unhandled exception
+	handler
+
+2009-01-19  Alan McGovern  <amcgovern@novell.com>
+
+	* ResourceDictionary.cs: Fix RemoveInternal - TryGetValue returns the
+	actual object, not an IntPtr. 
+
+2009-01-19  Geoff Norton  <gnorton@novell.com>
+
+	* DependencyObject.cs: Handle Kind.VIDEOBRUSH
+
+2009-01-18  Geoff Norton  <gnorton@novell.com>
+
+	* Application.cs: You can pass absolute URI's in here, and they're
+	just treated the same.
+
+2009-01-18  Geoff Norton  <gnorton@novell.com>
+
+	* ResourceDictionary.cs: Ensure that managed objects added to a
+	ResourceDictionary are not collected.
+
+2009-01-18  Sebastien Pouliot  <sebastien@ximian.com> 
+
+	* System.Windows/DependencyObject.g.cs: Regenerated for 
+	UnmanagedMatrix
+
+2009-01-18  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Point.cs: Return ToString() on overloads and add a TODO on them.
+	This is needed for some unit tests (which calls the overload to
+	detect equality).
+
+2009-01-16  Chris Toshok  <toshok@ximian.com>
+
+	* DependencyObject.cs (DependencyObject.set_native): throw an
+	exception if _native was already set.
+	(DependencyObject.TrackNativeReference): nuke this.
+	(DependencyObject.SetValueImpl): remove spew.
+
+2009-01-15  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* DependencyObject.cs: Add missing case for [Column|Row]Collection
+
+2009-01-15  Jackson Harper  <jackson@ximian.com>
+
+	* DependencyProperty.cs: Add an overload to lookup dependency
+	properties without creating a new one of the prop doesn't exist.
+
+2009-01-15  Alan McGovern  <amcgovern@novell.com>
+
+	* DependencyObject.cs: Nuke the managedObjects dictionary as it is no
+	longer used anywhere.
+
+2009-01-15  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* DependencyProperty.g.cs: Regenerated.
+
+2009-01-15  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* DependencyProperty.cs: Use GetPropertyFull to get custom properties
+	too.
+
+2009-01-15  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* PresentationFrameworkCollection.cs: Add an internal virtual 
+	NullCheck method to let inheritors provide an alternative check
+	on values. Implement Contains on top of IndexOfImpl (i.e. remove
+	ContainsImpl and its lack of the free on the Value).
+
+2009-01-14  Larry Ewing  <lewing@novell.com>
+
+	* Rect.cs: Fix rect to follow match the new unit tests.
+
+	* UIElement.cs: add more input validation exceptions.
+
+2009-01-14  Jb Evain  <jbevain@novell.com>
+
+	* AssemblyPart.cs (Load): implement.
+
+2009-01-14  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* StartupEventArgs.cs: Prevent a NRE.
+
+2009-01-13  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* DependencyObject.cs: Add missing case for [Double|Point]Collection
+
+2009-01-13  Alan McGovern  <amcgovern@novell.com>
+
+	* Setter.cs: Keep a list of types which have been used with the managed
+	Setter class so we can fulfill it's bizarre caching behaviour.
+
+2009-09-01  Geoff Norton  <gnorton@novell.com>
+
+	* DurationConverter.cs:
+	* NullableBoolConverter.cs:
+	* PropertyPathConverter.cs: Removing ConvertFromString caused a
+	Stack Overflow when trying to parse strings.  We need to handle this
+	properly internally.
+
+2009-01-13  Jb Evain  <jbevain@novell.com>
+
+	* DependencyObject.cs: remove references to Helper.Agclr.
+
+2009-01-12  Jb Evain  <jbevain@novell.com>
+
+	* XapHackProxyImpl.cs: deleted.
+
+2009-01-12  Jb Evain  <jbevain@novell.com>
+
+	* Deployment.cs: add a current field.
+	* Application.cs: assign Deployment.Current when creating the application
+	from the Deployment manifest.
+
+2009-01-12  Jb Evain  <jbevain@novell.com>
+
+	* Application.cs (GetResourceStream): refactor a bit. Protect from
+	MissingResourceExceptions.
+
+2009-01-12  Alan McGovern  <amcgovern@novell.com>
+
+	* DependencyProperty.g.cs: Should not be a public property
+
+2009-01-12  Jb Evain  <jbevain@novell.com>
+
+	* Application.cs: fix storing of the entry point assembly.
+
+2009-01-12  Jb Evain  <jbevain@novell.com>
+
+	* Application.cs (CreateFromXap): EntryPointAssembly is the actual
+	name of the assembly, not the name of the AssemblyPart.
+	Triggered by Chiron.
+
+2009-01-12  Sebastien Pouliot  <sebastien@ximian.com> 
+
+	* DependencyObject.g.cs: Regenerated
+	* DependencyProperty.cs: Hide custom delegate type
+
+2009-01-12  Geoff Noton  <gnorton@novell.com>
+
+	* Application.cs: Copy the ResourceDictionary from the temp DO to the
+	ApplicationClass.  Application.Resources also appears to never return
+	null.
+
+2009-01-12  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* DependencyObject.cs: Corcompare issues.
+
+2009-01-12  Andreia Gaita  <avidigal@novell.com>
+
+	* DependencyObject.cs: Remove unmanaged StackPanel usage
+	* DependencyObject.g.cs,
+	  DependencyProperty.g.cs: regen
+
+2009-01-09  Alan McGovern  <amcgovern@novell.com>
+
+	* DependencyObject.cs:
+	* FrameworkElement.cs:
+	* DependencyProperty.cs: Add managed validation to Style so we can
+	verify Style.TargetType matches DO.GetType before setting the value.
+	The parser will have to do a similar check when parsing styles from
+	XAML.
+
+2009-01-08  Alan McGovern  <amcgovern@novell.com>
+
+	* Setter.cs:
+	* DependencyProperty.cs: Add the ability to map a DependencyProperty
+	to/from native. This removes a hack in Style where DP's used to be
+	looked up by name, which couldn't be done with properties registered
+	through C#. Fixes 2 NUnit tests.
+
+2009-01-08  Sebastien Pouliot  <sebastien@ximian.com> 
+
+	* PresentationFrameworkCollection.cs: Added change notification
+	and <object> support (needed for ItemCollection).
+	* UIElement.cs: Add helper method to return an AutomationPeer
+
+2009-01-08  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* System.Windows/DependencyObject.g.cs: Regenerated for
+	ITEM_COLLECTION
+
+2009-01-07  Larry Ewing  <lewing@novell.com>
+
+	* FrameworkElement.cs: mark the callbacks as internal so that the
+	GC doesn't collect out from under us.
+
+2009-01-07  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* PresentationFrameworkCollection.cs: Add missing validations
+
+2009-01-07  Chris Toshok  <toshok@ximian.com>
+
+	* DependencyObject.g.cs: regen.
+
+	* FrameworkElement.cs (Initialize): we always need to attach to
+	the Loaded event (or at least there are more reasons to now), so
+	we can tell in managed code if we need to load generic.xaml for a
+	control's style.
+	(InvokeLoaded): make this virtual so Control can override it.
+	(Loaded): remove the Events.* stuff from here.  assume the
+	unmanaged handler is always registered.
+
+	* Application.cs (Application.GetGenericXamlStyleFor): implement
+	by loading the generic.xaml resource, parsing it, and then looking
+	up the type in it.
+
+2009-01-06  Alan McGovern  <amcgovern@novell.com>
+
+	* Setter.cs: Implement proper validation of Setters and also correctly
+	implement behaviour of sealed/unsealed styles. They are now passing
+	all the NUnit tests except for one.
+
+2008-12-22  Alan McGovern  <amcgovern@novell.com>
+
+	* DependencyObject.cs: When do.SetValue (dp, null) is called, correctly
+	set the null value as opposed to calling do.ClearValue(dp).
+
+2008-12-22  Andreia Gaita  <avidigal@novell.com>
+
+	* DependencyObject.g.cs: Regenerated for DispatcherTimer
+
+2008-12-19  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* DependencyObject.cs: Check read-only DP in SetValue
+	* DependencyProperty.cs: Add an internal RegisterReadOnly method
+
+2008-12-19  Chris Toshok  <toshok@ximian.com>
+
+	* DependencyObject.cs: move DependencyObject.GetAsValue to
+	Value.FromObject and DependencyObject.ValueToObject to
+	Value.ToObject.
+
+	* ResourceDictionary.cs, DependencyProperty.cs,
+	PresentationFrameworkCollection.cs: track change
+	
+2008-12-17  Chris Toshok  <toshok@ximian.com>
+
+	* DependencyProperty.cs (Lookup): correct error message to mention
+	tools/generators instead of making clean twice/etc.
+
+2008-12-17  Alan McGovern  <amcgovern@novell.com>
+
+	* DependencyObject.cs: BindingExpression/BindingExpressionBase should
+	not be passed to/from native code anymore.
+
+2008-12-17  Alan McGovern  <amcgovern@novell.com>
+
+	* FrameworkElement.cs: Add a helper method to allow a binding which has
+	bound to an INotifyPropertyChanged object to update correctly
+
+2008-12-16  Alan McGovern  <amcgovern@novell.com>
+
+	* FrameworkElement.cs: Do type conversions when setting the value in a
+	two way binding.
+
+2008-12-16  Alan McGovern  <amcgovern@novell.com>
+
+	* DependencyObject.cs:
+	* FrameworkElement.cs: Move databinding to managed code.
+
+2008-12-16  Alan McGovern  <amcgovern@novell.com>
+
+	* DependencyProperty.cs: If a default value has been set in native code,
+	propagate that to managed code.
+
+2008-12-15  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Thickness.cs: Fix case for NaN. Complete GetHashCode.
+
+2008-12-15  Sebastien Pouliot  <sebastien@ximian.com> 
+
+	* TemplatePart.cs: Complete.
+
+2008-12-12  Sebastien Pouliot  <sebastien@ximian.com> 
+
+	* GridLength.cs: Fix validation and default value. Complete todo.
+
+2008-12-12  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* CornerRadius.cs: Add missing validations. Complete GetHashCode and
+	ToString.
+
+2008-12-11  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* DependencyProperty.g.cs: Regenerated (so we expose the setter
+	on the Name property).
+	* UIElement.cs: Add missing validations in methods. Remove extra 
+	API (not in SL2 final). Return null in OnCreateAutomationPeer (like
+	SL does). Remove extra [SecuritySafeCritical] on MouseCapture.
+
+2008-12-11  Chris Toshok  <toshok@ximian.com>
+
+	* DependencyObject.cs: finally factor out this duplicated code
+	block (calling both get_object_type and DO.Lookup) and add it
+	here, called FromIntPtr.
+
+	* DataTemplate.cs, RoutedEventArgs.cs, FrameworkElement.cs: use it
+	here.
+	
+2008-12-11  Chris Toshok  <toshok@ximian.com>
+
+	* Setter.cs: no reason to cache the value here.
+
+2008-12-11  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* FrameworkElement.cs: Add missing exception checks in FindName and 
+	SetBindings (crasher). Remove unneeded NIE in OnApplyTemplate.
+
+2008-12-10  Alan McGovern  <amcgovern@novell.com>
+
+	* DependencyObject.cs:
+	* DependencyProperty.g.cs: PasswordCharProperty should be a char. This
+	is represented by an int32 in unmanaged code.
+
+2008-12-10  Full Name  <Email Address>
+
+	* DependencyObject.g.cs:
+	* DependencyProperty.g.cs: Commit the files from the generator.
+
+2008-12-09  Chris Toshok  <toshok@ximian.com>
+
+	* DataTemplate.cs: make class partial to allow for the generated
+	partial class, and implement LoadContent.
+
+	* DependencyObject.cs: add DATATEMPLATE case to CreateObject.
+
+2008-12-05  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* UIElement.cs: virtualize all Invoke* since Control to call On* 
+	methods	before the events are fired.
+
+2008-12-04  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* DependencyProperty.g.cs: regenerated
+
+2008-12-03  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* DependencyProperty.cs: DependencyProperty.RegisterAny: When getting
+	  default values for structures, we need to handle managed structures
+	  too. Fixes two unit tests.
+
+2008-12-02  Jackson Harper  <jackson@ximian.com>
+
+	* Application.cs: Don't restrict components to DOs.
+
+2008-12-02  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* DependencyProperty.g.cs: regenerated
+
+2008-12-02  Alan McGovern  <amcgovern@novell.com>
+
+	* PropertyMetadata.cs:
+	* DependencyProperty.cs: Ensure the default value of a CustomDP is
+	propagated to the unmanaged
+
+2008-12-02  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* DependencyObject.cs, DependencyProperty.cs: Add support for
+	  Nullable<> DependencyProperties.
+
+2008-12-02  Andreia Gaita  <shana@jitted.com>
+
+	* System.Windows/DependencyObject.cs: Register StackPanel as a DO
+
+2008-12-01  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* DependencyProperty.cs: Remove try/catch around custom_property.
+	Metadata.property_changed_callback since throwing exception is valid
+	inside a managed callback.
+
+2008-12-01  Alan McGovern  <amcgovern@novell.com>
+
+	* DependencyProperty.g.cs: ChildProperty should not be exposed
+
+2008-12-01  Alan McGovern  <amcgovern@novell.com>
+
+	* FrameworkElement.cs: Rename variables to match the unmanaged API.
+
+2008-11-28  Alan McGovern  <amcgovern@novell.com>
+
+	* DependencyObject.cs: DataBinding now works for one-way, one-time and
+	two-way bindings with managed objects.
+
+2008-11-27  Alan McGovern  <amcgovern@novell.com>
+
+	* Expression.cs:
+	* FrameworkElement.cs:
+	* DependencyObject.cs: Allow the Binding class to be mapped between
+	managed and unmanaged code.
+
+2008-11-26  Jackson Harper  <jackson@ximian.com>
+
+	* Application.cs: Import some namespaces by default.
+	- Update signatures to parser functions
+	* DependencyProperty.g.cs: regen.
+
+2008-11-26  Alan McGovern  <amcgovern@novell.com>
+
+	* DependencyObject.cs: Remove the managed binding stuff and ignore the
+	tests.
+
+2008-11-26  Alan McGovern  <amcgovern@novell.com>
+
+	* DependencyObject.cs: Implement ReadLocalValue by calling the native
+	GetLocalValue function. Implement ClearValue aswell.
+
+2008-11-25  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* FrameworkElement.cs: Yet time for BindingValidationError.
+
+2008-11-25  Alan McGovern  <amcgovern@novell.com>
+
+	* Setter.cs: Silverlight throws a null ref in this case
+
+	* Style.cs:
+	* SetterBase.cs:
+	* DependencyProperty.g.cs:
+	* SetterBaseCollection.cs: Added full support for sealing styles.
+
+2008-11-24  Alan McGovern  <amcgovern@novell.com>
+
+	* Setter.cs: If a value is set through Xaml/unmanaged code, it is not
+	visible through these properties. If a value is set, propagate it to
+	the unmanaged code.
+
+2008-11-24  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Thickness.cs, Application.cs: Fix parameter names to match SL.
+
+2008-11-21  Stephane Delcroix  <sdelcroix@novell.com>
+
+	* PropertyPath.cs: implement an internal PathParameters getter
+
+2008-11-21  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* DurationConverter.cs, PropertyPathConverter.cs: Remove
+	  ConvertFromString, it doesn't exist in SL2.
+
+2008-11-21  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* DurationConverter.cs, PropertyPathConverter.cs: Fix method signatures
+	  to match SL2 api.
+
+2008-11-19  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* DependencyObject.g.cs: ColumnDefinitionCollection doesn't have a
+	  public ctor.
+	* DependencyProperty.g.cs: Regenerated.
+
+2008-11-19  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* DependencyObject.g.cs, DependencyProperty.g.cs: Added InputMethod,
+	  ICommand, HostingRenderTargetBitmap. Corcompare fixes.
+
+2008-11-19  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* DependencyObject.g.cs, DependencyProperty.g.cs: Corcompare.
+
+2008-11-18  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* DependencyProperty.g.cs: Corcompare fixes.
+
+2008-11-18  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* CrossDomainAccess.cs, DependencyObject.cs,
+	  DependencyPropertyChangedEventHandler.cs, DependencyObject.g.cs,
+	  DependencyProperty.g.cs, ExceptionRoutedEventArgs.cs,
+	  Expression.cs, FrameworkElement.cs, MessageBox.cs,
+	  MessageBoxResult.cs, MessageBoxButton.cs, Point.cs,
+	  PresentationFrameworkCollection.cs, Rect.cs, PropertyPath.cs,
+	  PropertyMetadata.cs, ResourceDictionary.cs, RoutedEventArgs.cs,
+	  Setter.cs, SetterBase.cs, SizeChangedEventArgs.cs,
+	  StartupEventArgs.cs, Style.cs, StyleTypedPropertyAttribute.cs,
+	  SystemParameters.cs, TemplateBindingExpression.cs,
+	  TriggerAction.cs, TemplateVisualStateAttribute.cs,
+	  TriggerActionCollection.cs, TriggerCollection.cs, UIElement.cs,
+	  VisualStateGroup.cs, VisualStateChangedEventArgs.cs,
+	  VisualStateManager.cs, VisualTransition.cs: More corcompare work.
+
+2008-11-18  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Application.cs, AssemblyPartCollection.cs, DataTemplate.cs,
+	  DependencyObject.cs, DependencyObject.g.cs, DurationConverter.cs,
+	  EventTrigger.cs, PresentationFrameworkCollection.cs,
+	  SetterBaseCollection.cs, TriggerActionCollection.cs,
+	  TriggerBase.cs, TriggerCollection.cs: Corcompare work.
+
+2008-11-14  Alan McGovern  <amcgovern@novell.com>
+
+	* DependencyObject.cs: Add partial support for two way binding and for
+	using Binding.Converter
+
+2008-11-14  Alan McGovern  <amcgovern@novell.com>
+
+	* DependencyObject.cs: Only set the value if the Binding has a value. No
+	need to call Activator.CreateInstance because dp.DefaultValue already
+	contains the correct value.
+
+2008-11-14  Alan McGovern  <amcgovern@novell.com>
+
+	* PropertyPath.cs:
+	* FrameworkElement.cs:
+	* DependencyObject.cs: Add initial support for DataBinding.
+
+2008-10-16  Jb Evain  <jbevain@novell.com>
+
+	* RoutedEventArgs.cs: rename property Source to OriginalSource.
+	* FrameworkElement.cs: update accordingly.
+
+2008-10-16  Jb Evain  <jbevain@novell.com>
+
+	* ResourceDictionary.cs: fix different Contains to check for
+	null and non string keys.
+
+2008-10-16  Jb Evain  <jbevain@novell.com>
+
+	* ResourceDictionary.cs: implement Count and IsReadOnly.
+
+2008-09-29  Jb Evain  <jbevain@novell.com>
+
+	* Duration.cs: use an enum as a way to represent duration's kind.
+
+2008-09-15  Jb Evain  <jbevain@novell.com>
+
+	* VisualStateManager.cs: throw ArgumentNullException where we should.
+
+2008-09-14  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Application.cs: GetResourceStream works only on relative URI.
+	Throw an InvalidOperationException if we try to nullify RootVisual.
+
+2008-09-12  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Application.cs: Only update current (and appdomain data) if we
+	are the first Application instance. Otherwise copy the data from
+	Current (since all instance are identical).
+
+2008-09-11  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Application.cs: Initialize, via AppDomain, the IsolatedStorage
+	roots. Add missing parameter checks / exceptions.
+
+2008-09-10  Jeffrey Stedfast  <fejj@novell.com>
+
+	* UIElement.cs: get_RenderSize does not need SecuritySafeCritical
+	attribute.
+
+2008-09-09  Chris Toshok  <toshok@ximian.com>
+
+	* DependencyProperty.cs: swallow exceptions raised during the
+	property_changed_callback.
+
+2008-09-08  Chris Toshok  <toshok@ximian.com>
+
+	* VisualTransition.cs: this isn't a DO, so implement the
+	properties as normal CLR properties + private fields.  the parser
+	can handle this now (yay).
+
+	* VisualStateGroup.cs: add 2 private DependencyProperties for the
+	States and Transitions collections, and implement the accessors.
+
+	* VisualState.cs: implement the property accessors using
+	DP's (it's a DO, after all).
+
+	* VisualStateManager.cs: both dependency properties are attached.
+	implement GetVisualStateGroups by creating the collection if need
+	be.
+
+2008-09-08  Larry Ewing  <lewing@novell.com>
+
+	* UIElement.cs: expose RenderSize.
+
+2008-09-05  Chris Toshok  <toshok@ximian.com>
+
+	* DependencyObject.cs (CreateObject): add
+	ColumnDefinitionCollection and RowDefinitionCollection support.
+	(GetAsValue): marshal the GridLength struct.
+
+2008-09-03  Chris Toshok  <toshok@ximian.com>
+
+	* ResourceDictionary.cs: rename _Remove to RemoveInternal, correct
+	return values of some of the explicit interface implementations,
+	and add some SecuritySafeCriticals.
+
+2008-09-03  Sebastien Pouliot  <sebastien@ximian.com> 
+
+	* ResourceDictionary.cs: Implement Contains(object) so we can compile
+	moon's unit tests. Add correct exceptions to Add method.
+
+2008-09-03  Jeffrey Stedfast  <fejj@novell.com>
+
+	* DependencyObject.cs: Added Kind.TEXTBOX to the switch.
+
+2008-09-03  Zoltan Varga  <vargaz@gmail.com>
+
+	* DependencyObject.cs (SetValue): Allow any managed value if the property
+	has type object.
+
+2008-09-03  Stephane Delcroix  <sdelcroix@novell.com>
+
+	* DependencyObject.cs: MultiScaleImage support.
+
+2008-09-02  Stephane Delcroix  <sdelcroix@novell.com>
+
+	* ResourceDictionary.cs: implement Remove
+
+2008-08-28  Chris Toshok  <toshok@ximian.com>
+
+	* ResourceDictionary.cs: implement most of this.
+
+	* DependencyObject.cs: remove some redundant type checking, and
+	revert the Helper.Agclr change.
+
+	* XapHackProxyImpl.cs: revert the Helper.Agclr change.
+
+2008-08-26  Chris Toshok  <toshok@ximian.com>
+
+	* DependencyProperty.cs (DependencyProperty.RegisterAny): move the
+	Type lookups to after the argument exception throwing stuff, fixes
+	a unit test.
+
+	* DependencyObject.cs (DependencyObject.GetAsValue): don't short
+	circuit out if as_managed_object == true.  try to always map
+	things over in a form that the unmanaged code can deal with as
+	well.
+	(DependencyObject.ValueToObject): in the case of a managed enum
+	property type, box up an enum object and return that.
+
+2008-08-26  Jeffrey Stedfast  <fejj@novell.com>
+
+	* XapHackProxyImpl.cs: Don't do gross things like intiailizing
+	Helper's Agclr reference. Helper does this itself now using
+	strong-name.
+
+	* DependencyObject.cs: Don't set Helper.Agclr, Helper does this
+	itself now to avoid this particular grossness.
+	(Initialize): Renamed.
+
+2008-08-25  Jeffrey Stedfast  <fejj@novell.com>
+
+	* DependencyObject.cs (EnsureInitialized): Renamed from Ping() and
+	also made public for 3.0 assemblies.
+
+2008-08-24  Geoff Norton  <gnorton@novell.com>
+
+	* Application.cs: Rewrite GetResourceStream with more liberal 
+	behaviour
+
+2008-08-23  Geoff Norton  <gnorton@novell.com>
+
+	* Dependency*.g.cs: Regen
+	* DependencyObject.cs: Create Uri's as Absolute or Relative.
+
+2008-08-22  Chris Toshok  <toshok@ximian.com>
+
+	* FrameworkElement.cs: slight change - since we have lots of
+	unmanaged code for dealing with the various content trees under a
+	given element, and since Control/UserControl don't override
+	MeasureOverride/ArrangeOverride, we have to call into unmanaged
+	code in FWE.MeasureOverride/ArrangeOverride.  This matches up with
+	the SecuritySafeCritical attributes, even if it does mean many
+	more M->N transitions.
+
+2008-08-22  Chris Toshok  <toshok@ximian.com>
+
+	* FrameworkElement.cs: in our Initialize method register the
+	delegates with the unmanaged code for our layout overrides.  Proxy
+	them through InvokeMeasureOverride and InvokeArrangeOverride.
+	Implement MeasureOverride properly, and leave ArrangeOverride
+	alone for the moment (broken, I think).
+
+	* UIElement.cs: provide implementations for all the layout methods
+	- Arrange, Measure, InvalidateArrange, InvalidateMeasure,
+	UpdateLayout.
+
+	* DependencyObject.g.cs: regen.
+
+2008-08-22  Chris Toshok  <toshok@ximian.com>
+
+	* Size.cs: implement ToString.
+
+2008-08-21  Chris Toshok  <toshok@ximian.com>
+
+	* DependencyObject.cs: add CornerRadius support.
+
+	* DependencyProperty.g.cs, DependencyObject.g.cs: regen.
+
+2008-08-20  Stephane Delcroix  <sdelcroix@novell.com>
+
+	* Canvas.cs: fix Get/SetZIndex now that the ZIndexProperty
+	is moved from UIElement to Canvas
+
+2008-08-20  Stephane Delcroix  <sdelcroix@novell.com>
+
+	* Application.cs: Name is no longer a property of AssemblyPart.
+	Commenting out its usage. have to check if we can remove that 
+	definitely
+
+2008-08-19  Chris Toshok  <toshok@ximian.com>
+
+	* UIElement.cs: fix up cast errors in InvokeGotFocus and
+	InvokeLostFocus, and add RoutedEventArgs parameters.
+
+2008-08-18  Geoff Norton  <gnorton@novell.com>
+
+	* DependencyObject.cs: Generate a native pointer for managed
+	DO subclasses.  Support Type::USERCONTROL contstruction.
+
+2008-08-18  Jeffrey Stedfast  <fejj@novell.com>
+
+	* FrameworkElement.cs: Updated.
+
+2008-08-18  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* CustomDependencyProperty.cs, DependencyProperty.cs: Store the
+	  PropertyChanged handler so that the GC doesn't free it.
+
+2008-08-15  Chris Toshok  <toshok@ximian.com>
+
+	* DependencyProperty.g.cs: regen.
+
+2008-08-15  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* DependencyProperty.g.cs: KeyTimeProperty isn't nullable in managed
+	  code.
+
+2008-08-15  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* DependencyProperty.g.cs: Regenerated after last changes.
+
+2008-08-14  Jackson Harper  <jackson@ximian.com>
+
+	* Application.cs: Add the System.Windows assembly to the list.
+
+2008-08-14  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* DependencyObject.cs, RoutedEventArgs.cs: Updated according to new
+	  method names.
+
+2008-08-14  Geoff Norton  <gnorton@novell.com>
+
+	* Application.cs: Make the static surface internal.
+
+2008-08-14  Geoff Norton  <gnorton@novell.com>
+
+	* DependencyObject.cs: Construct and return a ThreadStatic
+	Dispatcher when requested.
+
+2008-08-13  Chris Toshok  <toshok@ximian.com>
+
+	* Application.cs: move the surface_attach call out of the
+	RootVisual setter.  put it in CreateApplication, *after* the
+	Startup event is emitted.
+
+2008-08-14  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* DependencyProperty.g.cs, DependencyObject.g.cs: Regenerated.
+	* DependencyObject.cs: Removed classes and members which are no longer
+	  in SL2B2.
+
+2008-08-14  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* DependencyObject.cs: SetValue: state the name of the dependency
+	  property in error messages, and don't validate attached properties.
+	* DependencyProperty.cs: Added IsAttached.
+
+2008-08-14  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* XapHackProxyImpl.cs: Initialize Helper.Agclr here, this is in the
+	  right AppDomain.
+
+2008-08-13  Larry Ewing  <lewing@novell.com>
+
+	* Application.cs: remove the notice about StartupEventArgs.
+
+	* StartupEventArgs.cs: implement the InitParam fetching.
+
+2008-08-13  Chris Toshok  <toshok@ximian.com>
+
+	* Setter.cs: correct the exception in Setter.set_Property, and
+	change the access of our DP's.
+
+	* Style.cs: need to call the internal ctor to get a native handle.
+	Also, use Setters, not a private field.
+
+2008-08-14  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* DependencyProperty.g.cs: Regenerated.
+
+2008-08-14  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* DependencyProperty.g.cs: Regenerated.
+
+2008-08-13  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* DependencyProperty.g.cs: Regenerated.
+
+2008-08-13  Larry Ewing  <lewing@novell.com>
+
+	* Application.cs: make Current work in derived cases and implement
+	Host.
+
+2008-08-13  Jeffrey Stedfast  <fejj@novell.com>
+
+	* DependencyObject.cs: Fixed for InlineCollection change.
+
+2008-08-13  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* DependencyProperty.g.cs, DependencyObject.g.cs: Regenerated.
+
+2008-08-13  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* DependencyProperty.g.cs, DependencyObject.g.cs: Regenerated.
+
+2008-08-13  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* DependencyObject.g.cs: Regenerated.
+
+2008-08-13  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Application.cs, DependencyObject.cs, DependencyObject.g.cs,
+	  Duration.cs, FrameworkElement.cs, GridLength.cs, UIElement.cs:
+	  Changed some parameter names, base types, method signatures, etc to
+	  match SL.
+	* DependencyProperty.g.cs: Changed some parameter names, base types,
+	  method signatures, accessibility, etc to match SL.
+
+2008-08-13  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* DependencyObject.g.cs, DependencyProperty.g.cs, Deployment.cs:
+	  Regenerated.
+
+2008-08-13  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* DependencyProperty.cs: Store the declaring type in the DP as a type,
+	  not as a Kind. Cleanup a bit.
+
+2008-08-13  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* DependencyObject.g.cs, DependencyProperty.g.cs: Added a native
+	  StackPanel class and generate the managed StackPanel.
+
+2008-08-13  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Application.cs: Split ApplicationInternal out into a separate file
+	  and enable generation for it.
+
+2008-08-13  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* ApplicationInternal.cs: Split ApplicationInternal out into a separate
+	  file and enable generation for it.
+	* DependencyObject.g.cs, DependencyProperty.g.cs,
+	  PresentationFrameworkCollection.cs: More DO generation.
+
+2008-08-12  Chris Toshok  <toshok@ximian.com>
+
+	* Application.cs (GetComponentTypeFromName): split out the linq
+	expression from CreateComponentFromName so we can use the type
+	lookup elsewhere.
+
+2008-08-12  Chris Toshok  <toshok@ximian.com>
+
+	* DependencyObject.cs: add CONTROLTEMPLATE and FRAMEWORKTEMPLATE
+	to the CreateObject switch.
+
+	* DependencyProperty.g.cs: regen.
+
+2008-08-12  Chris Toshok  <toshok@ximian.com>
+
+	* Setter.cs: add in the hacks for the Property property.
+
+	* DependencyProperty.g.cs: regened.
+
+2008-08-12  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* PresentationFrameworkCollection.cs: Make partial.
+
+2008-08-12  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* TriggerActionCollection.cs, ResourceDictionary.cs,
+	  SetterBaseCollection.cs, TriggerCollection.cs,
+	  FrameworkTemplate.cs, DependencyObject.g.cs, SetterBase.cs: Remove
+	  more code, add more partial modifiers and fix DependencyObject.g.cs
+	  whitespace problem.
+
+2008-08-12  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* AssemblyPart.cs, AssemblyPartCollection.cs, DependencyObject.g.cs,
+	  DependencyProperty.g.cs, Deployment.cs, EventTrigger.cs,
+	  FrameworkElement.cs, Setter.cs, Style.cs, UIElement.cs: Generate
+	  public ctor, internal ctor and GetKind for classes inheriting from
+	  DependencyObject.
+
+2008-08-12  Chris Toshok  <toshok@ximian.com>
+
+	* DependencyObject.cs: add Style support to CreateObject.
+
+	* Style.cs: add internal IntPtr ctor.
+
+2008-08-12  Jackson Harper  <jackson@ximian.com>
+
+	* Application.cs: When we hydrate an assembly we need to pass in
+	the assembly name of the type being created.
+
+2008-08-12  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* AssemblyPartCollection.cs: Make classes partial.
+
+2008-08-12  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Style.cs, Deployment.cs, DependencyObject.cs, EventTrigger.cs,
+	  AssemblyPart.cs, UIElement.cs, DependencyObject.g.cs, Setter.cs,
+	  FrameworkElement.cs, DependencyProperty.g.cs: Implement DP accessor
+	  generation.
+
+2008-08-12  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Application.cs, AssemblyPart.cs, DependencyObject.cs,
+	  DependencyProperty.g.cs, Deployment.cs, EventTrigger.cs,
+	  FrameworkElement.cs, Setter.cs, Style.cs, UIElement.cs: Make
+	  classes partial and remove DP registration, which is now generated.
+
+2008-08-11  Chris Toshok  <toshok@ximian.com>
+
+	* DependencyObject.cs: add Support for Setter/SetterBaseCollection
+	to CreateObject, and add SetterBase to the abstract type warning.
+
+	* Setter.cs: add internal IntPtr ctor, as well as the
+	ValueProperty dp (which the Value CLR property uses).
+
+	* Application.cs: add Resources DP.
+
+	* SetterBaseCollection.cs: add internal IntPtr ctor.
+
+2008-08-11  Chris Toshok  <toshok@ximian.com>
+
+	* PresentationFrameworkCollection.cs: call
+	NativeMethods.value_free_value to free up the values we create.
+
+2008-08-11  Chris Toshok  <toshok@ximian.com>
+
+	* Style.cs, Setter.cs, SetterBase.cs, SetterBaseCollection.cs:
+	deal with unmanaged peers.
+
+2008-08-11  Chris Toshok  <toshok@ximian.com>
+
+	* RoutedEventArgs.cs: implement the Source property in such a way
+	that it'll work for both fully managed and wrapped unmanaged
+	objects (and such that it passes the simple unit tests.)
+
+2008-08-11  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* DependencyObject.cs: Remove the double and point arrays, no longer
+	  needed.
+
+2008-08-08  Fernando Herrera  <fherrera@novell.com>
+
+	* ResourceDictionary.cs:
+	* TemplatePart.cs: Added stubs for SL2 methods.
+
+2008-08-07  Chris Toshok  <toshok@ximian.com>
+
+	* UIElement.cs: implement TransformToVisual by calling into
+	uielement_get_transform_to_uielement.
+
+2008-08-07  Chris Toshok  <toshok@ximian.com>
+
+	* Size.cs: correct behavior wrt unit tests.
+
+2008-08-07  Chris Toshok  <toshok@ximian.com>
+
+	* Thickness.cs: implement ToString() properly.
+
+2008-08-07  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* DependencyProperty.cs: Updated.
+
+2008-08-06  Chris Toshok  <toshok@ximian.com>
+
+	* UIElement.cs: stub out the rest of things.
+
+2008-08-06  Chris Toshok  <toshok@ximian.com>
+
+	* SetterBaseCollection.cs: add MonoTODO for the ctor.
+
+2008-08-06  Chris Toshok  <toshok@ximian.com>
+
+	* PresentationFrameworkCollection.cs: remove the argument-less
+	ctor.  There's no need for it, as the class is abstract with no
+	public/protected ctor, so it can't be subclassed aside from the
+	subclasses we control.
+
+2008-08-06  Chris Toshok  <toshok@ximian.com>
+
+	* PresentationFrameworkCollection.cs: add *Impl methods for all
+	the abstract ones.  I have no clue why there needs to be abstract
+	methods in this class at all.. maybe for additional checking in
+	the overrides?  Even so, base implementations + overrides when
+	needed >>>> abstract + overrides for everything.  Anyway, all our
+	unmanaged collection code is generic (being based on Values), so
+	it can all be shared.
+
+2008-08-06  Chris Toshok  <toshok@ximian.com>
+
+	* FrameworkElement.cs: enable DataContextProperty after enabling
+	it in the unmanaged code.
+
+2008-08-06  Chris Toshok  <toshok@ximian.com>
+
+	* DependencyObject.cs (ValueToObject): we need to use fixed in
+	some places here, fixes build with new mcs.
+	(GetAsValue): same.
+
+2008-08-06  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* FrameworkElement.cs: Comment out DataContextProperty, it doesn't
+	  exist in native code yet (so every managed app will crash when
+	  looking up this property). Fix MaxHeight/Width property lookup.
+
+2008-08-05  Chris Toshok  <toshok@ximian.com>
+
+	* DependencyObject.cs: add GeneralTransform to the list of types
+	that can't be created (it's abstract).
+
+2008-08-05  Chris Toshok  <toshok@ximian.com>
+
+	* Thickness.cs: remove ^M's.
+
+	* TemplateBindingExpression.cs: add.
+
+	* VisualStateManager.cs, VisualState.cs, VisualTransition.cs,
+	VisualStateGroup.cs: stub these out.
+
+	* FrameworkElement.cs, UIElement.cs: move properties from
+	UIElement to FrameworkElement.
+
+	* SizeChangedEventArgs.cs: wrap the unmanaged SizeChangedEventArgs
+	class.
+
+2008-08-05  Chris Toshok  <toshok@ximian.com>
+
+	* DependencyObject.cs (ValueToObject): don't switch on the
+	fullname of a type - compare it directly with == and typeof().
+	Add support for marshalling Cursor as unmanaged int32.
+
+	(GetAsValue): Add support for marshalling Cursor as unmanaged
+	int32.  Also, make the code more consistent - use a direct cast
+	inside the "if (foo is bar) { ... }" blocks, not "as".
+
+	Also, for the love of god, stop formatting code using using "}
+	else if (...) {".  Insert a blank line between "}" and "else".
+	Otherwise it's !#*&^!%# impossible to see what the condition is in
+	a mess of other code.
+
+2008-08-05  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* DependencyObject.cs: Deleted Visual (moved content into UIElement),
+	  and renamed VisualCollection to UIElementCollection.
+
+2008-08-05  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* DependencyObject.cs: SetValue: Add another error check.
+
+2008-08-05  Chris Toshok  <toshok@ximian.com>
+
+	* UIElement.cs: use MouseButtonEventArgs for ButtonUp/Down.
+
+2008-08-05  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* DependencyProperty.cs: Check if values have changed before raising
+	  events. Unmanaged code won't necessarily catch values which are
+	  equal from the managed perspective.
+
+2008-08-05  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* DependencyProperty.cs: Updated according to Surface->Types changes.
+
+2008-08-03  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* DependencyProperty.cs: Add a default_value field, and assign it for
+	  value types upon construction.
+	* DependencyObject.cs: Throw an exception if SetValue is called to set
+	  a value type to null.
+
+2008-08-02  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* DependencyProperty.cs: Updated according to API changes.
+
+2008-08-02  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* DependencyObject.cs: We need to handle null value types when val is
+	  null to, not only when ValueToObject returns null.
+
+2008-08-01  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* PropertyMetadata.cs: Make property_changed_callback internal.
+	* DependencyProperty.cs: Store DP data in managed code, and implement
+	  property changed callbacks.
+	* DependencyObject.cs: GetValue: if the property type is a value type
+	  we need to return the default value for that type, not null.
+	* CustomDependencyProperty.cs: Create a public Metadata property and
+	  update according to DependencyProperty changes.
+
+2008-07-30  Jeffrey Stedfast  <fejj@novell.com>
+
+	* FrameworkElement.cs: Added Loaded event.
+
+	* UIElement.cs: Make the ctor protected instead of public.
+
+2008-07-30  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* DependencyObject.cs: Implement CheckAccess and stub a bit.
+
+2008-07-30  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* CustomDependencyProperty.cs: Added.
+	* DependencyObject.cs: Don't do any type conversion in SetValue and
+	  implement marshalling of managed objects.
+	* DependencyProperty.cs: Implement registration of custom
+	  DependencyProperties.
+
+2008-07-29  Jeffrey Stedfast  <fejj@novell.com>
+
+	* PresentationFrameworkCollection.cs: Updated for DependencyObject
+	API changes.
+
+	* DependencyObject.cs (ValueAsObject): Now takes a Type argument
+	so that we can marshall Kind.STRING back to the proper .NET type.
+	(GetAsValue): Marshall FontFamily, Uri, and XmlLanguage to
+	Kind.STRING.
+
+	* DependencyProperty.cs: Allow us to get the Type and renamed
+	GetKind property to just Kind.
+
+2008-07-29  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* DependencyProperty.cs: Update error message from agclr/agmono to
+	  System.Windows/Mono.Moonlight.
+
+2008-07-28  Chris Toshok  <toshok@ximian.com>
+
+	* DependencyObject.cs (ValueToObject): add Size support.
+	(GetAsValue): same.
+
+2008-07-28  Chris Toshok  <toshok@ximian.com>
+
+	* FrameworkElement.cs: in 2.0, FrameworkElement doesn't expose a
+	public (or even protected) ctor.
+
+2008-07-28  Chris Toshok  <toshok@ximian.com>
+
+	* DependencyObject.cs (ValueToObject): add Thickness support.
+	(GetAsValue): same.
+
+2008-07-28  Chris Toshok  <toshok@ximian.com>
+
+	* PresentationFrameworkCollection.cs: remove the rest of the DO
+	specific code.
+
+2008-07-28  Chris Toshok  <toshok@ximian.com>
+
+	* PresentationFrameworkCollection.cs: implement
+	GenericCollectionIterator.GetCurrent in a non-DO specific way.
+
+2008-07-28  Chris Toshok  <toshok@ximian.com>
+
+	* PresentationFrameworkCollection.cs: track change to collection
+	unmanaged api.
+
+2008-07-28  Chris Toshok  <toshok@ximian.com>
+
+	* PresentationFrameworkCollection.cs: remove the DependencyObject
+	subclass restriction (required for the StylusPoint change), and
+	make the methods abstract that are supposed to be.  let's fix this
+	:)
+
+2008-07-28  Chris Toshok  <toshok@ximian.com>
+
+	* TriggerCollection.cs: stub out
+	PresentationFrameworkCollection<T> overrides.
+
+	* TriggerActionCollection.cs: same.
+
+	* AssemblyPartCollection.cs: same.
+
+2008-07-26  Chris Toshok  <toshok@ximian.com>
+
+	* RoutedEventArgs.cs: flesh this out (along with a
+	question/comment for set_Source.)  start using a similar internal
+	ctor setup (like the DO's) for the unmanaged event objects.
+
+	* UIElement.cs: KeyboardEventArgs -> KeyEventArgs.
+
+2008-07-24  Jeffrey Stedfast  <fejj@novell.com>
+
+	* PresentationFrameworkCollection.cs: Fixed to build, altho this
+	code needs some serious rethinking.
+
+2008-07-23  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* PresentationFrameworkCollection.cs: Make some methods virtual so that
+	  derived classes can use the right member signatures.
+	* DependencyObject.cs: Removed VisualCollection.
+
+2008-07-23  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* TextWrapping.cs: More B2 updates.
+
+2008-07-23  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* GridLength.cs: Implement missing methods.
+	* UIElement.cs: Fix event signatures and base class.
+	* Thickness.cs, CornerRadius.cs: Implemented.
+	* ResourceDictionary.cs: Fix base class.
+
+2008-07-23  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* SizeChangedEventArgs.cs: Fixed base class.
+	* XamlReader.cs: Removed.
+	* StyleSimulations.cs: Moved StyleSimulations to System.Windows.Media.
+
+2008-07-23  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* PropertyPath.cs, ParserErrorEventHandler.cs, ErrorType.cs: Removed.
+	* TextDecorationKind.cs, TextDecorationCollection.cs,
+	  TextDecorations.cs: Updated TextDecoration* according to SL2B2.
+	* RoutedEvent.cs, SizeChangedEventHandler.cs,
+	  RoutedPropertyChangedEventHandler_T.cs, RoutedEventArgs.cs,
+	  ExceptionRoutedEventHandler.cs,
+	  RoutedPropertyChangedEventArgs_T.cs, SizeChangedEventArgs.cs:
+	  Added.
+
+2008-07-23  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* FontWeight.cs, FontStyleKind.cs, Expression.cs, FontStretchKind.cs,
+	  FontWeightKind.cs, FontStyle.cs, FontStretches.cs, FontWeights.cs,
+	  FontStretch.cs, FontStyles.cs: Implement
+	  Font(Style|Weight|Stretch).
+
+2008-07-23  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* ErrorEventHandler.cs, RuntimeErrorEventArgs.cs,
+	  ParserErrorEventArgs.cs, RuntimeErrorEventHandler.cs,
+	  Downloader.cs, ErrorEventArgs.cs: Removed.
+	* ExceptionRoutedEventArgs.cs: Added.
+
+2008-07-23  Chris Toshok  <toshok@ximian.com>
+
+	* DependencyProperty.cs: track dependencyproperty unmanaged api
+	change.
+
+2008-07-22  Jeffrey Stedfast <fejj@novell.com>
+
+	* DependencyObject.cs: Updated for Silverlight 2 beta 2 KeyTime changes.
+
+2008-07-22  Jeffrey Stedfast  <fejj@novell.com>
+
+	* TextDecorationCollection.cs: Added
+
+	* LineStackingStrategy.cs: Added
+
+2008-07-22  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* DependencyObject.cs: SetValue isn't virtual anymore. Remove comment
+	  about SetValue's generic signature (given that it isn't generic
+	  anymore).
+
+2008-07-22  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* DependencyProperty.cs: Stubbed a bit.
+
+2008-07-22  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* PropertyMetadata.cs: Added.
+
+2008-07-21  Jackson Harper  <jackson@ximian.com>
+
+	* Application.cs: Add an internal Application class for loading
+	Applications in unmanaged land. This allows us to pass in a DO
+	instead of adding special cases just for the Application class.
+
+2008-07-21  Jackson Harper  <jackson@ximian.com>
+
+	* Application.cs: Add in the xaml parsers new callback handlers,
+	expose a method for getting assemblies from the xap, add a hack
+	parsing an Application into a temporary UserControl so we can
+	handle App.xaml files.
+	
+2008-07-21  Jeffrey Stedfast  <fejj@novell.com>
+
+	* PresentationFrameworkCollection.cs: Explicitly implement IList.
+
+	* HorizontalAlignment.cs: Added.
+
+	* VerticalAlignment.cs: Added.
+
+	* TextAlignment.cs: Added.
+
+	* DependencyObject.cs: Use InlineCollection instead of Inlines.
+
+	* Inlines.cs: Removed.
+
+2008-07-15  Jb Evain  <jbevain@novell.com>
+
+	* CrossDomainAccess.cs: added.
+	* Deployment.cs: update to sl2b2 api.
+	* DependecyObject.cs: update after SupportedCulture removal.
+
+2008-06-27  Jackson Harper  <jackson@ximian.com>
+
+	* Application.cs: Creating a component requires a list of the
+	namespaces imported into the XAML.
+	- Some assembly loading hacks
+
+2008-06-11  Stephane Delcroix  <sdelcroix@novell.com>
+
+	* Application.cs: new Host property (stubbed).
+
+2008-05-16  Miguel de Icaza  <miguel@novell.com>
+
+	* DependencyObject.cs (SetValue): Drop the parametrized type, we
+	never used it, they no longer use it.
+
+2008-05-08  Miguel de Icaza  <miguel@novell.com>
+
+	* Application.cs: Add support to load data from the Resources
+	embedded into the assembly.    
+
+	Instead of sticking XAML files as toplevel resources, they stuck
+	the XAML files inside a resource that must be accessed with a
+	ResourceReader for no discernible reason.
+
+	Use some LINQ, just because Marek said so. 
+
+2008-04-25  Stephane Delcroix  <sdelcroix@novell.com>
+
+	* DependencyObject.cs: add InkPresenter in the switch.
+
+2008-04-15  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* DependencyObject.cs: Comparing a Kind value to another to determine type
+	  hierarchy isn't supported anymore
+
+2008-04-13  Jb Evain  <jbevain@novell.com>
+
+	* DependencyObject.cs: use a Dictionary<,> instead of
+	an Hashtable for the DO cache.
+	Merged from the Moonlight 2 branch.
+
+2008-04-01  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* DependencyObject.cs: base_unref_delayed doesn't exist anymore, just use
+	  base_unref.
+
+2008-03-04  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* DependencyObject.cs: Inform agmono about our own assembly.
+
+2008-03-03  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* XamlReader.cs: If multiple surfaces per appdomain is allowed, throw an
+	  exception (since we don't know which surface to attach the xaml to).
+
+2008-02-21  Sebastien Pouliot  <sebastien@ximian.com> 
+
+	* Downloader.cs: In GetResponseText make sure we free the native 
+	pointer is something goes wrong when reading/decoding the stream.
+
+2008-01-17  Chris Toshok  <toshok@ximian.com>
+
+	* Rect.cs: fix the Union/Intersect methods -- they were updating
+	x/y and then accessing them implicitly through Right/Bottom.
+	Also, in the intersect case, if the rectangle ends up being empty,
+	clear it out so that Rect.Equals (Rect.Empty) returns true.  this
+	gets DestroyAllInvaders working (woop!)
+
+2007-12-19  Stephane Delcroix  <sdelcroix@novell.com>
+
+	 * DependencyObject.cs: adding LINEARGRADIENTBRUSH and 
+	 TRANSFORMGROUP too, reauired by some component-one demos.
+
+2007-12-19  Stephane Delcroix  <sdelcroix@novell.com>
+
+	 * DependencyObject.cs: add a case for RADIALGRADIENTBRUSH in 
+	 CreateObject method. Fix http://www.vectorlight.net/default.aspx?page=22
+
+2007-11-20  Jeffrey Stedfast  <fejj@novell.com>
+
+	* UIElement.cs: Pass null instead of EventArgs.Empty for some of
+	the event handlers (they are defined to always take null args by
+	the msdn docs).
+
+2007-11-19  Jackson Harper  <jackson@ximian.com>
+
+	* DependencyObject.cs: Move the value-to-object code into a
+	separate function, so I can use it in the managed xaml parser.
+
+2007-10-10  Chris Toshok  <toshok@ximian.com>
+
+	* DependencyObject.cs: remove the old ClearPendingDestroys code,
+	and just call base_unref_delayed from Free.
+
+	* XamlReader.cs: just to be consistent, all unmanaged unrefs call
+	base_unref_delayed.
+
+2007-10-06  Chris Toshok  <toshok@ximian.com>
+
+	* DependencyObject.cs (GetAsValue): we can't use
+	Type.GetElementType() on enums.  there might be a way to do this
+	check (to see if the enum is int-sized), but I couldn't figure it
+	out - IsAssignableFrom doesn't work.  Remove the check for now,
+	since we break with it enabled.
+
+2007-10-02  Jackson Harper  <jackson@ximian.com>
+
+	* DependencyObject.cs: If we are trying to use a string to set a
+	property, use the special xaml parsing functions here.  This will
+	try to massage the string into the correct type.
+
+2007-09-30  Jb Evain  <jbevain@novell.com>
+
+	* ParserErrorEvent[Args|Handler].cs,
+	* RuntimeErrorEvent[Args|Handler].cs: added
+2007-09-27  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* ResourceDictionary.cs, TriggerActionCollection.cs, TriggerCollection.cs,
+	  UIElement.cs, Downloader.cs, Inlines.cs, EventTrigger.cs,
+	  FrameworkElement.cs: Don't ref ourself if we're created using a *_new
+	  function, the creation itself already gives us a ref.
+
+2007-09-27  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* XamlReader.cs: Load: unref the created object once we have a managed
+	  DependencyObject version.
+
+2007-09-21  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* XamlReader.cs: Use the new ManagedXamlLoader.
+	* DependencyObject.cs: Remove cwl.
+
+2007-09-17  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* XamlReader.cs: Update according to recent Xaml API changes.
+
+2007-08-30  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* DependencyProperty.cs: Make the error message somewhat more explicit.
+
+2007-08-20  Jb Evain  <jbevain@novell.com>
+
+	* XamlReadre.cs, Downloader.cs, DependencyObject.cs: use methods
+	in [agmono]Mono.Helper to avoid calling internal methods of mscorlib.
+
+2007-08-17  Chris Toshok  <toshok@ximian.com>
+
+	* DependencyObject.cs: change some NotImplementedExceptions to
+	just Exceptions.
+
+	* Visibility.cs: remove Visibility.Hidden.  it's gone in the
+	refresh.
+
+2007-08-11  Miguel de Icaza  <miguel@novell.com>
+
+	* XamlReader.cs: Do some sharing of code, by using the agmono stuff.
+
+2007-08-10  Chris Toshok  <toshok@ximian.com>
+
+	* UIElement.cs: add InvokeKeyUp and InvokeKeyDown.
+
+2007-08-09  Chris Toshok  <toshok@ximian.com>
+
+	* Duration.cs: implement the NotImplemented methods.
+
+2007-08-06  Jackson Harper  <jackson@ximian.com>
+
+	* XamlReader.cs: Default createnamescope is false to match
+	createFromXaml default
+	(http://msdn2.microsoft.com/en-us/library/bb412361.aspx).
+
+2007-08-03  Miguel de Icaza  <miguel@novell.com>
+
+	* Downloader.cs: We need a bit more logic here than just creating
+	strings, we need to use something that knows about bytemarks.
+
+	Introduce a simplified version of System.IO/UnmanagedMemoryStream
+
+2007-08-01  Jeffrey Stedfast  <fejj@novell.com>
+
+	* FontWeights.cs: Updated for the July 2007 Refresh release.
+
+2007-07-31  Jeffrey Stedfast  <fejj@novell.com>
+
+	* StyleSimulations.cs: Added values.
+
+2007-07-31  Chris Toshok  <toshok@ximian.com>
+
+	* StyleSimulations.cs: new enum.
+
+2007-07-30  Chris Toshok  <toshok@ximian.com>
+
+	* UIElement.cs: add the Tag property.
+
+2007-07-30  Chris Toshok  <toshok@ximian.com>
+
+	* DependencyObject.cs: add support for the new KeyFrameCollection
+	classes.
+
+2007-07-29  Chris Toshok  <toshok@ximian.com>
+
+	* DependencyObject.cs: track RESOURCE_COLLECTION ->
+	RESOURCE_DICTIONARY change.
+
+	* UIElement.cs: same.
+
+	* ResourceDictionary.cs: move ResourceCollection.cs here, and
+	rename it.
+
+2007-07-16  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Rect.cs: Fix constructor as reported by Robert Jordan.
+
+2007-07-12  Chris Toshok  <toshok@ximian.com>
+
+	* Downloader.cs: move to using UnmanagedEventHandlers to proxy
+	events.
+
+2007-07-11  Chris Toshok  <toshok@ximian.com>
+
+	* UIElement.cs: use the MS event names for the strings we pass to
+	events.AddHandler.  tracks the uielement.cpp change.
+
+2007-07-09  Miguel de Icaza  <miguel@novell.com>
+
+	* XamlReader.cs: Add try/catch events to the code to prevent it
+	from throwing exceptions that are returned to the native libmoon. 
+
+2007-07-09  Chris Toshok  <toshok@ximian.com>
+
+	* XamlReader.cs: set the parser callbacks in our static ctor.
+
+2007-07-09  Miguel de Icaza  <miguel@novell.com>
+
+	* XamlReader.cs: Do not use the Lookup version that only finds
+	existing objects, use the Lookup version that creates the managed
+	instance if required (by passing the Kind type to it).
+
+	Add better error reporting.
+
+2007-07-08  Chris Toshok  <toshok@ximian.com>
+
+	* XamlReader.cs (set_attribute): unfortunately we can't use
+	TypeDescriptor.GetProperty here, since it can't be used with
+	write-only properties (which Dr. Popper uses).  c&p the
+	PropertyDescriptor.Converter code here and rename it
+	GetConverterFor(), and use System.Reflection for setting the
+	property value.  Ah well.
+
+2007-07-08  Chris Toshok  <toshok@ximian.com>
+
+	* UIElement.cs: track change to Events.Add/RemoveHandler args.
+	they're much cleaner now.
+
+	* DependencyObject.cs: add a GCHandle field which we lazily
+	allocate (and free in our dtor) that we can pass to events.
+
+2007-07-08  Chris Toshok  <toshok@ximian.com>
+
+	* UIElement.cs: be consistent about our treatment of all events
+	(be they mouse/key events or others, like Loaded).  Also, use the
+	winforms/asp.net optimization of bloating the event add/remove
+	code in exchange for lessening memory usage per object by using
+	EventHandlerList.  Having code for add/remove also lets us
+	register (and unregister) with the unmanaged events when we need
+	to, further reducing unmanaged -> managed transitions.
+
+2007-07-03  Miguel de Icaza  <miguel@novell.com>
+
+	* Downloader.cs: UPdate to the new API.
+
+	* ErrorEventArgs.cs: New internal constructor.
+
+2007-07-02  Miguel de Icaza  <miguel@novell.com>
+
+	* FrameworkElement.cs (Parent): implement this using a native
+	method call. 
+
+2007-06-27  Miguel de Icaza  <miguel@novell.com>
+
+	* DependencyObject.cs (SetValue): use the native value_free_value
+	to release the value as some fields in the structure are actually
+	refcounted. 
+	
+	(GetAsValue): When wrapping a dependency object, take a ref here.
+
+2007-06-27  Jackson Harper  <jackson@ximian.com>
+
+	* XamlReader.cs: Don't need to use invoke (this was there because
+	the code was a copy and paste from the plugin).
+
+2007-06-26  Miguel de Icaza  <miguel@novell.com>
+
+	* DependencyObject.cs: Add checks to ensure that we are only
+	called from the proper thread.
+
+2007-06-25  Alan McGovern  <amcgovern@novell.com>
+
+	* UIElement.cs: Added ZIndex property
+
+2007-06-22  Chris Toshok  <toshok@ximian.com>
+
+	* DependencyObject.cs (SetValue<T>): call FreeValue after
+	dependency_object_set_value.
+	(FreeValue): free's the memory we allocated in GetAsValue since
+	the unmanaged SetValue method will have copied it (by virtue of
+	Value's copy ctor).
+
+2007-06-22  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* DependencyObject.cs: Changed implementation of GetAsValue to match
+	  toshok's implementation of GetValue.
+
+2007-06-22  Chris Toshok  <toshok@ximian.com>
+
+	* DependencyObject.cs (GetValue): make this *gobs* cleaner by just
+	using the fields in the value structure as opposed to using byte
+	pointers and constant offsets.
+
+2007-06-21  Chris Toshok  <toshok@ximian.com>
+
+	* DependencyObject.cs: 64 bit work with grendel.
+
+2007-06-21  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* DependencyObject.cs: Implement KeyTime marshalling.
+
+2007-06-21  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Rect.cs: Add missing members.
+
+2007-06-21  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* DependencyObject.cs: Fix TimeSpan marshalling.
+
+2007-06-21  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* DependencyObject.cs: Implement creation of more classes.
+
+2007-06-20  Chris Toshok  <toshok@ximian.com>
+
+	* XamlReader.cs: make the callbacks internal so we can use the
+	from FrameworkElement.InitializeFromXaml.
+
+2007-06-20  Jeffrey Stedfast  <fejj@novell.com>
+
+	* DependencyObject.cs: Add VISUAL to the "NotImplemented" abstract
+	types in the switch.
+
+2007-06-20  Jackson Harper  <jackson@ximian.com>
+
+	* DependencyObject.cs: Add ResourceCollection.
+
+2007-06-20  Jackson Harper  <jackson@ximian.com>
+
+	* XamlReader.cs: Tie into events.
+
+2007-06-20  Jackson Harper  <jackson@ximian.com>
+
+	* UIElement.cs: Invoke the loaded event.
+
+2007-06-20  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* DependencyProperty.cs: Add better exception message.
+
+2007-06-19  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* DependencyProperty.cs: Fix warning.
+
+2007-06-19  Miguel de Icaza  <miguel@novell.com>
+
+	* Rect.cs: Add more stuff to rect.
+
+2007-06-19  Jackson Harper  <jackson@ximian.com>
+
+	* ResourceCollection.cs: These have a DependencyObject child type.
+
+2007-06-19  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* DependencyProperty.cs: Update to changed unmanaged nullable behavior.
+
+2007-06-18  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* DependencyProperty.cs: Store the declaring type and add a few
+	  informational properties.
+	* DependencyObject.cs: Fix debug message.
+
+2007-06-18  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Duration.cs: Add an internal constructor and properties used by the
+	  marshaller.
+	* DependencyObject.cs: Fix Duration marshalling, the naive approach of
+	  using Marshal.PtrToStructure/StructureToPtr doesn't work because
+	  the managed structure layout isn't fixed. Also implement TimeSpan
+	  marshalling.
+
+2007-06-18  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Downloader.cs: Don't request events if we don't have a native object.
+	* Inlines.cs: Construction implemented.
+	* FontWeights.cs: Added.
+	* DependencyObject.cs: GetValue/SetValue: throw an exception if the
+	  object's native handle isn't set.
+
+2007-06-18  Atsushi Enomoto <atsushi@ximian.com>
+
+	* TextDecorations.cs
+	  FontStretches.cs
+	  TextWrapping.cs
+	  Inlines.cs
+	  FontStyles.cs : new.
+
+2007-06-17  Jackson Harper  <jackson@ximian.com>
+
+	* XamlReader.cs: Another moonlight sync, so we can create x:Class elements.
+
+2007-06-16  Jackson Harper  <jackson@ximian.com>
+
+	* XamlReader.cs: Update to set custom attributes (basically a sync
+	with moonlight.cs, I should look into ways of eliminating the code
+	duplication here).
+
+2007-06-16  Sebastien Pouliot  <sebastien@ximian.com> 
+
+	* Downloader.cs: Handle unset DownloadFailed event.
+
+2007-06-15  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* DependencyObject.cs: Add support to create new Image type.
+
+2007-06-15  Jackson Harper  <jackson@ximian.com>
+
+	* XamlReader.cs: Add the callback for creating custom element
+	types.
+
+2007-06-15  Sebastien Pouliot  <sebastien@ximian.com> 
+
+	* Downloader.cs: Fix DownloadFailed type to ErrorEventHandler (not 
+	EventHandler).
+
+2007-06-15  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* DependencyObject.cs: Fix signature (FindName not FindObject)
+
+2007-06-15  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* ManagedDownloader.cs, Downloader.cs: Remove managed downloader.
+
+2007-06-15  Alan McGovern <amcgovern@novell.com> 
+
+	* DependenctObject.cs: Creating instances of GradientStopCollection instead of null
+
+2007-06-15  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* ManagedDownloader.cs: Added.
+	* Downloader.cs: Initialize the native downloader.
+	* DependencyObject.cs: Implement more marshalling.
+
+2007-06-15  Miguel de Icaza  <miguel@novell.com>
+
+	* Downloader.cs: Bind this to the native methods.
+
+	* UIElement.cs: 
+
+	* DependencyObject.cs (CreateObject): Take a ref when an unmanaged
+	object is surfaced to the managed world.
+
+	(ClearPendingDestroys): Routine that disposes the finalized
+	objects that need to be unrefed
+
+2007-06-14  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* TriggerActionCollection.cs, EventTrigger.cs: Fix native constructor
+	  name.
+	* DependencyObject.cs: Construct TriggerActionCollection properly,
+	  implement enum marshalling (treat them like Int32) and fix string
+	  marshalling.
+
+2007-06-14  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* DependencyObject.cs: Creation of TimeLineCollection implemented.
+
+2007-06-14  Alan McGovern <amcgovern@novell.com> 
+
+	* EventTrigger.cs: fixed casing issues with properties.
+
+2007-06-14  Miguel de Icaza  <miguel@novell.com>
+
+	* DependencyObject.cs: Add more mappings.
+
+2007-06-14  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* TriggerCollection.cs, UIElement.cs, Downloader.cs,
+	  ResourceCollection.cs, DependencyObject.cs, FrameworkElement.cs:
+	  Constructor fixes, part 3.
+
+2007-06-13  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Downloader.cs, DependencyObject.cs: Second pass on constructors.
+
+2007-06-13  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* UIElement.cs, FrameworkElement.cs: Second pass on constructors.
+
+2007-06-13  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* UIElement.cs, DependencyObject.cs, FrameworkElement.cs: First part of
+	  fixing internal constructors.
+
+2007-06-13  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* TriggerCollection.cs, Downloader.cs, ResourceCollection.cs: Use
+	  native constructors.
+
+2007-06-13  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* TriggerCollection.cs, UIElement.cs, Downloader.cs,
+	  ResourceCollection.cs, FrameworkElement.cs: Implement GetKind.
+
+2007-06-13  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Downloader.cs: Fix property lookup, the parameters were mixed up.
+
+2007-06-13  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* DependencyObject.cs: Finished implementation of get/setvalue
+	  marshalling.
+
+2007-06-13  Miguel de Icaza  <miguel@novell.com>
+
+	* DependencyObject.cs (FindObject): implement.
+
+	(native): turn into a property, so we can
+	track all the mappings.  For example creating managed objects
+	otherwise that are never marshalled would have never been
+	registered. 
+
+2007-06-12  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Downloader.cs: Implement Uri property - since Uri is not an object
+	  inherited from DependencyObject, in unmanaged land it's stored as a
+	  string.
+
+2007-06-12  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* DependencyProperty.cs: Delete Register.
+	* Downloader.cs: Move from DependencyProperty.Register to
+	  DependencyProperty.Lookup.
+
+2007-06-12  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* DependencyObject.cs: Added back Inlines.
+
+2007-06-12  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* DependencyObject.cs: Remove Kind.INLINES, it's not implemented in
+	  unmanaged code.
+
+2007-06-10  Miguel de Icaza  <miguel@novell.com>
+
+	* DependencyObject.cs: Add support for marshalling arrays of
+	doubles. 
+
+2007-06-09  Miguel de Icaza  <miguel@novell.com>
+
+	* DependencyObject.cs (SetValue): Also consider class hierarchy,
+	so a SolidBrush can be assigned to a Brush.
+
+2007-06-08  Miguel de Icaza  <miguel@novell.com>
+
+	* DependencyObject.cs (GetAsValue): Helper.
+	(SetAsValue): first useful implemementation.
+
+2007-06-07  Miguel de Icaza  <miguel@novell.com>
+
+	* DependencyObject.cs: handle bools.
+
+	* XamlReader.cs: Some bits, need to get the unmanaged Value.Kind
+	so I can create the proper managed object upon returning from
+	Load. 
+
+	* DependencyObject.cs (SetValue<T>): Implement this, now we only
+	need to test this ;-)
+
+	* DependecyObject.cs: Partial implementation for GetValue. 
+
+	Drop tons of dead code.
+
+	* DependencyProperty.cs: Rework to use the native dependency
+	objects instead of implementing a managed one.
+
+	Both DependencyObject and DependencyProperty are now wrappers to
+	the unmanaged version for now.    We will need to extend this
+	later to support the managed components when we are ready. 
+
+	* FrameworkElement.cs: Update to new DependencyProperty
+	framework. 
+
+2007-06-03  Sebastien Pouliot  <sebastien@ximian.com> 
+
+	* ErrorEventArgs.cs: New.
+	* ErrorEventHandler.cs: New.
+	* ErrorType.cs: New.
+
+2007-06-01  Sebastien Pouliot  <sebastien@ximian.com> 
+
+	* Downloader.cs: New. (incomplete)
+	* Rect.cs: New. Structure (imcomplete)

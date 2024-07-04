@@ -1,0 +1,73 @@
+2009-11-09  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* StrokeCollection.cs: Add validations in GetBounds and HitTest
+	to throw ArgumentException when required.
+
+	r: rolf
+
+2009-11-04  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Stroke.cs: Call this() not base() on non-default ctor, 
+	otherwise 'native' won't be set and nothing will work correctly.
+	Add missing null-check in HitTest
+
+	r: alan
+
+2009-02-19  Jeffrey Stedfast  <fejj@novell.com>
+
+	* Stroke.cs: Implemented non-default ctor.
+
+2008-11-19  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* StrokeCollection.cs, Stroke.cs: Corcompare.
+
+2008-11-18  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* StrokeCollection.cs: Corcompare work.
+
+2008-08-15  Chris Toshok  <toshok@ximian.com>
+
+	* Stroke.cs: add SecuritySafeCriticals.
+
+2008-08-12  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* DrawingAttributes.cs, Stroke.cs, StrokeCollection.cs: Generate public
+	  ctor, internal ctor and GetKind for classes inheriting from
+	  DependencyObject.
+
+2008-08-12  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* StrokeCollection.cs: Make classes partial.
+
+2008-08-12  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* DrawingAttributes.cs, Stroke.cs: Implement DP accessor generation.
+
+2008-08-12  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* DrawingAttributes.cs, Stroke.cs: Make classes partial and remove DP
+	  registration, which is now generated.
+
+2008-07-28  Chris Toshok  <toshok@ximian.com>
+
+	* StrokeCollection.cs: stub out PresentationFrameworkCollection<T>
+	overrides.
+
+2008-01-09  Chris Toshok  <toshok@ximian.com>
+
+	* StrokeCollection.cs: implement GetBounds.
+
+	* Stroke.cs: implement GetBounds.
+
+2008-01-09  Chris Toshok  <toshok@ximian.com>
+
+	* StrokeCollection.cs: add HitTest and GetBounds.
+
+	* Stroke.cs: add HitTest and GetBounds.
+
+2007-09-27  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* DrawingAttributes.cs, StrokeCollection.cs, Stroke.cs: Don't ref ourself if
+	  we're created using a *_new function, the creation itself already gives
+	  us a ref.
+

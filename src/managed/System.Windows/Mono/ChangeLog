@@ -1,0 +1,3938 @@
+2010-09-02  Jeffrey Stedfast  <fejj@novell.com>
+
+	* MoonlightTypeConverter.cs: Implemented type-conversion for
+	Thickness to CornerRadius.
+
+2010-07-28  Jackson Harper  <jackson@ximian.com>
+
+	* Value.cs: A little sanity check here so you don't accidently
+	create a Mono.Value from a Mono.Value.
+
+2010-07-27  Jackson Harper  <jackson@ximian.com>
+
+	* ApplicationLauncher.cs: We dont need the file/string anymore
+	when creating a xaml loader.
+
+2010-07-21  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* NativeDependencyObjectHelper.cs: Add switch entry for SecuritySettings.
+
+2010-07-21  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Helper.cs: Move CanonicalizeFileName here.
+
+2010-07-14  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* NativeMethods.cs: throw a NotImplementedException if the
+	runtime requested it
+
+2010-07-12  Alan McGovern  <amcgovern@novell.com>
+
+	* Events.cs:
+	* Helper.cs:
+	* EasingFunctionWrapper.cs: Nuke
+	  Helper.ReportException/PluginInstance::ReportException.
+	  They're only used in debug builds and they cause DRTs to
+	  fail. As they don't really have much of a use anymore,
+	  remove them. Fixes drt 357.
+
+2010-07-09  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* EventObjectToggleRef.cs: Make sure we don't leak exceptions to native code.
+
+2010-07-09  Alan McGovern  <amcgovern@novell.com>
+
+	* IWeakListener.cs:
+	* WeakCollectionChangedListener.cs: Implement a WeakListener
+	  for INotifyCollectionChanged objects. Classes which want to
+	  weak-listen to the event need to be of type
+	  IListenCollectionChanged.
+
+2010-07-08  Jackson Harper  <jackson@ximian.com>
+
+	* MoonlightTypeConverter.cs: Open this up a bit so the
+	XamlTypeConverter can inherit from it.
+
+2010-07-01  Jeffrey Stedfast  <fejj@novell.com>
+
+	* Value.cs (ToObject): Added support for GlyphTypeface.
+	(FromObject): Same.
+
+2010-07-01  Alan McGovern  <amcgovern@novell.com>
+
+	* INativeDependencyObjectWrapper.cs: As every method in
+	  INativeDependencyObjectWrapper is stateless and 100%
+	  identical for every implementor, implement these as
+	  extension methods to INativeDependencyObjectWrapper and make
+	  the interface itself empty.
+
+2010-06-29  Mario Carrion  <mcarrion@novell.com>
+
+	* A11yHelper.cs:
+	* ApplicationLauncher.cs: Deprecate A11yHelper class in favor of
+	AccessibilityBridge in C++. (Reworked patch r156659)
+
+	r: toshok
+
+2010-06-28  Alan McGovern  <amcgovern@novell.com>
+
+	* MoonlightTypeConverter.cs: MoonlightTypeConverter needs to
+	  work with CultureInfos too.
+
+2010-06-28  Alan McGovern  <amcgovern@novell.com>
+
+	* NativeMethods.cs: Add MoonError* parameters to our
+	  measure/arrange/UpdateLayout functions to ensure that errors
+	  are propagated correctly.
+
+2010-06-23  Jackson Harper  <jackson@ximian.com>
+
+	* Value.cs: Handle EventObjects not just DependencyObjects.
+
+2010-07-14  Chris Toshok  <toshok@ximian.com>
+
+	* NativeDependencyObjectHelper.cs: add
+	Attached/Detached/MentorChanged callbacks here.
+	(SetManagedPeerCallbacks): add this so we can stop having to
+	modify 50 different calls to
+	NativeMethods.event_object_set_managed_peer_callbacks whenever the
+	signature changes.
+	(ClearManagedPeerCallbacks): same.
+	(CreateObject): add VIDEOFORMAT_COLLECTION to the switch.
+
+2010-06-22  Chris Toshok  <toshok@ximian.com>
+
+	* NativeDependencyObjectHelper.cs: add RichTextBoxView to the
+	switch.
+
+2010-06-22  Alan McGovern  <amcgovern@novell.com>
+
+	* ManagedXamlLoader.cs:
+	* MarkupExpressionParser.cs: Rewrite TemplateBindings to not
+	  be leaky. We have to be careful to not store a reference to
+	  the template owner otherwise we end up with a reference
+	  cycle and cannot ever GC the source or target of the
+	  TemplateBinding.
+
+2010-06-18  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Events.cs:
+	* NativeDependencyObjectHelper.cs: Update to SL4 final API.
+
+2010-06-04  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* NativeMethods.cs: Update according to HttpOptions changes.
+
+2010-06-02  Alan McGovern  <amcgovern@novell.com>
+
+	* MarkupExpressionParser.cs: Use case insensitive enum parsing
+	  for RelativeSource.
+
+	* MoonlightValueConverter.cs: Use case insensitive enum
+	  parsing here, it's the only place we don't.
+
+2010-06-01  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Helper.cs: Add a centralized (managed) IsUserInitiated so
+	we'll be able to waive the requirement under SL4 elevated trust
+
+2010-06-01  Alan McGovern  <amcgovern@novell.com>
+
+	* NativeDependencyObjectHelper.cs: Add a missing case for
+	  CompositeTransform
+
+2010-05-28  Chris Toshok  <toshok@ximian.com>
+
+	* Value.cs: track change to VideoFormat ctor and fieldnames.
+
+2010-05-28  Chris Toshok  <toshok@ximian.com>
+
+	* Events.cs: reuse existing event args for
+	CaptureImageCompletedEvent and SendCompletedEvent.
+
+2010-05-27  Chris Toshok  <toshok@ximian.com>
+
+	* Events.cs: add dispatcher for
+	EventHandler<CaptureImageCompletedEventArgs>
+
+2010-05-26  Chris Toshok  <toshok@ximian.com>
+
+	* Value.cs: correct field usage for Audio/VideoFormat classes.
+
+	* Events.cs: add CreateSampleReadyEventArgsEventHandlerDispatcher
+	and CreateVideoFormatChangedEventArgsEventHandlerDispatcher for
+	the video capture stuff.
+
+2010-05-26  Alan McGovern  <amcgovern@novell.com>
+
+	* DoubleKeyedDictionary.cs: Sometimes we don't want to do the
+	  sanity checks to make sure we don't have duplicates in the
+	  ItemContainerGenerator dictionaries. It is legal to have one
+	  item in multiple containers.
+
+2010-05-25  Alan McGovern  <amcgovern@novell.com>
+
+	* IListExtensions.cs: Add a handy 'AddRange' extension method
+	  to IList<T>.
+
+2010-05-25  Alan McGovern  <amcgovern@novell.com>
+
+	* Helper.cs: Add some static "AreEqual" methods which do
+	  reference and/or value equality testing as appropriate.
+
+2010-05-24  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* NativeMethods.cs: Update to HttpRequest API.
+
+2010-05-24  Alan McGovern  <amcgovern@novell.com>
+
+	* Value.cs:
+	* ManagedXamlLoader.cs: We always store the correct type in
+	  our Value*s instead of failing over to Type::MANAGED now.
+	  GCHandles can be checked for with the new "GCHandleFlag"
+	  flag in the padding field. This should clear up a lot of
+	  warnings about incompatible types.
+
+2010-05-21  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Events.cs: Show console output on exceptions in debug mode too.
+
+2010-05-20  Alan McGovern  <amcgovern@novell.com>
+
+	* ManagedXamlLoader.cs: We can attach bindings to
+	  DependencyObjects now, so remove the check which enforced
+	  FrameworkElements. Fixes more of 232.
+
+2010-05-18  Alan McGovern  <amcgovern@novell.com>
+
+	* IListExtensions.cs: Add BinarySearch extension method to
+	  IList<T> so that I can binary search observable collections
+	  (and others).
+
+2010-05-17  Alan McGovern  <amcgovern@novell.com>
+
+	* ManagedXamlLoader.cs: Don't call value_delete_value until
+	  we're finished with the Value*.
+
+2010-05-17  Alan McGovern  <amcgovern@novell.com>
+
+	* ManagedXamlLoader.cs: Fix another two places where we need
+	  to call delete_value instead of free_value
+
+2010-05-17  Alan McGovern  <amcgovern@novell.com>
+
+	* ManagedXamlLoader.cs:
+	* MoonlightTypeConverter.cs:
+	* MarkupExpressionParser.cs:
+	* MoonlightValueConverter.cs: we should be calling
+	  value_delete_value not value_free_value.
+
+2010-05-17  Alan McGovern  <amcgovern@novell.com>
+
+	* Value.cs:
+	* ManagedXamlLoader.cs:
+	* NativeDependencyObjectHelper.cs: Make our managed Value
+	  struct implement IDisposable and make that call
+	  value_free_value. Change all places which use
+	  Value.FromObject to wrap the returned Value in a using
+	  statement. This should help find all the places where we use
+	  value_free_value incorrectly.
+
+2010-05-12  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Events.cs (CreateSendCompletedEventArgsEventHandlerDispatcher):
+	Do not use anonymous methods for code that needs to be decorated
+	with [SecuritySafeCritical] since the compiler can renamed them
+
+2010-05-11  Chris Toshok  <toshok@ximian.com>
+
+	* NativeMethods.cs (CreateManagedException): add
+	SendFailedException support.
+
+	* Events.cs (CreateSendCompletedEventArgsEventHandlerDispatcher):
+	we need a little hack here to get the exception from the error,
+	given the way our generator marshals MoonErrors.  Pass the
+	exception to SendCompletedEventArgs's ctor.
+
+2010-05-11  Jeffrey Stedfast  <fejj@novell.com>
+
+	* Events.cs: Added safe handler for ContentChangedEventHandler.
+
+	* NativeDependencyObjectHelper.cs: Added mapping to TextPointer
+	and TextSelection.
+
+2010-05-06  Chris Toshok  <toshok@ximian.com>
+
+	* Types.cs: add hack to register StylusPoint = Kind.STYLUSPOINT,
+	and also throw an exception when KindToType would have previously
+	returned null since it's actually an error (and a rather insidious
+	one at that)
+
+2010-05-03  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Helper.cs: Add CheckAccess helper for class that inherit
+	from System.Object (e.g. MessageBox)
+
+2010-04-23  Alan McGovern  <amcgovern@novell.com>
+
+	* MarkupExpressionParser.cs: {StaticResource} expressions are
+	  not allowed end in whitespace according to the moon-units.
+	  Fixes a regression in the tests.
+
+2010-04-19  Alan McGovern  <amcgovern@novell.com>
+
+	* ManagedXamlLoader.cs: Correctly handle setting bindings on
+	  attached properties through xaml.
+
+2010-04-19  Alan McGovern  <amcgovern@novell.com>
+
+	* ManagedXamlLoader.cs: If an attached property is referenced
+	  in xaml with a clr namespace prefix, the DP lookup will fail
+	  when we use full_type_name as we end up looking up:
+	  "Some.Namespace.SomeClass.Canvas" and "Left" instead of
+	  "Canvas" and "Left". If our DP lookup fails the first time,
+	  do a second lookup with "Canvas" and "Left" to see if that
+	  works. It's possible that multiple places can be affected by
+	  this.
+
+2010-04-19  Alan McGovern  <amcgovern@novell.com>
+
+	* MoonlightTypeConverter.cs: If we can't find the correct
+	  property when looking for typeconverters then just ignore it
+	  instead of throwing an exception. Fixes part of DRT 997.
+
+2010-04-15  Alan McGovern  <amcgovern@novell.com>
+
+	* Value.cs: ManagedTypeInfo needs to contain the Type::Kind
+	  for the type. This allows us figure out if one
+	  ManagedPropertyInfo is subclass/superclass of another which
+	  was not possible before.
+
+2010-04-14  Alan McGovern  <amcgovern@novell.com>
+
+	* MoonlightTypeConverter.cs: Correctly parse gridlengths like
+	  "5.3*" in our type converter.
+
+2010-04-09  Alan McGovern  <amcgovern@novell.com>
+
+	* NativeDependencyObjectHelper.cs: Add in proper null checks
+	  for for ReadLocalValue and ClearValue
+
+2010-04-09  Alan McGovern  <amcgovern@novell.com>
+
+	* MarkupExpressionParser.cs: We need to trim both double
+	  quotes and single quotes from the string. Fixes part of drt
+	  349.
+
+2010-04-08  Alan McGovern  <amcgovern@novell.com>
+
+	* MarkupExpressionParser.cs: Add support for some new SL4
+	  binding properties to the parser and also ensure we throw an
+	  exception for bindings which do not end in '}'
+
+2010-04-06  Alan McGovern  <amcgovern@novell.com>
+
+	* MoonlightTypeConverter.cs: Add enough support for nullable
+	  types in MoonlightTypeConverter so that it doesn't blow up
+	  completely when it encounters them.
+
+2009-04-05  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* NativeDependencyObjectHelper.cs: Add missing Stroke to the 
+	switch/case. Progress on DRT#649
+
+2010-04-01  Alan McGovern  <amcgovern@novell.com>
+
+	* MarkupExpressionParser.cs: Add handling for the '{}' escape
+	  string in MarkupExpressionParser. Also add parser support
+	  for the new SL4 binding types.
+
+2010-03-30  Alan McGovern  <amcgovern@novell.com>
+
+	* Value.cs:
+	* NativeDependencyObjectHelper.cs: StylusPoint is a DO in
+	  native and a struct in managed, so give it the same magic
+	  marshalling treatment that Matrix gets.
+
+2010-03-30  Alan McGovern  <amcgovern@novell.com>
+
+	* Types.cs: Make System.Enum be the base type of all enums so
+	  we can have a typesafe Value::AsEnum () method in native.
+
+2010-03-29  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs: We need to try looking up attached
+	properties with the prop's xmlns even if it is null, if that
+	doesn't work then we can try looking up with the element's xmlns.
+	Fixes attached properties in the default namespace on custom
+	elements.
+
+2010-03-29  Alan McGovern  <amcgovern@novell.com>
+
+	* Value.cs: Check that the type is non-null before accessing
+	  it so we emit the right warning if a type could not be
+	  found.
+
+2010-03-29  Alan McGovern  <amcgovern@novell.com>
+
+	* NativeDependencyObjectHelper.cs: This wasn't supposed to hit
+	  SVN.
+
+2010-03-29  Alan McGovern  <amcgovern@novell.com>
+
+	* Value.cs:
+	* ManagedXamlLoader.cs:
+	* MoonlightTypeConverter.cs:
+	* NativeDependencyObjectHelper.cs: Add enums to our type
+	  system so that we don't lose type information when
+	  attempting to parse them from xaml.
+
+
+	* Types.cs: When registering an enum in our type system, make
+	  its base type "System.Object" instead of
+	  System.Enum/System.ValueType. This simplifies the type
+	  system slightly and allows us to easily add enums to
+	  properties which are Type::OBJECT. We also need to count all
+	  value types (and enums) as having a public ctor.
+
+
+2010-03-29  Alan McGovern  <amcgovern@novell.com>
+
+	* Value.cs:
+	* ManagedXamlLoader.cs:
+	* MoonlightTypeConverter.cs:
+	* NativeDependencyObjectHelper.cs: Add enums to our type
+	  system so that we don't lose type information when
+	  attempting to parse them from xaml.
+
+
+	* Types.cs: When registering an enum in our type system, make
+	  its base type "System.Object" instead of
+	  System.Enum/System.ValueType. This simplifies the type
+	  system slightly and allows us to easily add enums to
+	  properties which are Type::OBJECT. We also need to count all
+	  value types (and enums) as having a public ctor.
+
+
+2010-03-26  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs: We should be using the property's xmlns
+	here.
+
+2010-03-26  Alan McGovern  <amcgovern@novell.com>
+
+	* Value.cs:
+	* Types.cs:
+	* MoonlightTypeConverter.cs:
+	* NativeDependencyObjectHelper.cs: Revert r154268 for now.
+	  It's causing regressions.
+
+2010-03-26  Alan McGovern  <amcgovern@novell.com>
+
+	* Kind.cs: Really remove Kind.cs from SVN.
+
+2010-03-26  Alan McGovern  <amcgovern@novell.com>
+
+	* Kind.cs:
+	* Value.cs:
+	* MoonlightTypeConverter.cs:
+	* NativeDependencyObjectHelper.cs: Add enums to our type
+	  system so that we don't lose type information when
+	  attempting to parse them from xaml.
+
+	* Types.cs: When registering an enum in our type system, make
+	  it's base type "System.Object" instead of
+	  System.Enum/System.ValueType. This simplifies the type
+	  system slightly and allows us to easily add enums to
+	  properties which are Type::OBJECT. We also need to count all
+	  value types (and enums) as having a public ctor.
+
+2010-03-25  Alan McGovern  <amcgovern@novell.com>
+
+	* Types.cs: Avoid a second dictionary lookup on the same type
+	  when doing a Type.Find in managed
+
+2010-03-24  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs: ToObject is somewhat expensive so nonts
+	let not use it unnecessarily.
+
+2010-03-23  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs: Dont use a regex here.
+
+2010-03-23  Jackson Harper  <jackson@ximian.com>
+
+	* MarkupExpressionParser.cs: Don't use regexs.  This almost
+	doubles performance of markup expression parsing.
+
+2010-03-23  Alan McGovern  <amcgovern@novell.com>
+
+	* NativeDependencyObjectHelper.cs: 1) Refactor the managed
+	  DependencyProperty.GetValue () to take a Type::Kind
+	  parameter so the correct default value metadata is returned.
+	2) Ensure we instantiate a new PropertyMetadata every time we
+	  call GetMetadata (Type) as the default value can change
+	  depending on the Type argument.
+
+2010-03-23  Alan McGovern  <amcgovern@novell.com>
+
+	* NativeDependencyObjectHelper.cs: 1) Refactor the managed
+	  DependencyProperty.GetValue () to take a Type::Kind
+	  parameter so the correct default value metadata is returned.
+	2) Ensure we instantiate a new PropertyMetadata every time we
+	  call GetMetadata (Type) as the default value can change
+	  depending on the Type argument.
+
+2010-03-16  Jackson Harper  <jackson@ximian.com>
+
+	* Types.cs: When we register a type we supply its content property
+	name now.
+	* ManagedXamlLoader.cs:
+	* XamlLoaderCallbacks.cs: We dont need a callback for getting
+	content properties anymore
+
+2010-03-16  Alan McGovern  <amcgovern@novell.com>
+
+	* NativeDependencyObjectHelper.cs: Managed land should not
+	  generate default values to cover up for missing
+	  DefaultValue/AutoCreateValue attributes in native.
+
+2010-03-15  Alan McGovern  <amcgovern@novell.com>
+
+	* MarkupExpressionParser.cs: Don't allocate a new
+	  StringBuilder every time we want to get the next piece
+
+2010-03-15  Alan McGovern  <amcgovern@novell.com>
+
+	* MarkupExpressionParser.cs: Fix some bugs in our handling of
+	  both quoted characters and trailing whitespace when parsing
+	  bindings.
+
+2010-03-15  Alan McGovern  <amcgovern@novell.com>
+
+	* ManagedXamlLoader.cs: The managed xaml loader doesn't need
+	  to call SetParent on DOs anymore. This should be handled
+	  fine by the engine.
+
+2010-03-12  Alan McGovern  <amcgovern@novell.com>
+
+	* MarkupExpressionParser.cs: Spaces aren't a terminating
+	  character for segments in a binding expression, only '}' and
+	  ',' appear to indicate the end of a segment. Fixes the new
+	  moon-unit testcase and appears to regress nothing.
+
+2010-03-12  Alan McGovern  <amcgovern@novell.com>
+
+	* MarkupExpressionParser.cs: When we enter or leave an escaped
+	  block, we need to include the escaped characters in our
+	  output string.
+
+2010-03-12  Alan McGovern  <amcgovern@novell.com>
+
+	* ManagedXamlLoader.cs: Comment this back out to fix the
+	  build. I'll add a test for this change next...
+
+2010-03-12  Alan McGovern  <amcgovern@novell.com>
+
+	* ManagedXamlLoader.cs: Refactor ManagedXamlLoader to look for
+	  the getter method instead of the setter method when trying
+	  to figure out if a DP is an attached DP or not as setters
+	  are not always required. When a DP type is typeof (IList),
+	  we use the IList setting code before attempting to use the
+	  static setter method. Fixes the bug where setting an
+	  attached property with no static setter in xaml would
+	  silently fail.
+
+2010-03-10  Jackson Harper  <jackson@ximian.com>
+
+	* MarkupExpressionParser.cs: Allow mustached statements in
+	expressions such as: \{foo bar\}.  A space is allowed
+	after the trailing closestache.
+
+2010-03-09  David Reveman  <davidr@novell.com>
+
+	* Value.cs: Handle the transition between libmoon DO-based
+	matrix (UnmanagedMatrix3D) and the managed, struct-based,
+	Matrix3D type.
+
+	* Types.cs: Force System.Windows.Media.Media3D.Matrix to be
+	registered as an UNMANAGEDMATRIX3D.
+
+2010-03-05  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Kind.cs:
+	* Events.cs: Regenerated.
+
+2010-03-04  Chris Toshok  <toshok@ximian.com>
+
+	* ToggleRef.cs, EventObjectToggleRef.cs: make ToggleRef an
+	abstract base class and EventObjectToggleRef the implementation
+	for EventObjects.  System.Windows.Browser will include its own
+	ToggleRef implementation for ScriptObjects.
+
+	* NativeDependencyObjectHelper.cs:
+	s/ToggleRef/EventObjectToggleRef/
+
+2010-03-03  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Types.cs: Remove verbose sanity block.
+
+2010-03-02  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Events.cs: Remove uncompilable debug code.
+
+2010-03-01  Alan McGovern  <amcgovern@novell.com>
+
+	* NativeDependencyObjectHelper.cs:
+	  DependencyProperty.DefaultValue now always contains the
+	  correct default value for a DP. It will always contain a
+	  valid value and not DependencyProperty.UnsetValue. We also
+	  correctly set PropertyMetadata.DefaultValue so that it
+	  contains DependencyProperty.UnsetValue when it should and
+	  when the property type is a ValueType, it converts
+	  DP.UnsetValue/null to a proper value.
+
+2010-02-19  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Value.cs: Remove slow code path warning.
+
+2010-02-12  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs: Better ambiguously matched duo detection.
+
+2010-02-11  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs: Specify params so we don't get ambiguous
+	matches when trying to find attached property get/setters. Note
+	that we dont know the type of the setter so we just use object.
+
+2010-02-11  Alan McGovern  <amcgovern@novell.com>
+
+	* NativeDependencyObjectHelper.cs: Add a missing case to the
+	  switch statement.
+
+2010-02-10  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+        * MoonError.cs: use g_free instead of Marshal.FreeHGlobal.
+
+2010-02-10  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* XamlLoaderCallbacks.cs:
+	* Value.cs: Add some comments about what callers have to do to not
+	leak.
+
+	* MoonlightValueConverter.cs:
+	* MoonlightTypeConverter.cs:
+	* ManagedXamlLoader.cs: Properly dispose the Value instances we create.
+
+2010-02-10  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* MarkupExpressionParser.cs: Fix compiler warning.
+
+2010-02-09  Larry Ewing  <lewing@novell.com>
+
+	* NativeDependencyObjectHelper.cs: make setting the property to
+	DependencyPropery.UnsetValue clear the value.
+
+	Fixes the size of the MediaElement in the Olympics fullscreen
+	mode.
+
+2010-02-09  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* A11yHelper.cs:
+	* Helper.PublicKey.cs: Fix 3.0 compiler warning.
+	* A11yHelper.cs: Fix compiler warnings.
+
+2010-02-08  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs: Sometimes we don't have a resource base.
+	This fixes a nullref crash, but the real fix is probably
+	to go through and make sure we always have a resource base
+	(specifically GetGenericStyleFor should probably have this).
+
+2010-02-03  Andreia Gaita  <avidigal@novell.com>
+
+	* GeneratedPInvokes.cs, Types.g.cs: remove autogenerated files from
+	the repo
+
+2010-02-03  Jackson Harper  <jackson@ximian.com>
+
+	* MarkupExpressionParser.cs: Allow strings to be surrounded by \{
+	\} blocks, also allow escaping of chars in those blocks like \,
+	(this really doesn't matter because the block will swallow until
+	it finds the closing brace).
+
+2010-02-01  Alan McGovern  <amcgovern@novell.com>
+
+	* MarkupExpressionParser.cs: We shouldn't call
+	  NativeMethods.value_free_value2 if value_ptr is null. This
+	  can happen if we look up a static resource which doesn't
+	  exist.
+
+2010-01-29  Alan McGovern  <amcgovern@novell.com>
+
+	* MarkupExpressionParser.cs: Parse the UpdateSourceTrigger
+	  property properly for Bindings.
+
+2010-01-28  Alan McGovern  <amcgovern@novell.com>
+
+	* MoonlightTypeConverter.cs: Throw an exception with the
+	  correct message
+
+2010-01-28  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Types.cs: Remove debug spew.
+
+2010-01-27  Chris Toshok  <toshok@ximian.com>
+
+	* NativeMethods.cs (CreateManagedException): handle
+	ListenFailedException.
+
+	* Events.cs: add
+	CreateMessageReceivedEventArgsEventHandlerDispatcher and
+	CreateSendCompletedEventArgsEventHandlerDispatcher.
+
+2010-01-27  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* NativeDependencyObjectHelper.cs: GetValue: Uncomment thread check
+	that was accidentally committed.
+
+2010-01-26  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs: If we have unrooted relative URIs expand
+	them, this is because URIs are relative to their base.
+
+2010-01-26  Alan McGovern  <amcgovern@novell.com>
+
+	* Types.cs: TypeToKind should register the type if it hasn't
+	  already been registered. Fixes some TypeConversion issues in
+	  http://burkovsky.gmxhome.de/agfractal where we were looking
+	  up the native kind of 'int16' before it was registered.
+
+2010-01-22  Alan McGovern  <amcgovern@novell.com>
+
+	* DoubleKeyedDictionary.cs: Fix up the interactions between
+	  the various ItemsChanged events and OnItemsChanged methods.
+	  I think we're now clearing containers and refreshing the ICG
+	  in the correct place aswell.
+
+2010-01-19  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* MoonlightTypeConverter.cs: Give more information in exception message.
+
+2010-01-14  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Kind.cs: Regenerated.
+
+2010-01-14  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Types.cs: Add a kind->type hash table instead of enumerating. This
+	makes MOON_TRACE=all output decrease significantly (and hopefully makes
+	initial loading a tiny bit faster).
+
+2010-01-12  Alan McGovern  <amcgovern@novell.com>
+
+	* DoubleKeyedDictionary.cs: Add some API so the container can
+	  be completely cleared and make this class non-public.
+
+2010-01-12  Andreia Gaita  <avidigal@novell.com>
+
+	* NativeMethods.cs: (SetPropertyDelegate) Add support for indexed
+	property setters
+
+2010-01-08  Jeffrey Stedfast  <fejj@novell.com>
+
+	* NativeDependencyObjectHelper.cs (CreateObject): BitmapSource is
+	abstract, so throw an exception if we try to instantiate one.
+
+2009-01-04  Sebastien Pouliot  <sebastien@ximian.com> 
+
+	* Value.cs: PixelFormat was not part of SL3 final API.
+
+2009-12-31  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* GeneratedPInvokes.cs: Regenerated
+
+2009-12-29  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Kind.cs: Regenerated.
+
+2009-12-29  Andreia Gaita  <avidigal@novell.com>
+
+	Initial support for indexed properties, like this[int index]. Only
+	getters are supported right now.
+
+	* NativeMethods.cs: Add parameters to the GetProperty delegate,
+	to support indexed property getters
+
+2009-12-22  Alan McGovern  <amcgovern@novell.com>
+
+	* DoubleKeyedDictionary.cs: Add a helper class to simplify
+	  mapping an index to a container and a container to an index.
+	  Will also be used later on to map items to/from an index
+	  too.
+
+2009-12-21  Brad Taylor  <brad@getcoded.net>
+
+	* A11yHelper.cs:
+	* ApplicationLauncher.cs: Allow the AutomationBridge to cleanly
+	shutdown before the domain is unloaded.
+
+	r: spouliot
+
+2009-12-16  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* NativeDependencyObjectHelper.cs: Update according to Application ctor
+	changes.
+
+2009-12-15  Jeffrey Stedfast  <fejj@novell.com>
+
+	* EasingFunctionWrapper.cs: Made EaseInCore protected.
+
+2009-12-15  Alan McGovern  <amcgovern@novell.com>
+
+	* GeneratedPInvokes.cs: regen
+
+	* NativeMethods.cs: Rename ApplyStyle to ConvertSetterValues
+	  to reflect what it actually does. Rename ApplyDefaultStyle
+	  to GetDefaultStyle and make it return the default style
+	  instead.
+
+2009-12-10  Chris Toshok  <toshok@ximian.com>
+
+	* MoonlightTypeConverter.cs (ConvertObject): add a bool
+	doToStringConvertion flag for template bindings, which don't seem
+	to do this automatically.
+
+2009-12-09  Chris Toshok  <toshok@ximian.com>
+
+	* MoonlightTypeConverter.cs: allow conversion from string to
+	ImageSource/BitmapSource/BitmapImage properties by treating the
+	string like a url.
+
+2009-12-09  Alan McGovern  <amcgovern@novell.com>
+
+	* ManagedXamlLoader.cs: If we're setting a value of type
+	  Binding to an object we need to check for the existance of a
+	  DP first and if that doesn't exist, we look up a standard
+	  CLR property.
+
+2009-12-09  Alan McGovern  <amcgovern@novell.com>
+
+	* ManagedXamlLoader.cs: We shouldn't pass null here as we'll
+	  miss out on any TypeConverters declared on the property.
+
+	* MoonlightTypeConverter.cs: When using a
+	  MoonlightTypeConverter, if the source type is directly
+	  assignable to the destination, we should just return the
+	  value.
+
+2009-12-08  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* GeneratedPInvokes.cs: Regenerated.
+
+2009-12-04  Jackson Harper  <jackson@ximian.com>
+
+	* MoonlightTypeConverter.cs: Convert CacheMode's from strings.
+
+2009-12-04  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs: remove inaccurate comment.
+
+2009-12-02  Alan McGovern  <amcgovern@novell.com>
+
+	* MarkupExpressionParser.cs: Implement support for
+	  RelativeSource based bindings.
+
+2009-12-02  Alan McGovern  <amcgovern@novell.com>
+
+	* MarkupExpressionParser.cs: Add provisional support for the
+	  SL3 Binding.ElementName API.
+
+2009-12-01  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs: Make sure we dont set a target property
+	when we actually have an attached property of the same name.
+	
+2009-11-30  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* GeneratedPInvokes.cs: Regenerated.
+
+2009-11-30  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* A11yHelper.cs: MOON_A11Y_INTERNAL_HACK is not needed anymore
+	  since the audit finished in r147098. r: spouliot
+
+2009-11-30  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* ManagedXamlLoader.cs: Use the safe set_parent variant.
+
+	* GeneratedPInvokes.cs: Regenerated.
+
+2009-11-27  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* GeneratedPInvokes.cs: Regenerated.
+
+2009-11-27  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Value.cs:
+	* Surface.cs:
+	* XamlLoaderCallbacks.cs:
+	* NativeDependencyObjectHelper.cs: The Native surface is refcounted and an
+	EventObject descendant, ensure the managed equivalent uses the same semantics.
+
+2009-11-25  Jackson Harper  <jackson@ximian.com>
+
+	* GeneratedPInvokes.cs: regen
+
+2009-11-23  Alan McGovern  <amcgovern@novell.com>
+
+	* GeneratedPInvokes.cs: regen
+
+2009-11-21  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* ApplicationLauncher.cs: Static-ify type. Found using Gendarme's
+	ConsiderUsingStaticTypeRule
+	* DispatcherTimer.cs: Seal type. Found using Gendarme's
+	AvoidUnsealedUninheritedInternalTypeRule.
+	* EasingFunctionWrapper.cs: Seal type. Found using Gendarme's
+	AvoidUnsealedUninheritedInternalTypeRule. Remove duplicate 
+	ReportException	method.
+	* EventHandlerList.cs: Seal types. Found using Gendarme's 
+	AvoidUnsealedUninheritedInternalTypeRule.
+	* Events.cs: Static-ify type. Found using Gendarme's 
+	ConsiderUsingStaticTypeRule. Remove duplicate ReportException
+	method.
+	* Helper.cs: Add (now shared) ReportException method.
+	* Hosting.cs: Static-ify type. Found using Gendarme's 
+	ConsiderUsingStaticTypeRule
+	* ManagedType.cs: Seal type. Found using Gendarme's
+	AvoidUnsealedUninheritedInternalTypeRule
+	* ManagedXamlLoader.cs, MarkupExpressionParser.cs: Seal types.
+	Found using Gendarme's AvoidUnsealedUninheritedInternalTypeRule.
+	Use faster IndexOf(char) overload. Found using Gendarme's 
+	PreferCharOverloadRule
+	* MoonException.cs, MoonlightTypeConverter.cs, 
+	MoonlightValueConverter.cs: Seal types. Found using Gendarme's
+	AvoidUnsealedUninheritedInternalTypeRule
+	* NativeDependencyObjectHelper.cs: Static-ify type. Found using
+	Gendarme's ConsiderUsingStaticTypeRule
+	* SetPropertyDelayedAttribute.cs: Seal. Found using Gendarme's 
+	AvoidUnsealedConcreteAttributesRule. Remove extra using clauses
+	* StaticResource.cs, StreamWrapper.cs, Surface.cs, ToggleRef.cs,
+	Types.cs: Seal types. Found using Gendarme's
+	AvoidUnsealedUninheritedInternalTypeRule
+
+2009-11-20  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* NativeMethods.cs: Remove types_register_type, it's now generated.
+
+	* GeneratedPInvokes.cs: Regenerated.
+
+2009-11-20  Chris Toshok  <toshok@ximian.com>
+
+	* NativeDependencyObjectHelper.cs: add PIXELSHADER and
+	SHADEREFFECT to CreateObject.
+
+2009-11-20  Sebastien Pouliot  <sebastien@ximian.com> 
+
+	* GeneratedPInvokes.cs: Regenerated
+	* NativeMethods.cs (types_register_type): Marshal bools properly
+
+2009-11-19  Sebastien Pouliot  <sebastien@ximian.com> 
+
+	* XamlLoaderCallbacks.cs: Remove old debugging code. Found using
+	Gendarme's WriteStaticFieldFromInstanceMethodRule
+
+2009-11-19  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* MoonError.cs: Avoid code duplication and reuse Value.
+	StringToIntPtr
+	* Value.cs: Change StringToIntPtr visibility to public and handle
+	null case
+
+2009-11-19  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* GeneratedPInvokes.cs: Regenerated.
+
+2009-11-18  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* NativeDependencyObjectHelper.cs: Added object construction case for
+	TimelineMarkerRoutedEventArgs.
+
+	* Kind.cs:
+	* GeneratedPInvokes.cs: Regenerated.
+
+	* Events.cs: CreateTimelineMarkerRoutedEventHandlerDispatcher: don't
+	have anonymous methods which requires an SSC attribute - the compiler
+	generated name isn't stable, and any unrelated change (including
+	compiler update) can cause the generated attributes to not work.
+
+2009-11-17  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Kind.cs:
+	* GeneratedPInvokes.cs: Regenerated.
+
+	* Events.cs: Added CreateLogReadyRoutedEventHandlerDispatcher.
+
+2009-11-17  Jackson Harper  <jackson@ximian.com>
+
+	* MarkupExpressionParser.cs: Implement parsing for RelativeSource
+	expressions.
+
+2009-11-12  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Types.cs: Improve readability. Also use Type.EmptyTypes to
+	avoid needless (and repetitive) allocation of an empty array
+
+2009-11-11  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Helper.cs: Remove old, digest-only, codec integrity check
+
+2009-11-10  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* GeneratedPInvokes.cs: Regenerated.
+
+	r: sde
+
+2009-11-09  Chris Toshok  <toshok@ximian.com>
+
+	* NativeDependencyObjectHelper.cs (CreateObject): add mappings for
+	BitmapCache/CacheMode.
+
+	r: spouliot
+
+2009-11-08  Chris Toshok  <toshok@ximian.com>
+
+	* NativeDependencyObjectHelper.cs (CreateObject): add mappings for
+	the out of browser types.
+
+	r: lewing
+
+2009-11-08  Chris Toshok  <toshok@ximian.com>
+
+	* NativeDependencyObjectHelper.cs (CreateObject): add mappings for
+	the effect types.
+
+	r: kangaroo
+
+2009-11-05  Alan McGovern  <amcgovern@novell.com>
+
+	* NativeMethods.cs:
+	* GeneratedPInvokes.cs: regen. r: toshok
+
+2009-11-05  Alan McGovern  <amcgovern@novell.com>
+
+	* Value.cs:
+	* NativeDependencyObjectHelper.cs: Create
+	  MediaAttributeCollection in the correct way. r: rolf
+
+2009-11-02  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Value.cs: PtrToStructure doesn't work with structure instances,
+	use the type overload instead. Fixes MS DRT #480.
+
+	r: alan
+
+2009-11-02  Alan McGovern  <amcgovern@novell.com>
+
+	* NativeMethods.cs:
+	* GeneratedPInvokes.cs: regen. r: rolf
+
+2009-10-20  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs: fix the lookup of default namespace
+	types in managed attached properties on elements in a custom
+	managed namespace
+
+	r: kangaroo
+
+2009-10-20  Andreia Gaita  <avidigal@novell.com>
+
+	* GeneratedPInvokes.cs: regen
+
+	r: rolf
+
+2009-10-15  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Kind.cs: Regenerated.
+
+	r: sde
+
+2009-10-07  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs: Fix binding to attached properties.  In
+	this case we should lookup the DP not look for the attached
+	property set method.
+
+2009-10-05  Alan McGovern  <amcgovern@novell.com>
+
+	* GeneratedPInvokes.cs: Store the starting_generation and
+	  only_unemitted flags on the EmitContext so that the values
+	  are used when we call DoEmitCurrentContext from managed
+	  code. r: toshok
+
+2009-09-29  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* GeneratedPInvokes.cs: Regenerated.
+
+	r: alan
+
+2009-10-01  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* StreamWrapper.cs: Ensure no callback method leak exceptions to
+	native code. Close callback: free the gchandle.
+
+	r: spouluit
+
+2009-09-29  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Surface.cs: Remove empty dtor and dead code.
+
+	r: jackson
+
+2009-09-29  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Kind.cs: Regenerated.
+	
+        r: alan, spouliot
+
+2009-09-25  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* NativeDependencyObjectHelper.cs: Lock all accesses to the objects
+	hash table.
+
+	r: andreia
+
+2009-09-25  Sebastien Pouliot  <sebastien@ximian.com> 
+
+	* GeneratedPInvokes: regen.
+
+	r: andreia
+
+2009-09-23  Chris Toshok  <toshok@ximian.com>
+
+	* NativeDependencyObjectHelper.cs (AddNativeMapping): add more
+	info to the spew.
+	(CreateObject): enable MouseButtonEventArgs creation since we now
+	have a Kind for it.
+
+	* Events.cs: fix the FIXME, and treat MouseButtonEventArgs the
+	same as the other routedeventargs subclasses (i.e. NDOH.FromIntPtr
+	?? new MouseButtonEventArgs)
+
+	* GeneratedPInvokes.cs, Kind.cs: regen.
+
+	r: lewing
+
+2009-09-23  Chris Toshok  <toshok@ximian.com>
+
+	* NativeDependencyObjectHelper.cs (AddNativeMapping): if there's a
+	conflict in DEBUG builds, throw an exception.  otherwise write it
+	out to the console. return false if we didn't create a toggle
+	ref (because either native == 0 or we'd already created a
+	toggleref for this object.)
+	(Lookup): cast to INativeEventObjectWrapper, not
+	INativeDependencyObjectWrapper.  This gets eventargs working.
+	(CreateObject): add cases for the EventObject-derived
+	EventArgs-subclasses.
+	
+	* EventHandlerList.cs: stop using the System.ComponentModel
+	implementation, use a
+	Dictionary<int,Dictionary<int,EventHandlerData>> subclass.  This
+	is just used to keep refs to delegates so that they aren't
+	collected while they're registered with unmanaged-land.
+
+	* DispatcherTimer.cs: remove autogenerated events.
+
+	r: spouliot, andriea
+
+2009-09-18  Jackson Harper  <jackson@ximian.com>
+
+	* XamlLoaderCallbacks.cs: Use flags for validating tempaltes and
+	importing the default xmlns now.
+
+2009-09-17  Jeffrey Stedfast  <fejj@novell.com>
+
+	* MarkupExpressionParser.cs: Removed unused variables.
+
+	* Types.cs: Got rid of unused variables.
+
+	* ManagedXamlLoader.cs: Removed unused variables.
+
+	r:kangaroo
+
+2009-09-14  Jeffrey Stedfast  <fejj@novell.com>
+
+	* Helper.cs (CanonicalizeAssemblyPath): New helper function.
+	(CanonicalizeResourceName): Same.
+
+	r: spouliot
+
+2009-09-15  Sebastien Pouliot  <sebastien at ximian.com>
+
+	* GeneratedPInvokes.cs: Regenerated
+
+	r: toshok
+
+2009-09-14  Chris Toshok  <toshok@ximian.com>
+
+	* MoonError.cs (FromIntPtr): new method, marshal it from
+	unmanaged, and dup the string.
+
+	* NativeMethods.cs (CreateManagedException): actually return the
+	exception object, don't throw it here.
+
+2009-09-11  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Kind.cs: Regenerated.
+
+	r: sde
+
+2009-09-10  Jackson Harper  <jackson@ximian.com>
+
+	* SetPropertyDelayedAttribute.cs: An attribute that can be placed
+	on properties to specify that they are set after the item is fully
+	parsed.
+	* XamlLoaderCallbacks.cs: Add a flags enum to the callback data
+	* ManagedXamlLoader.cs: When setting properties make sure they
+	aren't delayed attributes, if they are we will set them after the
+	item is full parsed.
+	* GeneratedPInvokes.cs: regen
+
+	r: spouliot
+
+2009-09-09  Chris Toshok  <toshok@ximian.com>
+
+	* ApplicationLauncher.cs: the two InitializeDeployment methods
+	both take culture/uiculture names now.
+
+	r: andreia
+
+2009-09-03  Stephane Delcroix  <sdelcroix@novell.com>
+
+	* Value.cs: static UnmanagedUri.FromUri () method. used in Value
+	and DZITS.cs
+
+2009-08-27  Chris Toshok  <toshok@ximian.com>
+    
+    	* ManagedXamlLoader.cs (ManagedXamlLoader.LookupType): rework this
+    	pretty substantially.  If we're given an assembly name, load that
+    	assembly and look up the type there.  If we're only given the type
+    	name, we need to iterate over the assemblies that the deployment
+    	contains, looking for them there.
+    
+    	A slightly more controversial is that apparently it's valid to do
+    	this: <UserControl x:Class="Some.Type"/> where Some.Type is
+    	private.
+    
+    	http://www.propserv.otago.ac.nz/imap/ makes use of both of these
+    	features. The private type it loads is
+    	Microsoft.VirtualEarth.MapControl.Core.DragRectangle, which is
+    	defined thusly:
+    
+    	.class private auto ansi beforefieldinit DragRectangle
+                extends
+	[System.Windows]System.Windows.Controls.UserControl
+
+	jackson - We restrict these private lookups to lookup only, it is
+	illegal to create an internal type in the parser, it only works
+	while hydrating because the type is already created.
+
+	r: jackson/toshok
+
+2009-08-26  Alan McGovern  <amcgovern@novell.com>
+
+	* GeneratedPInvokes.cs: Allow FrameworkTemplates to be
+	  expanded in managed code. Using that, expand the
+	  ItemsPanelTemplate in ItemsControl when it is available. r:
+	  toshok
+
+2009-08-26  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* A11yHelper.cs: Fixed typos in last "a11y" commit.
+
+2009-08-26  Alan McGovern  <amcgovern@novell.com>
+
+	* Kind.cs: regen r: shana
+
+2009-08-26  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* ApplicationLauncher.cs: Initialize A11y in SL >= 2.0 apps.
+
+	* A11yHelper.cs: New class with the purpose of looking for
+	  a11y assemblies dynamically. For now it only supports the
+	  extra XPI deployment.
+
+2009-08-25  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Events.cs: Don't call Content.InvokeResize inside the loaded
+	callback. Doing so will cause infinite recursion if something
+	is added (hence loaded) in the plugin OnResize event.
+	Documentation states that "This event will occur upon initial 
+	loading of the Silverlight plug-in." and runtime.cpp does that.
+	[Fix crasher bug #504979 http://www.bennedik.de/Silverboard.html]
+
+	r: alan, jackson
+
+2009-08-21  Jeffrey Stedfast  <fejj@novell.com>
+
+	* Value.cs: Add a Close function pointer to
+	UnmanagedStreamCallbacks struct.
+
+	r:toshok
+
+2009-08-20  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs: Supply the name and full name of the
+	property to TrySetExpression, use the name for everything but
+	attached properties.
+	r:alan
+
+2009-08-20  Alan McGovern  <amcgovern@novell.com>
+
+	* ManagedXamlLoader.cs:
+	* MarkupExpressionParser.cs: Applying a TemplateBinding to a
+	  non-framework element should silently discard the binding.
+	  r: jackson
+
+2009-08-18  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs: The content property must be specified on
+	the type that contains the property, inheritance should be
+	ignored.
+
+	r:jeff
+
+2009-08-15  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* INativeEventObjectWrapper.cs: Refactored out EventObject code from
+	INativeDependencyObjectWrapper into INativeEventObjectWrapper.
+
+	* ToggleRef.cs: Change API to use INativeEventObjectWrapper instead
+	of INativeDependencyObjectWrapper.
+
+	* NativeDependencyObjectHelper.cs: Add a FreeNativeMapping method
+	and change method signatures to use INativeEventObjectWrapper instead
+	of INativeDependencyObjectWrapper whenever required.
+
+	* MarkupExpressionParser.cs: Update according to API changes in 
+	NativeDependencyObjectHelper.
+
+	* INativeDependencyObjectWrapper.cs: Make this interface inherit from
+	INativeEventObjectWrapper.
+
+	* Events.cs: Updated according to API changes in RoutedEventArgs.
+
+	r: andreia
+
+2009-08-14  Jeffrey Stedfast  <fejj@novell.com>
+
+	* StreamWrapper.cs: Added a Close() method so native code can
+	close the stream when it is done with it (needed to fix leaking of
+	Resource streams). Also simplified some of the methods by getting
+	rid of unneeded variables.
+
+	r:kangaroo
+
+2009-08-12  Alan McGovern  <amcgovern@novell.com>
+
+	* NativeMethods.cs:
+	* GeneratedPInvokes.cs: regen r: toshok
+
+2009-08-12  Chris Toshok  <toshok@ximian.com>
+
+	* GeneratedPInvokes.cs: regen.
+
+2009-08-12  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs: Handle converting ints to enum
+	values. This is done in the parser instead of the converter
+	because data binding can't do this.
+	
+2009-08-11  Jackson Harper  <jackson@ximian.com>
+
+	* NativeDependencyObjectHelper.cs: Add SKEWTRANSFORM to the
+	switch.
+
+2009-08-10  Jackson Harper  <jackson@ximian.com>
+
+	* MarkupExpressionParser.cs:
+	* ManagedXamlLoader.cs: Allow markup on non FrameworkElement
+	objects.  StaticResources should work on non FEs and setting a
+	Binding that is of type Binding should work on non FEs.
+	- Make sure we unseal setters when setting properties.
+
+2009-08-08  Chris Toshok  <toshok@ximian.com>
+
+	* Value.cs: re-enable the now functioning FontSource marshalling.
+
+	* StreamWrapper.cs (StreamWrapper.Read): add spew on exceptions
+	here for the time being.  they helped track down problems in
+	fontmanager.cpp/Value.cs
+
+2009-08-07  Andreia Gaita  <avidigal@novell.com>
+
+	* GeneratedPInvokes.cs: regen.
+
+2009-08-06  Chris Toshok  <toshok@ximian.com>
+
+	* GeneratedPInvokes.cs: regen.
+
+2009-08-06  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs: Need to check/set whether a property has
+	been set before setting it in managed.
+	* GeneratedPInvokes.cs: regen
+
+2009-08-05  Jackson Harper  <jackson@ximian.com>
+
+	* MoonlightTypeConverter.cs: We need to handle TimeSpans here,
+	since these are normally handled by TypeDescriptors default
+	TypeConverters.
+
+2009-07-29  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Helper.cs: Make this a partial class. Add CheckFileIntegrity
+	to verify the codecs integrity. The currently enabled code simply
+	checks the known SHA1 of the current codecs (so it's still 
+	compatible with the binary blobs downloaded from MS)
+	* Helper.PublicKey.cs: New. Contains the public key used to 
+	verify the codecs integrity.
+
+2009-07-29  Alan McGovern  <amcgovern@novell.com>
+
+	* Events.cs: When eventhandlers are being invoked on a
+	  RoutedEvent, once one handler sets Handled to true,
+	  subsequent handlers should not be invoked.
+
+2009-07-29  Alan McGovern  <amcgovern@novell.com>
+
+	* Events.cs: An extra RaiseKeyDown method is unnecessary -
+	  remove it and use InvokeKeyDown properly.
+
+2009-07-29  Alan McGovern  <amcgovern@novell.com>
+
+	* Events.cs:
+	* GeneratedPInvokes.cs: 1) TextBox cannot hook into Key press
+	  events in unmanaged code otherwise they never propagate to
+	  managed and the user cannot intercept them. Instead of
+	  hooking to the event in native code, just call native
+	  TextBox::OnKeyDown in the managed override.
+	2) Key press events are actually handled in two different
+	  places. 'Navigation' keypresses like Left/Right/PgUp are
+	  handled when the textbox OnKeyDown virtual method is
+	  invoked. 'Character' keypresses like 'a', 'b', 'c' are
+	  handled after the KeyDown event is emitted
+	3) If a key press does not affect the textbox state (i.e.
+	  pressing 'left' when the caret is already at the very left),
+	  then the keypress is not handled.
+	4) The KeyDown event is emitted even if OnKeyDown is overriden
+	  and the base method is not invoked.
+	5) The tab key should be interpreted as 'Focus next control'
+	  only after the KeyDown event handlers have run and the key
+	  press is not handled.
+
+2009-07-28  Jackson Harper  <jackson@ximian.com>
+
+	* Types.cs: Force System.Windows.Media.Matrix to be registered as
+	an UNMANAGEDMATRIX.  Fixes a lot of the
+	Matrix <-> System.Widnows.Media.Matrix isusues.
+
+2009-07-27  Jackson Harper  <jackson@ximian.com>
+
+	* XamlLoaderCallbacks.cs: we hydrate with a Value* now because it
+	is legal to have non DOB top level elements that get hydrated.
+
+2009-07-26  Jackson Harper  <jackson@ximian.com>
+
+	* Value.cs: Try casting to a INativeDependencyObjectWrapper
+	instead of a DependencyObject, this lets us stuff Applications in
+	Value without losing it's type.
+
+2009-07-24  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Helper.cs: Remove unused code.
+	* ManagedXamlLoader.cs: Fix typo.
+
+2009-07-23  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* GeneratedPInvokes.cs: Regenerated.
+
+2009-07-22  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* GeneratedPInvokes.cs: Regenerated.
+
+2009-07-20  Chris Toshok  <toshok@ximian.com>
+
+	* ApplicationLauncher.cs (ApplicationLauncher.CreateXamlLoader):
+	add a resourceBase, and pass it along to
+	XamlLoader.CreateManagedXamlLoader.
+
+	* GeneratedPInvokes.cs: regen.
+
+	* ManagedXamlLoader.cs (ManagedXamlLoader.ctor): add a
+	resourceBase argument.
+	(ManagedXamlLoader.TrySetExpression): remove one level of
+	redundant nesting.
+
+	* NativeMethods.cs: add resourceBase to the GetResourceCallback
+	delegate type.
+
+	* XamlLoaderCallbacks.cs: add resourceBase parameters everywhere.
+
+2009-07-17  Larry Ewing  <lewing@novell.com>
+
+	* MoonError.cs: always at least copy the exception message.
+
+2009-07-17  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Kind.cs: Regenerated.
+
+2009-07-15  Jackson Harper  <jackson@ximian.com>
+
+	* XamlLoaderCallbacks.cs:
+	* ManagedXamlLoader.cs: Consolidate some of the data passed to
+	every callback and not used much into a struct.
+
+2009-07-15  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* GeneratedPInvokes.cs: Regenerated.
+
+2009-07-15  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* GeneratedPInvokes.cs: Regenerated.
+
+2009-07-13  Jackson Harper  <jackson@ximian.com>
+
+	* MoonError.cs: we need to pass the message back to unmanaged
+	also.
+
+2009-07-13  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs: Throw the proper exception here.
+
+2009-07-13  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs: throw a parsing exception if we there is
+	no key for a resource, this will get turned into a MoonError.
+	* MoonError.cs: Get the error code from the xamlparseexception
+	
+2009-07-13  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Kind.cs: Regenerated.
+
+2009-07-13  Alan McGovern  <amcgovern@novell.com>
+
+	* GeneratedPInvokes.cs: TabNavigation should activate if the
+	  control does not handle the Tab key
+
+2009-07-09  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs: Raise an error if we are trying to set a
+	value type non nullable property to x:Null.
+
+2009-07-09  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs: If there is an error setting the value we
+	should just propogate it up.
+
+2009-07-07  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs: Seal/Unseal setters when setting
+	properties, just like in unmanaged.
+
+2009-07-06  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs: When we add content properties we need to
+	check if they are ILists.
+	- Now that adding to an IList content property works properly
+	don't add to IList in SetProperty, because that should be
+	previously handled
+	
+2009-07-02  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* NativeMethods.cs: Added new delegate.
+
+	* GeneratedPInvokes.cs: Regenerated.
+
+2009-07-01  Chris Toshok  <toshok@ximian.com>
+
+	* Kind.cs: regen.
+
+2009-06-30  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs: 
+	* XamlLoaderCallbacks.cs: Add a validate_templates param
+	* GeneratedPInvokes.cs: Regen
+	
+2009-06-30  Alan McGovern  <amcgovern@novell.com>
+
+	* MarkupExpressionParser.cs: Set the source properly, it is
+	  provided by either value or str_value, depending on which is
+	  non-null.
+
+2009-06-26  Chris Toshok  <toshok@ximian.com>
+
+	* GeneratedPInvokes.cs: regen.
+
+2009-06-25  Chris Toshok  <toshok@ximian.com>
+
+	* GeneratedPInvokes.cs: regen.
+
+2009-06-25  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Kind.cs: Regenerated.
+
+2009-06-24  Chris Toshok  <toshok@ximian.com>
+
+	* Value.cs: don't store FontStretch/Style/Weight as int32's.  we
+	use structs in unmanaged now too.
+
+	* MoonlightTypeConverter.cs: convert FontStretch/Style/Weight here
+	without going back to unmanaged.
+
+2009-06-22  Chris Toshok  <toshok@ximian.com>
+
+	* MarkupExpressionParser.cs: trim the end of the result from
+	GetNextPiece so that we don't include trailing spaces in static
+	resource keys.
+
+2009-06-22  Chris Toshok  <toshok@ximian.com>
+
+	* MarkupExpressionParser.cs: add a copyright/license blurb, and
+	add a "allowed_spaces" argument to GetNextPiece.  This is so
+	StaticResources can refer to keys that contain spaces.  Unbreaks
+	the iis smooth streaming site.
+
+2009-06-19  Jackson Harper  <jackson@ximian.com>
+
+	* XamlLoaderCallbacks.cs: Remove AddToContainer andd AddChild
+	- Add MoonError to all the callbacks.
+	* ManagedXamlLoader.cs: New managed version of AddChild remove
+	AddToContainer
+	
+2009-06-18  Sebastien Pouliot  <sebastien@ximian.com> 
+
+	* Value.cs: Comment some code to avoid crash when using FontSource
+
+2009-06-18  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* GeneratedPInvokes.cs: regen
+
+2009-06-17  Chris Toshok  <toshok@ximian.com>
+
+	* ManagedXamlLoader.cs (ConvertType): use a MoonlightTypeConverter
+	if there's no converter for the property (or the property type).
+
+2009-06-17  Chris Toshok  <toshok@ximian.com>
+
+	* MarkupExpressionParser.cs (LookupNamedResource): throw a
+	XamlParseException if name is null.
+
+2009-06-16  Chris Toshok  <toshok@ximian.com>
+
+	* StaticResource.cs: add an internal class so that the managed
+	parser can easily create StaticResource objects from
+	<StaticResource> elements.
+
+	* ManagedXamlLoader.cs (SetPropertyFromValue): if obj_value is a
+	StaticResource, use a hack and replace obj_value with a
+	"{StaticResource $resourceKey}" string so we re-use the same code
+	path.
+	(TrySetExpression): we need to call ConvertType on the
+	StaticResource's lookup value.  This allows us to use int
+	resources for double properties.
+	(LookupPropertyObject): clean up a tiny bit, and we never need to
+	return an *actual* value here.  the type is the important part, so
+	just return a nulled object with the correct kind.
+
+2009-06-14  Chris Toshok  <toshok@ximian.com>
+
+	* MarkupExpressionParser.cs (ParseExpression): fix compiler
+	warnings.
+
+2009-06-16  Andreia Gaita  <avidigal@novell.com>
+
+	* NativeDependencyObjectHelper.cs: (CreateObject) don't ref.
+	All objects are reffed by ToggleRef on creation (through the
+	NativeHandle assignment), so the hold is guaranteed there.
+
+2009-06-12  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs: Validate xml namespaces.
+
+2009-06-12  Alan McGovern  <amcgovern@novell.com>
+
+	* Events.cs:
+	* Hosting.cs: Ensure that the handlers for Resized and
+	  FullScreen are only registered once.
+
+2009-06-10  Jackson Harper  <jackson@ximian.com>
+
+	* XamlLoaderCallbacks.cs:
+	* ManagedXamlLoader.cs: we specify whether or not we are looking
+	up a property.
+	
+2009-06-09  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs: Handle {x:Null} attributes.
+
+2009-06-08  Jackson Harper  <jackson@ximian.com>
+
+	* MoonError.cs: Add line./char position info for xaml parse
+	exceptions.
+	* NativeMethods.cs: Construct XamlParseException with position
+	info.
+
+2009-06-08  Jackson Harper  <jackson@ximian.com>
+
+	* XamlLoaderCallbacks.cs: SetProperty gets a xmlns for the
+	property and the element now.
+	* ManagedXamlLoader.cs: Use the property's xmlns for attached
+	properties unless one isn't supplied, then we can use the elements
+	xmlns.
+
+2009-06-04  Chris Toshok  <toshok@ximian.com>
+
+	* ApplicationLauncher.cs: stop catching exceptions here.  they're
+	handled in the plugin code now.
+
+2009-06-05  Jackson Harper  <jackson@ximian.com>
+
+	* MoonlightTypeConverter.cs: Grab typeconverters from the getter
+	method for attached properties.
+
+2009-06-05  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs (TrySetAttachedProperty): This would offend
+	spock. When setting attached properties we get the type converter
+	from the property's getter.
+	- New method for creating non DOB types from text ie
+	<ManagedType>blah</ManagedType>. If that type has a proper
+	TypeConverter.
+
+2009-06-04  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs: Make enum parsing case insensitive.
+
+2009-06-04  Jackson Harper  <jackson@ximian.com>
+
+	* MarkupExpressionParser.cs: Binding modes are not case sensitive.
+
+2009-06-04  Alan McGovern  <amcgovern@novell.com>
+
+	* GeneratedPInvokes.cs: regen.
+	
+2009-06-03  Jackson Harper  <jackson@ximian.com>
+
+	* XamlLoaderCallbacks.cs: LookupObject takes a parent object now.
+	* ManagedXamlLoader.cs: LookupObject can now lookup properties on
+	objects and returns the value of the property if available, and a
+	NULL value with the correct type set for the property if the
+	property is null or attached.
+
+2009-06-02  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Kind.cs: Regenerated.
+
+2009-06-01  Chris Toshok  <toshok@ximian.com>
+
+	* NativeMethods.cs: update signature.
+
+	* Types.cs (RegisterType): pass a bool for whether the default
+	ctor is visible to Types::RegisterType.
+
+2009-05-29  Jeffrey Stedfast  <fejj@novell.com>
+
+	* Value.cs (FromObject): Added null-protection for FontSource's
+	stream wrapper.
+
+2009-05-28  Alan McGovern  <amcgovern@novell.com>
+
+	* ManagedXamlLoader.cs:
+	1) Add a null check around a CWL so it doesn't null ref.
+	2) If the type can't be found, return false instead of null reffing
+
+2009-05-27  Geoff Norton  <gnorton@novell.com>
+
+	* ApplicationLauncher.cs: Add a different code path to initialize
+	a default application for the xaml case.
+
+2009-05-21  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* NativeMethods.cs: Updated according to API changes.
+
+	* Kind.cs:
+	* GeneratedPInvokes.cs: Regenerated.
+
+2009-05-25  Chris Toshok  <toshok@ximian.com>
+
+	* NativeDependencyObjectHelper.cs (Lookup): from the comment,
+	don't change to a cast (as opposed to using 'a') since we can lose
+	important info if you do.
+
+2009-05-25  Chris Toshok  <toshok@ximian.com>
+
+	* ManagedXamlLoader.cs (AddToContainer): TypeFromString fails when
+	only passed the type_name of a managed type, since it doesn't
+	include the xmlns required to look it up.  This method has the
+	xmlns already, so pass it to the new overload of TypeFromString
+	which allows for the xmlns to be passed in.
+	(TypeFromString (parser, top_level, str)): call the new overload
+	that takes the xmlns.
+	(TypeFromString (parser, top_level, xmlns, str)): new overload, if
+	we have the xmlns available when calling TypeFromString, let's go
+	ahead and call this method.  Fixes DRT #335 timing out due to
+	parser failure.
+
+2009-05-25  Alan McGovern  <amcgovern@novell.com>
+
+	* Value.cs: Handle a null pointer in Value.ToObject(Type type, Value*).
+
+2009-05-25  Alan McGovern  <amcgovern@novell.com>
+
+	* GeneratedPInvokes.cs: regen
+
+2009-05-24  Chris Toshok  <toshok@ximian.com>
+
+	* Value.cs: add a Value.ToObject(Type type, Value*) method to
+	compliment the IntPtr variant, which now calls the new method.
+
+	* XamlLoaderCallbacks.cs: change all the callbacks to use Value*
+	instead of IntPtrs for Value* things.  we've historically had a
+	lot of problems keeping things straight without the type info.
+	This has the added cost of sprinkling "unsafe" in a lot of places,
+	but it's probably worth it.
+
+	* ManagedXamlLoader.cs: deal with all the IntPtr -> Value* changes
+	from the XamlLoaderCallbacks, which uncovered a place where we
+	were using NativeDependencyObjectHelper.Lookup on an IntPtr
+	corresponding to a Value*, not a DO*.
+
+2009-05-24  Chris Toshok  <toshok@ximian.com>
+
+	* ManagedXamlLoader.cs (TrySetExpression): don't use
+	NativeDependencyObjectHelper.Lookup(IntPtr), use
+	NativeDependencyObjectHelper.FromIntPtr(IntPtr).
+	(SetPropertyFromValue): same.
+
+2009-05-22  Chris Toshok  <toshok@ximian.com>
+
+	* ManagedXamlLoader.cs (TrySetExpression): {StaticResource} is an
+	expression.  we can't just drop it on the floor after parsing it
+	because it's not a binding/templatebinding.
+
+2009-05-22  Jackson Harper  <jackson@ximian.com>
+
+	* XamlLoaderCallbacks.cs:
+	* ManagedXamlLoader.cs: New callback for registering elements in
+	containers, we need to do this earlier on in the parse than
+	setproperty because other elements could reference these elements
+	before they've been set.
+
+2009-05-22  Alan McGovern  <amcgovern@novell.com>
+
+	* GeneratedPInvokes.cs: regen.
+
+2009-05-21  Alan McGovern  <amcgovern@novell.com>
+
+	* GeneratedPInvokes.cs: regen.
+
+2009-05-20  Alan McGovern  <amcgovern@novell.com>
+
+	* ManagedXamlLoader.cs:
+	* MoonlightTypeConverter.cs: DataBinding and ManagedXamlLoader
+	  use exactly the same type conversion as Styles and
+	  ObjectKeyFrames - so merge both of them to use
+	  MoonlightTypeConverter. This also fixes several
+	  typeconversion related databinding issues.
+
+2009-05-20  Alan McGovern  <amcgovern@novell.com>
+
+	* Kind.cs:
+	* Value.cs:
+	* Types.g.cs: Register 'float' as a known type
+
+2009-05-20  Alan McGovern  <amcgovern@novell.com>
+
+	* Helper.cs: If the type specified in the TypeConverter
+	  attribute is not of the correct type, bail out instead of
+	  throwing an InvalidCastException
+
+2009-05-20  Chris Toshok  <toshok@ximian.com>
+
+	* Types.cs (Types.Find): find all interfaces for the type as well,
+	and pass them to RegisterType.
+	(Types.RegisterType): add interfaces, which we pass as an array of
+	kinds to unmanaged.
+
+	* NativeMethods.cs: sucks, but i had to move types_register_type
+	back here since the generator was confusing the array parameter
+	with an out-param.  not sure how to do this with the current
+	generator, or if it's possible..
+
+	* Kind.cs: regen.
+
+	* GeneratedPInvokes.cs: regen.
+
+2009-05-19  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Kind.cs: Regenerated.
+
+2009-05-18  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* GeneratedPInvokes.cs: Regenerated.
+
+2009-05-18  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* GeneratedPInvokes.cs: Regenerated.
+
+2009-05-18  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* GeneratedPInvokes.cs: Updated.
+
+2009-05-16  Alan McGovern  <amcgovern@novell.com>
+
+	* Types.cs:
+	* NativeMethods.cs:
+	* ManagedXamlLoader.cs:
+	* GeneratedPInvokes.cs:
+	* MoonlightTypeConverter.cs: Add type converting to
+	  ObjectKeyFrame. The conversion is done during the Resolve
+	  phase. If the type conversion can't be completed an
+	  exception is thrown.
+
+2009-05-15  Alan McGovern  <amcgovern@novell.com>
+
+	* NativeDependencyObjectHelper.cs: The Keyframes property of
+	  ObjectAnimationUsingKeyframes needs to be autogenerated.
+
+2009-05-13  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs: Top level objects are now passed in as
+	Value*s instead of magical IntPtrs.
+	- Add some try/catching to reduce spew, now sure exactly why this is
+	happening, but i know everyone will be pissed about all the spew.
+
+2009-05-13  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs: Don't look in base classes for event
+	handlers.
+
+2009-05-06  Chris Toshok  <toshok@ximian.com>
+
+	* ManagedXamlLoader.cs (ConvertType): if value is null, just
+	return it.
+
+2009-05-05  Alan McGovern  <amcgovern@novell.com>
+
+	* NativeDependencyObjectHelper.cs: Back out the default value
+	  fix until the parser can be updated to handle this.
+
+2009-05-03  Chris Toshok  <toshok@ximian.com>
+
+	* Types.cs: more on that generic type fix.  look up the generic
+	type definition in our list of registered types.  This is as
+	general as can be, given that the only generic type definition
+	*in* the list of registered types will be PFC<>.  This fixes the
+	improper base types of PFC<T> instantiations (they were being
+	registered with parent type == DependencyObject, instead of
+	Collection.)
+
+2009-05-03  Chris Toshok  <toshok@ximian.com>
+
+	* MarkupExpressionParser.cs (ParseTemplateBinding): actually
+	create a TemplateBindingExpression object.
+
+	* XamlLoaderCallbacks.cs: all the delegate types take a loader
+	argument now, so we can look up the XamlContext.  Remove the
+	internal/public switch on NET_2_1 since the important assemblies
+	are already InternalsVisibleTo.  Just make it internal.
+
+	* ManagedXamlLoader.cs (LookupObject): no need to cast the result
+	of NativeDependencyObjectHelper.Lookup here.
+	(LookupDependencyPropertyForBinding): factor out a tiny bit of
+	TrySetExpression here.
+	(TrySetExpression): rework parameter list to be match everything
+	else(top_level is first, then loader/parser).  Also, deal with
+	TemplateBindingExpressions here.
+	(TrySetAttachedProperty): rework parameter list to match
+	everything else.
+	(TrySetEventReflection): same.
+	(TrySetEnumContentProperty): same.
+	(TrySetCollectionContentProperty): same.
+	(cb_lookup_object): match delegate type.
+	(cb_set_property): same.
+	(cb_import_xaml_xmlns): same.
+	(cb_get_content_property_name): same.
+	
+	* Kind.cs: GeneratedPInvokes.cs: regen.
+
+	* Surface.cs: Remove the internal/public switch on NET_2_1 since
+	the important assemblies are already InternalsVisibleTo.  Just
+	make it internal.
+
+	* NativeMethods.cs: add UnmanagedPropertyChangedEventArgs
+	structure, which matches the PropertyChangedEventArgs type in
+	unmanaged code.  Remove NativePropertyChangedHandler and add
+	UnmanagedPropertyChangedHandler, which takes a IntPtr to that
+	struct type.
+
+2009-05-01  Chris Toshok  <toshok@ximian.com>
+
+	* Types.cs: rework r133257 so we keep the generic type definition
+	stuff so that PresentationFrameworkCollection<T> still works.
+	Reenable the unit test for generic DP types too.
+
+2009-05-01  Alan McGovern  <amcgovern@novell.com>
+
+	* Types.cs: Revert r133257 and mark test with [MoonlightBug]
+	  until the change can be verified.
+
+2009-05-01  Alan McGovern  <amcgovern@novell.com>
+
+	* MarkupExpressionParser.cs: Anchor the MarkupExpressionParser
+	  regexes to the start of the string so we don't accidently
+	  match content embedded in a clr:string (or some string)
+
+2009-05-01  Alan McGovern  <amcgovern@novell.com>
+
+	* Types.cs: When registering managed types, we shouldn't throw
+	  away generic type information.
+
+2009-04-30  Alan McGovern  <amcgovern@novell.com>
+
+	* ManagedXamlLoader.cs: If DP.Lookup throws an exception while
+	  attaching a binding, catch it and return false. We may
+	  actually be trying to set a clr property.
+
+2009-04-30  Jackson Harper  <jackson@ximian.com>
+
+	* XamlLoaderCallbacks.cs:
+	* ManagedXamlLoader.cs: Get a Value* instead of a Kind for
+	GetContentPropertyName this fixes a crash on DOB objects.
+
+2009-04-30  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs: Allow setting IList collection elements as
+	content property.
+
+2009-04-30  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Kind.cs: Regenerated.
+
+2009-04-29  Chris Toshok  <toshok@ximian.com>
+
+	* Helper.cs: take a whack to this class, removing most everything
+	in it.
+
+	* everything-else: track changes to Helper.cs
+
+2009-04-28  Geoff Norton  <gnorton@novell.com>
+
+	* Value.cs:
+	* NativeDependencyObjectHelper.cs: We need to explicitly tell
+	the ctor now wether we want to keep a ref that might have been
+	created on this object or not.
+	* ToggleRef.cs: ToggleRef now takes its own ref on the object
+	instead of "managing" the object
+
+2009-04-28  Alan McGovern  <amcgovern@novell.com>
+
+	* GeneratedPInvokes.cs: Whoops, left out the p/invokes.
+
+2009-04-27  Jackson Harper  <jackson@ximian.com>
+
+	* Value.cs: PropertyPath's have an expanded_path property now. (I
+	should probably store these so we can 'roundtrip' propertypaths
+	without losing data).
+
+2009-04-19  Chris Toshok  <toshok@ximian.com>
+
+	* GeneratedPInvokes.cs: regen.
+
+	* Kind.cs: regen.
+
+2009-04-19  Chris Toshok  <toshok@ximian.com>
+
+	* Value.cs (FromObject): until we're marshaling XmlLanguages as
+	something other than a string, we need to set the kind of the
+	Value to STRING.  This along with the provider.cpp fix fixes DRT
+	952.
+
+2009-04-18  Chris Toshok  <toshok@ximian.com>
+
+	* GeneratedPInvokes.cs: regen.
+
+2009-04-15  Alan McGovern  <amcgovern@novell.com>
+
+	* Events.cs: All unhandled exceptions should go through the
+	  UnhandledException event - this allows moonunit tests which
+	  throw exceptions in callbacks to fail properly. I don't want
+	  to remove our current error reporting as having a big error
+	  message on screen is good for debugging. If people are happy
+	  about removing the current reporting, just nuke the if/else.
+
+2009-04-14  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* GeneratedPInvokes.cs: Regenerated.
+
+	* Helper.cs:
+	* NativeMethods.cs:
+	* ManagedXamlLoader.cs:
+	* MoonlightTypeConverter.cs:
+	* MoonlightValueConverter.cs: Generate all P/Invoke methods.
+
+2009-04-10  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs: Unref objects after they are created in
+	unmanaged.
+
+2009-04-09  Jeffrey Stedfast  <fejj@novell.com>
+
+	* Value.cs: Handle Kind.FONTSOURCE
+
+2009-04-09  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* GeneratedPInvokes.cs: regen
+
+2009-04-09  Jackson Harper  <jackson@ximian.com>
+
+	* GeneratedPInvokes.cs: regen
+	* XamlLoaderCallbacks.cs: Objects are created now, not just DependencyObjects.
+	* ManagedXamlLoader.cs: We get Value*'s from
+	CreateFromString/CreateFromFile now.
+
+2009-04-07  Chris Toshok  <toshok@ximian.com>
+
+	* NativeDependencyObjectHelper.cs (SetValue): we need specify type
+	checking in the case of a genericly typed DP.
+	Type.IsAssignableFrom is not enough.
+
+2009-04-06  Chris Toshok  <toshok@ximian.com>
+
+	* GeneratedPInvokes.cs: regen.
+
+2009-04-06  Chris Toshok  <toshok@ximian.com>
+
+	* Helper.cs (GCHandleInDomain): new method, use reflection to
+	twiddle GCHandle.CheckCurrentDomain so we can check if an intptr
+	is a valid GCHandle without throwing and catching exceptions.
+
+	* ManagedXamlLoader.cs (LookupObject): use Helper.GCHandleInDomain
+	instead of using exceptions.
+
+2009-04-06  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs: We should only load public types.
+
+2009-04-05  Chris Toshok  <toshok@ximian.com>
+
+	* GeneratedPInvokes.cs: regen.
+
+	* EasingFunctionWrapper.cs: wrapper class, a DO subclass (by way
+	of EasingFunctionBase) so we can store it easily and ref it.  Its
+	EaseInCore method just calls the IEasingFunction's Ease method.
+
+	* Value.cs (Value.FromObject): if we're dealing with an
+	IEasingFunction implementation that is *not* an EasingFunctionBase
+	subclass, we need to wrap it.
+
+2009-04-04  Chris Toshok  <toshok@ximian.com>
+
+	* NativeDependencyObjectHelper.cs (CreateObject): add the easing
+	keyframe types.
+
+	* GeneratedPInvokes.cs, Kind.cs, Types.g.cs: regen
+
+2009-04-03  Chris Toshok  <toshok@ximian.com>
+
+	* NativeDependencyObjectHelper.cs (CreateObject): add all the
+	easing types.
+
+2009-04-03  Aaron Bockover  <abockover@novell.com>
+
+	* GeneratedPInvokes.cs: Updated, provides surface_get_toplevel
+
+2009-04-03  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* NativeMethods.cs: Add new bindings to the plugin for 
+	enable_html_access, allow_html_popup_window and windowless
+
+2009-04-02  Alan McGovern  <amcgovern@novell.com>
+
+	* GeneratedPInvokes.cs: Popups are treated as top level
+	  elements which are rendered on top of all other elements. To
+	  handle this a list of all toplevel elements (layers) is kept
+	  in the surface. Mouse events are captured within a toplevel
+	  element and not visible to other toplevel elements.
+
+2009-04-01  Andreia Gaita  <avidigal@novell.com>
+
+	* NativeMethods.cs: Include the native DOM object
+        (wrapped as a npobj) in DomEventCallback
+
+2009-04-01  Chris Toshok  <toshok@ximian.com>
+
+	* GeneratedPInvokes.cs: regen.
+
+	* Kind.cs: regen.
+
+2009-03-31  Jb Evain  <jbevain@novell.com>
+
+	* NativeMethods.cs: add keyCode and charCode to DomEventCallback.
+
+2009-03-30  Chris Toshok  <toshok@ximian.com>
+
+	* Events.cs: rename mouse_button_up/doown to
+	mouse_left_button_up/down, and add (NET_3_0-only)
+	mouse_right_button_up/down and mouse_wheel support.
+
+2009-03-30  Chris Toshok  <toshok@ximian.com>
+
+	* NativeMethods.cs: add all the downloader delegates, and move
+	TickCall out of the NativeMethods class.
+
+	* GeneratedPInvokes.cs: regen.
+
+2009-03-30  Chris Toshok  <toshok@ximian.com>
+
+	* NativeMethods.cs: go ahead and remove runtime_init and
+	runtime_init_browser here, since the only one of use is
+	runtime_init_desktop (and even that is 3.0-only).
+
+2009-03-29  Geoff Norton  <gnorton@novell.com>
+
+	* GeneratedPInvokes.cs, Kind.cs, NativeDependencyObjectHelper.cs,
+	  Types.g.cs, Value.cs: Regenerate and add support for WriteableBitmap
+
+2009-03-27  Alan McGovern  <amcgovern@novell.com>
+
+	* ManagedXamlLoader.cs: Instead of manually searching for the
+	  DP, ensure that DPs in the type have been registered, then
+	  look it up normally. Thanks jackson.
+
+2009-03-27  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs: We need to parse out StaticResouces when
+	we get values.
+
+2009-03-27  Alan McGovern  <amcgovern@novell.com>
+
+	* ManagedXamlLoader.cs: If we're databinding a managed
+	  attached DP, it's possible that the DP will not have been
+	  registered yet if nothing has called the static cctor on
+	  that type. In this case we need to search for the DP by
+	  hand.
+
+2009-03-27  Jackson Harper  <jackson@ximian.com>
+
+	* MarkupExpressionParser.cs: Don't allow setting path or mode with
+	non strings (TODO: Maybe Mode can be an enum resource).
+	- If we happen to parse a string out of a sub exrpression use it
+	as the string value.
+
+2009-03-26  Alan McGovern  <amcgovern@novell.com>
+
+	* ManagedXamlLoader.cs: Only try and change the type if we're
+	  not a subclass. This stops a bunch of InvalidCastException
+	  from being thrown/caught.
+
+2009-03-26  Alan McGovern  <amcgovern@novell.com>
+
+	* NativeDependencyObjectHelper.cs: We already have
+	  dp.IsNullable so use that for the nullability check. Add
+	  extra tests to ensure every combination of null/non-null is
+	  tested.
+
+2009-03-26  Alan McGovern  <amcgovern@novell.com>
+
+	* NativeDependencyObjectHelper.cs: A null intptr means no
+	  value has been set, so we return dp.DefaultValue. A null
+	  result means we should use dp.DefaultValue if the property
+	  is a non-nullable valuetype.
+
+2009-03-26  Alan McGovern  <amcgovern@novell.com>
+
+	* NativeDependencyObjectHelper.cs: This changed caused
+	  regressions, backing it out.
+
+2009-03-26  Alan McGovern  <amcgovern@novell.com>
+
+	* NativeDependencyObjectHelper.cs: If the result is null, we
+	  only use the default value if it's a non-nullable struct.
+
+2009-03-26  Stephane Delcroix  <sdelcroix@novell.com>
+
+	* NativeMethods.cs: fix the ImageUriFunc delegate.
+
+2009-03-25  Geoff Norton  <gnorton@novell.com>
+
+	* GeneratedPInvokes.cs
+	* Kind.cs
+	* Types.g.cs
+	* Value.cs: Bindings live 100% in managed code now
+
+2009-03-25  Alan McGovern  <amcgovern@novell.com>
+
+	* MoonlightTypeConverter.cs: MoonlightTypeConverter should
+	  parse enums from strings. Allows the datagrid tests to load
+	  up a datagrid without exploding.
+
+2009-03-25  Jackson Harper  <jackson@ximian.com>
+
+	* MoonlightValueConverter.cs: We need to convert string from xaml,
+	it's possible that we could get something like Path="M ..." here
+	and the parser needs to create a geometry object from that.
+
+2009-03-25  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Value.cs: Move UnmanagedColor -> Color marshalling to a
+	  method on UnmanagedColor so that SilverlightHost can use it
+	  too.
+
+	* GeneratedPInvokes.cs: Regenerated.
+
+2009-03-24  Chris Toshok  <toshok@ximian.com>
+
+	* Value.cs: s/protocol/scheme for Uris.
+
+2009-03-24  Alan McGovern  <amcgovern@novell.com>
+
+	* ManagedXamlLoader.cs: 1) We need to special case the
+	  scenario where we are setting a Binding object to a
+	  FrameworkElement and convert it to a
+	  FrameworkElement.SetBinding call.
+	2) If we are setting a property from a string value, we need
+	  to check if it's a {StaticResource} first.
+	3) We need to pass the PropertyInfo to ConvertType otherwise
+	  we won't get the right type converter for properties which
+	  have a [TypeConverter] attribute.
+
+2009-03-24  Alan McGovern  <amcgovern@novell.com>
+
+	* MarkupExpressionParser.cs: When parsing a markup string, we
+	  only throw exceptions for StaticResources not being found if
+	  the expression is not a {Binding} expression.
+
+2009-03-24  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Kind.cs: Regenerated.
+
+2009-03-21  Andreia Gaita  <avidigal@novell.com>
+
+	* NativeMethods.cs: Add html_object_invoke_self
+	(same as _invoke but with no name arg), that uses 
+	NPN_InvokeDefault	instead.
+
+2009-03-21  Chris Toshok  <toshok@ximian.com>
+
+	* Value.cs: add first-class Uri support.
+
+	* NativeDependencyObjectHelper.cs: use
+	NativeMethods.dependency_object_set_value instead of
+	NativeMethods.dependency_object_set_marshalled_value.
+
+	* GeneratedPInvokes.cs: regen.
+
+2009-03-19  Alan McGovern  <amcgovern@novell.com>
+
+	* MarkupExpressionParser.cs: We don't throw if the static resource is
+	null. i.e. if it hasn't been parsed yet.
+
+2009-03-19  Alan McGovern  <amcgovern@novell.com>
+
+	* Helper.cs: By default we use en-US, not the
+	current machine culture.
+
+2009-03-13  Chris Toshok  <toshok@ximian.com>
+
+	* Value.cs: remove the "as INativeDependencyObjectWrapper", since
+	NativeDependencyObjectHelper.Lookup already returns that type.
+
+	* Kind.cs, Types.g.cs: regen.
+
+	* MoonlightTypeConverter.cs: for the types that are represented as
+	structs in managed code and enums in unmanaged, we need to pass
+	INT32 as the kind to value_from_str, and then create the Value
+	using the proper (managed) destinationType.
+
+2009-03-13  Geoff Norton  <gnorton@novell.com>
+
+	* Value.cs: Implement the Binding converter
+
+2009-03-13  Geoff Norton  <gnorton@novell.com>
+
+	* ManagedXamlLoader.cs:
+	* Value.cs: Lookup should cast to INativeDependencyObjectWrapper
+	so we can work on Application as well
+
+2009-03-11  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs: It's possible to set a property with a
+	type of System.Windows.Data.Binding to a Binding expression.  In
+	this case we don't actually bind the property we just create the
+	binding and set the value.
+
+2009-03-10  Chris Toshok  <toshok@ximian.com>
+
+	* ManagedXamlLoader.cs: s/logical_parent/parent.
+
+	* Types.cs (Types.Find): if the type is a generic instantiation,
+	look up the ManagedType info for the generic type definition.
+	I.e. if we're passed PFC<int> look up PFC<>.
+
+	* GeneratedPInvokes.cs, Kind: regen.
+
+2009-03-10  Geoff Norton  <gnorton@novell.com>
+
+	* Helper.cs: This code got lost when moving from ManagedXamlLoader.cs
+	to Helper.cs in r129030.  I'm bringing sexy back.
+
+2009-03-10  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs: Amazingly you can specify the wrong
+	assembly on a xaml type and it will be looked up correctly if that
+	type happens to be in the default assembly. See the Shock demo for
+	an example.
+
+2009-03-10  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs: Fix error message.
+
+2009-03-10  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs: Remove some duplicated code.
+
+2009-03-10  Jackson Harper  <jackson@ximian.com>
+
+	* Helper.cs: Expose some of the conversion methods, change
+	signatures to make a little easier to use.
+	* MoonlightTypeConverter.cs: Use the base converter when possible,
+	this will pickup types converter attributes.
+	- Use Helper's methods for converting IConvertible objects.
+
+2009-03-09  Geoff Norton  <gnorton@novell.com>
+
+	* ManagedXamlLoader.cs: Its possible for a bool to be passed in 
+	here with a NullableBool target, so we need to use the 2.1 converter
+	in System.Windows.
+
+2009-03-09  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs: Method for creating enums from string
+	content data.
+	* NativeMethods.cs: Add a signature so I can free values with an
+	IntPtr.
+
+2009-03-06  Andreia Gaita  <avidigal@novell.com>
+
+	* Helper.cs: Add ObjectFromIntPtr method, to lookup ToggleRef
+	instances and return the actual object that it stores. The closure
+	parameter is now the original native handle, and not a GCHandle.
+
+	* Events.cs: Events are now registered with the native handle as
+	the key to lookup objects on callback, instead of using GCHandles.
+	Switch to using ObjectFromIntPtr to lookup objects.
+
+	* NativeDependencyObjectHelper.cs: Switch to using ToggleRef to
+	wrap DOs
+
+	* DispatcherTimer.cs: Switch to using ObjectFromIntPtr to lookup
+	objects.
+
+2009-03-06  Alan McGovern  <amcgovern@novell.com>
+
+	* GeneratedPInvokes.cs: If the PropertyPath supplied to the
+	  TargetPropertyProperty is a DependencyProperty, we need a
+	  special method to retrieve it. Normally PropertyPaths which
+	  are instantiated with a DependencyProperty are returned as
+	  'null' from native. Also add method for getting the manual
+	  target.
+
+2009-03-06  Alan McGovern  <amcgovern@novell.com>
+
+	* ChangeLog:
+	* GeneratedPInvokes.cs: Revert - I didn't mean to commit that
+	  yet. It's not complete.
+
+2009-03-06  Andreia Gaita  <avidigal@novell.com>
+
+	* ToggleRef.cs: fix event signatures
+	* GeneratedPInvokes.cs: regen for new toggleref event registration
+
+2009-03-06  Andreia Gaita  <avidigal@novell.com>
+
+	* ToggleRef.cs: Added. This class helps manage object references.
+	Instead of keeping GCHandles around for each object that gets passed
+	to native, we keep an instance of ToggleRef, which keeps a (strong or
+	weak) reference to the original object. This class monitors refcounting
+	on the native side so that it can turn strong object references into
+	weak ones when there are no more native references to an object, thus
+	letting them get cleaned up.
+    
+	* NativeDependencyObjectHelper.cs: expose objects collection internally
+	for ToggleRef
+
+2009-03-05  Alan McGovern  <amcgovern@novell.com>
+
+	* Value.cs: If we set a propertypath with a
+	  DependencyProperty, set the 'path' string to null. This
+	  avoids extra marshalling when it's not needed.
+
+2009-03-05  Alan McGovern  <amcgovern@novell.com>
+
+	* Value.cs: Add a bunch of additional tests for PropertyPath.
+	  Ensure that the correct exceptions are thrown when a
+	  propertypath is used on a storyboard.
+
+2009-03-04  Jackson Harper  <jackson@ximian.com>
+
+	* NativeMethods.cs: Add method for grabbing an element's name.
+
+2009-03-04  Alan McGovern  <amcgovern@novell.com>
+
+	* Value.cs: Don't compare IntPtr against null, compare against
+	  IntPtr.Zero.
+
+2009-03-03  Chris Toshok  <toshok@ximian.com>
+
+	* ManagedXamlLoader.cs (TrySetAttachedProperty): fixed a missing
+	case from the previous Value/DependencyObject change.
+
+2009-03-03  Chris Toshok  <toshok@ximian.com>
+
+	* GeneratedPInvokes.cs: regen.
+
+2009-03-03  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs: SetProperty now takes a Value instead of a
+	dependency object.
+
+2009-03-03  Alan McGovern  <amcgovern@novell.com>
+
+	* Value.cs: Complete the implementation of PropertyPath. If it
+	  is constructed with a DependencyProperty in managed,
+	  propagate this to native.
+
+2009-03-01  NativeMethods  <sdelcroix@novell.com>
+
+	* NativeMethods.cs: fix a delegate signature to match native side
+
+2009-02-26  Chris Toshok  <toshok@ximian.com>
+
+	* GeneratedPInvokes.cs: regen.
+
+	* Events.cs (template_applied_callback): call
+	c.InvokeOnApplyTemplate, not c.OnApplyTemplate directly.
+
+2009-02-26  Chris Toshok  <toshok@ximian.com>
+
+	* Value.cs (FromObject): get rid of as_managed_object and replace
+	it with box_value_types.  These are the only objects we should be
+	concerned about passing to unmanaged code as GCHandles.
+	Everything else we either marshal or pass the unmanaged peer.
+	Handle them explicitly, and add a warning in the fallback case of
+	a managed ref type we don't know how to marshal (and box those
+	too).
+
+	* NativeDependencyObjectHelper.cs (SetValue): we box the value if
+	DependencyProperty.PropertyType is "object" and
+	DependencyProperty.BoxValueTypes is true.
+
+	* ManagedXamlLoader.cs (LookupObject): pass false for
+	@box_value_types to Value.FromObject.
+	(LookupComponentFromName): same.
+	(TrySetEventReflection): use LookupObject instead of just calling
+	NativeDependencyObjectHelper.Lookup, which can fail for gchandles.
+
+2009-02-26  Alan McGovern  <amcgovern@novell.com>
+
+	* MarkupExpressionParser.cs: Remove debug output
+
+2009-02-26  Alan McGovern  <amcgovern@novell.com>
+
+	* MarkupExpressionParser.cs: When parsing bindings 'this is a
+	  string' is counted as a single string, so parse it as such.
+
+2009-02-26  Alan McGovern  <amcgovern@novell.com>
+
+	* DLRHost.cs: Nuke a dead file.
+
+2009-02-23  Andreia Gaita  <avidigal@novell.com>
+
+	* NativeMethods.cs: Add html_object_has_property so managed code
+	can check for properties before trying to get them.
+
+2009-02-23  Jackson Harper  <jackson@ximian.com>
+
+	* MoonlightValueConverter.cs: Handle enums.
+
+2009-02-19  Jeffrey Stedfast  <fejj@novell.com>
+
+	* NativeDependencyObjectHelper.cs (CreateObject): Handle
+	DrawingAttributes and StylusInfo.
+
+2009-02-18  Chris Toshok  <toshok@ximian.com>
+
+	* MoonlightTypeConverter.cs: this can now convert from Colors to
+	Brushes (by creating a SolidColorBrush), so setters can specify
+	something like <Setter Property="Background" Value="Red" /> and
+	have it work.
+
+2009-02-18  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* GeneratedPInvokes.cs: Regenerated.
+
+2009-02-17  Jeffrey Stedfast  <fejj@novell.com>
+
+	* Value.cs (ToObject): Handle MediaAttributeCollection specially
+	because this has to get mapped to a Dictionary.
+
+	* NativeDependencyObjectHelper.cs (CreateObject): Handle
+	MediaAttributes.
+
+2009-02-17  Alan McGovern  <amcgovern@novell.com>
+
+	* GeneratedPInvokes.cs: Regenerated
+
+2009-02-17  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Kind.cs:
+	* GeneratedPInvokes.cs: Regenerated.
+
+2009-02-17  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Kind.cs: Regenerate.
+
+2009-02-16  Alan McGovern  <amcgovern@novell.com>
+
+	* GeneratedPInvokes.cs: Implement the managed side of
+	  Storyboard.GetCurrentState ().
+
+2009-02-10  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* GeneratedPInvokes.cs: Regenerated.
+
+2009-02-10  Jackson Harper  <jackson@ximian.com>
+
+	* XamlLoaderCallbacks.cs: Add the value data (xaml element
+	instance data for the value) to the set property call.
+	* ManagedXamlLoader.cs: Handle resource dictionarys by getting the
+	element key from unmanaged.
+	* NativeMethods.cs: New method for getting elements key.
+	
+2009-02-09  Jackson Harper  <jackson@ximian.com>
+
+	* MarkupExpressionParser.cs: Clean up the expression matching to
+	use regexs and advance past to the end of white space. This also
+	fixes matching things like {  StaticResource.
+
+2009-02-08  Chris Toshok  <toshok@ximian.com>
+
+	* MarkupExpressionParser.cs (HandleProperty): kinda gross, and
+	this should probably be fixed in a better way, but fix things so
+	that we continue parsing after parsing a subexpression.
+	i.e.  {Binding Source={StaticResource foo}, Path=bar} would stop
+	after parsing the {StaticResource} before this patch.
+
+	* MoonlightValueConverter.cs: default value converter used by
+	BindingExpressionBase when one isn't specified.
+
+	* GeneratedPInvokes.cs: regen.
+
+2009-02-06  Jackson Harper  <jackson@ximian.com>
+
+	* Value.cs: Let BINDINGEXPRESSIONs be parsed as strings.
+	* ManagedXamlLoader.cs: If we are setting a template binding we
+	don't get a return value.
+	* MarkupExpressionParser.cs: Use an unmanaged method for getting
+	the template parent of an element.
+	* NativeMethods.cs: New method
+
+2009-02-06  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Events.cs (loaded_callback): Use Content to InvokeResize
+
+2009-02-06  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* GeneratedPInvokes.cs: Regenerated.
+
+	* MoonError.cs: Add support for marshalling managed exception
+	  objects.
+
+	* NativeMethods.cs: CreateManagedException: Add support for
+	  marshalling managed exception objects.
+	  NativePropertyChangedHandler: update signature.
+
+2009-02-05  Jeffrey Stedfast  <fejj@novell.com>
+
+	* NativeDependencyObjectHelper.cs: Unmanaged ReadLocalValue()
+	function name changed.
+
+2009-02-05  Alan McGovern  <alan.mcgovern@gmail.com>
+
+	* GeneratedPInvokes.cs: Create an unmanaged version of
+	  FindElementsInHostCoordinates
+
+2009-02-05  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs: Consolidate type/assembly loading a little
+	bit better.  Always fallback to the System.Windows.dll assembly if
+	we don't find anything in the user assembly.
+
+2009-02-05  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Events.cs: Ensure no exceptions reach native code.
+
+2009-02-05  Jb Evain  <jbevain@novell.com>
+
+	* Value.cs: refactoring: use StringToIntPtr.
+
+2009-02-05  Jb Evain  <jbevain@novell.com>
+
+	* Value.cs: marshal PROPERTYPATH back and forth to
+	System.Windows.PropertyPath.
+	* Types.g.cs, Kind.cs: regen.
+
+2009-02-05  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs:
+	* XamlLoaderCallbacks.cs: We use the kind for getting content
+	property names now.  (Is this even needed or can it be handled
+	with the additional_types stuff?).
+
+2009-02-04  Geoff Norton  <gnorton@novell.com>
+
+	* ManagedXamlLoader.cs: A managed subclass of UserControl can
+	get its content property set here, but UserControl.Content is 
+	protected internal and the default binding flags wont have it
+	Partially fixes SLThing.
+
+2009-02-04  Chris Toshok  <toshok@ximian.com>
+
+	* ManagedXamlLoader.cs: when we're setting a list property, we
+	need to try the add_child case first, since some collections
+	permit the addition of string children.
+
+2009-02-04  Jackson Harper  <jackson@ximian.com>
+
+	* XamlLoaderCallbacks.cs:
+	* ManagedXamlLoader.cs: Had to change the signature a little here
+	so we could call back into unmanaged (sigh) to lookup resources
+	(without everything being all parented up).
+	* MarkupExtensioParser.cs: Call into unmanaged to lookup static
+	resources.
+	* NativeMethods.cs: New method for looking up named items.
+
+2009-02-04  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs: Don't use SetValue for attaching bindings,
+	use SetBinding.
+
+2009-02-04  Jackson Harper  <jackson@ximian.com>
+
+	* GeneratedPInvokes.cs: Regenerate.
+	* ManagedXamlLoader.cs: Use the binding expression parser when we
+	are given a BINDINGEXPRESSION or TEMPLATEBINDING.
+	* MarkupExpressionParser.cs: Add some methods for detecting what
+	kind of expression we are dealing with.
+
+2009-02-04  Jackson Harper  <jackson@ximian.com>
+
+	* MarkupExpressionParser.cs: New class for parsing
+	StaticResources, TemplateBindings and Binding Expressions.
+
+2009-02-04  Alan McGovern  <amcgovern@novell.com>
+
+	* Kind.cs:
+	* Types.g.cs:
+	* GeneratedPInvokes.cs: Hook up the managed hittesting code
+	  to the native hit testing code.
+
+2009-02-02  Geoff Norton  <gnorton@novell.com>
+
+	* Events.cs: Register the main surface Resized and FullScreenChanged
+	events and direct them at our Content object.
+
+2009-02-02  Chris Toshok  <toshok@ximian.com>
+
+	* ManagedXamlLoader.cs (Lookup): use
+	Types.Find(type).native_handle instead of
+	Types.TypeToNativeHandle(type).
+	(LookupComponentFromName): same.
+
+2009-02-02  Andreia Gaita  <avidigal@novell.com>
+
+	* DispatcherTimer.cs: Don't stop the timer when an exception is
+	thrown
+
+2009-01-30  Chris Toshok  <toshok@ximian.com>
+
+	* ManagedXamlLoader.cs: this is kinda gross, but if we're adding a
+	DO to a managed collection which is a property of another DO, set
+	the logical parent of the child to that of the parent, bypassing
+	the managed collection altogether.
+
+2009-01-30  Chris Toshok  <toshok@ximian.com>
+
+	* Types.cs (TypeToNativeKind): this is a bad name, these days -
+	this is what TypeToKind should be doing, as all the types the
+	unmanaged code can make use of have a kind now.  Remove the Enum
+	check.
+
+2009-01-30  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* GeneratedPInvokes.cs: Regenerated
+
+2009-01-29  Geoff Norton  <gnorton@novell.com>
+
+	* Value.cs: Learn how to make our managed surface counterpart.
+	* ApplicationLauncher.cs: API update, don't need the surface anymore
+
+2009-01-28  Chris Toshok  <toshok@ximian.com>
+
+	* NativeDependencyObjectHelper.cs (CreateObject): add case for
+	Kind.CONTENTCONTROL.
+
+2009-01-28  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Kind.cs: Regenerated.
+
+2009-01-28  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Kind.cs:
+	* GeneratedPInvokes.cs: Regenerated.
+
+2009-01-27  Chris Toshok  <toshok@ximian.com>
+
+	* Value.cs: add FontFamily and uint32 cases.
+
+2009-01-27  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs: Make the assembly arg mandatory, give the
+	specified assembly precedence when looking up types.
+	* XamlLoaderCallbacks.cs: ManagedXamlLoader needs an assembly now,
+	if one isn't supplied use System.Windows.
+	* ApplicationLauncher.cs: Use the CreateManagedXamlLoader factory method.
+
+2009-01-27  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Kind.cs: Include all types derived from EventObject in the type system
+	and remove the IncludeInKinds annotations from those classes.
+
+2009-01-26  Geoff Norton  <gnorton@novell.com>
+
+	* ApplicationLauncher.cs: This is now InitializeDeployment since we 
+	might have to lazy-load the Application.
+
+2009-01-26  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* NativeDependencyObjectHelper.cs: Handle DiscreteObjectKeyFrame.
+
+2009-01-26  Chris Toshok  <toshok@ximian.com>
+
+	* NativeDependencyObjectHelper.cs: add a case for TEXTBOXVIEW, and
+	track change from NativeMethods.dependency_object_get_object_type
+	to NativeMethods.event_object_get_object_type.
+
+	* ManagedXamlLoader.cs: track change from
+	NativeMethods.dependency_object_get_object_type to
+	NativeMethods.event_object_get_object_type
+	
+	* GeneratedPInvokes.cs, Kind.cs: regen.
+
+2009-01-25  Chris Toshok  <toshok@ximian.com>
+
+	* Types.cs: this is no longer a static class, but a private
+	instance field of Deployment.Current.
+
+	* ManagedXamlLoader.cs, MoonlightTypeConverter.cs: s/Types/Deployment.Current.Types/
+
+	* NativeDependencyObjectHelper.cs:
+	s/Types/Deployment.Current.Types/, and remove
+	CONTENTPRESENTER (and add a commented out BINDINGEXPRESSION) case
+	to the switch.
+	
+	* Kind.cs, Types.g.cs, GeneratedPInvokes: regen.
+
+2009-01-25  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* GeneratedPInvokes.cs: Regenerated
+	* Value.cs: Use new Matrix unsafe ctor
+
+2009-01-23  Andreia Gaita  <avidigal@novell.com>
+
+	* NativeMethods.cs: Add time_manager_remove_tick_call
+
+2009-01-23  Geoff Norton  <gnorton@novell.com>
+
+	* Helper.cs: Ensure we rewind the stream before blitting it
+	* NativeMethods.cs: Add the call for the managed_unzip methods
+	* StreamCallbacks.cs: Add a Write method
+	* StreamWrapper.cs: Add a Write method
+
+2009-01-22  Chris Toshok  <toshok@ximian.com>
+
+	* MoonlightTypeConverter.cs (ConvertFrom): short circuit the
+	destinationType == object case.
+
+2009-01-22  Chris Toshok  <toshok@ximian.com>
+
+	* Helper.cs (GetConverterFor): permit a null @info parameter,
+	which causes us to just look up the converter by type.
+
+2009-01-22  Chris Toshok  <toshok@ximian.com>
+
+	* ManagedXamlLoader.cs (ConvertType): we need to parse enum values
+	here too.
+
+2009-01-22  Chris Toshok  <toshok@ximian.com>
+
+	* NativeDependencyObjectHelper.cs (CreateObject): fix exception
+	text, and add a case for CONTENTPRESENTER.
+
+2009-01-21  Chris Toshok  <toshok@ximian.com>
+
+	* MoonlightTypeConverter.cs: punt all conversion of enums to
+	unmanaged code.
+
+2009-01-21  Chris Toshok  <toshok@ximian.com>
+
+	* MoonlightTypeConverter.cs: take the property name as well as
+	value_from_str does specific handling based on that for enum
+	marshaled types.
+
+2009-01-21  Chris Toshok  <toshok@ximian.com>
+
+	* Types.g.cs: regen.
+
+	* MoonlightTypeConverter.cs: s/virtual/override.  oops.
+
+2009-01-21  Geoff Norton  <gnorton@novell.com>
+
+	* GeneratedPInvokes.cs: Regenerate
+	* NativeMethods.cs: Add the Application.GetResrouceCallback
+	* Helper.cs: A helper method to copy a stream to unmanaged memory
+
+2009-01-21  Jb Evain  <jbevain@novell.com>
+
+	* NativeMethods.cs: remove plugin_instance_get_browser_information.
+
+2009-01-21  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Value.cs: Correctly handle unmanaged-managed transitions of 
+	TextDecorationCollection
+
+2009-01-21  Jackson Harper  <jackson@ximian.com>
+
+	* Value.cs: Types have their correct KIND now.
+
+2009-01-21  Jackson Harper  <jackson@ximian.com>
+
+	* Kind.cs:
+	* GeneratedPInvokes.cs: Regen
+	* NativeDependencyObjectHelper.cs: Update method signature, we
+	call into a special set_marshalled_value function now.
+	* Value.cs: Value kinds get their real kind now.
+
+2009-01-21  Alan McGovern  <amcgovern@novell.com>
+
+	* GeneratedPInvokes.cs: Initial attempt at trying to get Popup.Child
+	rendering.
+
+2009-01-20  Chris Toshok  <toshok@ximian.com>
+
+	* NativeDependencyObjectHelper.cs: re-enable the
+	CheckNativeAndThread checks.
+
+	* INativeDependencyObjectWrapper.cs: add CheckAccess.
+
+2009-01-20  Chris Toshok  <toshok@ximian.com>
+
+	* NativeMethods.cs: add the style delegates here, and a pinvoke
+	for value_from_str.
+	
+	* ManagedXamlLoader.cs: make parsing work on anything that
+	implements INativeDependencyObjectWrapper.
+
+	* Value.cs: s/DependencyObject/NativeDependencyObjectHelper.
+
+	* GeneratedPInvokes.cs, Types.g.cs: regen.
+	
+2009-01-20  Chris Toshok  <toshok@ximian.com>
+
+	* MoonlightTypeConverter.cs: a base level type converter for use
+	with styles.
+
+	* NativeDependencyObjectHelper.cs: move all the guts of the native
+	stuff from DependencyObject here, including all the lookup
+	methods.
+
+	* INativeDependencyObjectWrapper.cs: interface that separates out
+	the central features of a native DependencyObject (a handle, and
+	the ability to set/get DependencyProperties on it) from the
+	managed class DependencyObject.  This allows us to have managed
+	objects that are not DO-subclasses that are backed by unmanaged
+	DO-subclasses (as in Application).
+
+2009-01-20  Jackson Harper  <jackson@ximian.com>
+
+	* Types.g.cs: Regen.
+
+2009-03-15  Alan McGovern  <amcgovern@novell.com>
+
+	* DispatcherTimer.cs: Simplify how native events are connected to in
+	managed code. The managed add/remove event methods just call
+	RegisterEvent/UnregisterEvent defined in DO.cs instead of each event
+	managing the event list itself.
+
+2009-01-19  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs: Add to the list if it exists.
+
+2009-01-19  Jackson Harper  <jackson@ximian.com>
+
+	* Value.cs: Break News! Uris are URIs.
+
+2009-01-19  Jackson Harper  <jackson@ximian.com>
+
+	* Kind.cs:
+	* Types.g.cs: Updated
+
+2009-01-19  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs: Lookup named components when trying to set
+	attached properties.  TODO: Be nice to pull all the FindType stuff
+	into one method.
+
+2009-01-19  Alan McGovern  <amcgovern@novell.com>
+
+	* DispatcherTimer.cs: Change all our native callbacks to use a wrapped
+	handler which traps managed exceptions.
+
+2009-01-19  Alan McGovern  <amcgovern@novell.com>
+
+	* Events.cs: Events.CreateSafeHandler (UnmanagedEventHandler) will wrap
+	an existing UnmanagedEventHandler to create handler which will not
+	propagate managed exceptions to native code.
+
+2009-01-19  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Kind.cs: Regenerated.
+
+2009-01-19  Alan McGovern  <amcgovern@novell.com>
+
+	* Kind.cs:
+	* Types.g.cs:
+	* GeneratedPInvokes.cs: Create an unmanaged peer for the Popup class
+
+2009-01-19  Andreia Gaita  <avidigal@novell.com>
+
+	* DispatcherTimer.cs: catch any exception thrown on Tick and
+	route them to the global exception handler (Application)
+
+2009-01-18  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* GeneratedPInvokes.cs, Kind.cs, Types.g.cs: Regenerated
+	* Value.cs: Handle the transition between libmoon DO-based
+	matrix (UnmanagedMatrix) and the managed, struct-based, Matrix
+	type provided by SL2.
+
+2009-01-17  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs: Rework CreateComponentFromName into
+	LookupComponentFromName.
+
+2009-01-17  Jackson Harper  <jackson@ximian.com>
+
+	* XamlLoaderCallbacks.cs: Marshall bool properly.
+
+2009-01-17  Jackson Harper  <jackson@ximian.com>
+
+	* Types.cs: Skip the INVALID kind when trying to find a native
+	kind.
+
+2009-01-17  Jackson Harper  <jackson@ximian.com>
+
+	* XamlLoaderCallbacks.cs: Switch CreateObject to LookupObject (see
+	xaml.cpp for why).
+	* ManagedXamlLoader.cs: CreateObject now Looks objects up and
+	conditionally creates them.
+
+2009-01-17  Jackson Harper  <jackson@ximian.com>
+
+	* Types.cs: New method for funding the underlying native KIND of a
+	type.
+
+2009-01-16  Chris Toshok  <toshok@ximian.com>
+
+	* Value.cs (Value.FromObject):
+	s/DependencyObject.TrackNativeReference/NativeMethods.event_object_ref.
+
+	* Helper.cs (Helper.GetConverterFor): make public (we use it from
+	the style machinery), and also look up the type converter on
+	@target_type if the property lacks a TypeConverter attribute.
+
+2009-01-16  Jb Evain  <jbevain@novell.com>
+
+	* NativeMethods.cs: add plugin_instance_get_browser_information.
+
+2009-01-16  Geoff Norton  <gnorton@novell.com>
+
+	* ManagedXamlLoader.cs:
+	* XamlLoaderCallbacks.cs: Add a GCHandle if this managed xaml 
+	loader is going to be used to apply control templates.
+
+2009-01-16  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs: Don't crash when we get an empty xmlns.
+
+2009-01-16  Jb Evain  <jbevain@novell.com>
+
+	* NativeMethods.cs: remove plugin_instance_load_url.
+
+2009-01-15  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs: Think I have fixed the param matching
+	properly this time.
+
+2009-01-15  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Value.cs: Handle Kind.GRIDLENGTH
+
+2009-01-15  Geoff Norton  <gnorton@novell.com>
+
+	* NativeMethods.cs: Drop a few unused pinvokes, and add one
+	for downloader_response_abort.
+
+2009-01-15  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs: Improve logic for event handler name
+	matching, needs less than two args, both are optional, first has
+	to be an object, second has to be an EventArgs.
+
+2009-01-15  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs: We need to walk up the type's hierarchy
+	and make sure all it's DPs are registered.
+
+2009-01-15  Jackson Harper  <jackson@ximian.com>
+
+	* XamlLoaderCallbacks.cs: Updated signature for set property.
+	* ManagedXamlLoader.cs: Handle creating DependencyPropertys in
+	SetProperty.
+
+2009-01-15  Sebastien Pouliot  <sebastien@ximian.com> 
+
+	* NativeMethods.cs: Fix marshaling of booleans (C# is four bytes,
+	like glib gboolean, but C++ bool is one byte). Remove old pinvokes
+	that does not exists anymore (except two that are still called from
+	managed code)
+
+2009-01-15  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Helper.cs: Update calls to value_from_str_with_typename
+	* NativeMethods.cs: Update value_from_str_with_typename pinvoke 
+	definition (3 different defects)
+	[Fix crasher on http://sildev.net/3DCubes/index.html]
+
+2009-01-15  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* GeneratedPInvokes.cs: Regenerated.
+
+2009-01-14  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs: Add special handling of System.Type
+	arguments specified as strings.
+	* Value.cs: Add the new ManagedTypeInfo.
+	* Kind.cs: Regen
+	
+2009-01-14  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* GeneratedPInvokes.cs: Regenerated to free char* return values
+
+2009-01-13  Chris Toshok  <toshok@ximian.com>
+
+	* XamlLoaderCallbacks.cs: make sure we free the native loader in a
+	finally block so exceptions thrown from the native methods don't
+	keep them alive.
+
+2009-01-13  Jackson Harper  <jackson@ximian.com>
+
+	* NativeMethods.cs: Add new method for looking up namespace uris.
+
+2009-01-13  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs:
+	* XamlLoaderCallbacks.cs: Update xaml callback sigs.
+
+2009-01-13  Stephane Delcroix  <sdelcroix@novell.com>
+
+	* NativeMethods: add a P/Invoke to set the GetTileLayers callback
+
+2009-01-13  Andreia Gaita  <avidigal@novell.com>
+
+	* DispatcherTimer.cs: Set correct sender object in event
+
+2009-01-13  Jb Evain  <jbevain@novell.com>
+
+	* Helper.cs: remove Aglcr.
+	* NativeMethods.cs: remove references to Helper.Agclr.
+	* Types.g.cs: regen, remove references to Helper.Agclr.
+
+2009-01-13  Jb Evain  <jbevain@novell.com>
+
+	* XamlLoaderCallbacks.cs
+	* ManagedXamlLoader.cs: fix the signature of
+	CreateDependencyObjectFromFile and CreateDependencyObjectFromString
+	to actually return a DependencyObject.
+
+2009-01-13  Jb Evain  <jbevain@novell.com>
+
+	* XamlLoaderCallbacks.cs (CreateManagedXamlLoader): remove
+	the use of reflection now that we're in System.Windows.
+
+2009-01-12  Jb Evain  <jbevain@novell.com>
+
+	* ApplicationLauncher.cs: new class specific to NET_2_1,
+	used by the plugin to create and terminate applications.
+	* XapHack.cs: deleted.
+
+2009-01-12  Jackson Harper  <jackson@ximian.com>
+
+	* Helper.cs: Convert enums.
+
+2009-01-12  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs: Add the ability to rename types. So
+	CreateObject can lookup internal names. Right now this is only
+	used for ApplicationInternal.
+
+2009-01-12  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* ManagedXamlLoader.cs: TrySetEventReflection: we need to find the
+	method to bind to manually, Delegate.CreateDelegate (with a string
+	argument to find the method) only supports methods with the exact
+	same parameter types, however we have to bind to methods which
+	doesn't have the exact same parameter types.
+
+2009-01-12  Andreia Gaita  <avidigal@novell.com>
+
+	* Mono/GeneratedPInvokes.cs, 
+	  Mono/Kind.cs,
+	  Mono/Types.g.cs: regen (removed unmanaged StackPanel)
+
+2009-01-08  Alan McGovern  <amcgovern@novell.com>
+
+	* Value.cs: Add the ability to map a DependencyProperty to/from native.
+	This removes a hack in Style where DP's used to be looked up by name,
+	which couldn't be done with properties registered through C#. Fixes 2
+	NUnit tests.
+
+2009-01-08  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* GeneratedPInvokes.cs, Kind.cs, Types.g.cs: Regenerated for
+	ITEM_COLLECTION
+
+2009-01-07  Alan McGovern  <amcgovern@novell.com>
+
+	* Value.cs: Added new test for cursors and fixed the implementation to
+	make it pass.
+
+2009-01-07  Alan McGovern  <amcgovern@novell.com>
+
+	* Value.cs: Cursor.Default should map to a null cursor in managed land
+	as per MSDN. Fixes failing NUnit test after default cursor was
+	reinstated.
+
+2009-01-06  Alan McGovern  <amcgovern@novell.com>
+
+	* GeneratedPInvokes.cs: Nuke DO.GetDefaultValue as it just wraps the
+	DP.GetDefaultValue function. Fixed the implementation of 'null'
+	Value*. Now a Value* with GetIsNull () == true will be returned as
+	'NULL' for calls to GetValue or GetValueNoDefault. This makes
+	Value.GetIsNull opaque to native code so existing null checks will
+	work as they should. The only function which is aware of GetIsNull is
+	GetLocalValue, and this correctly handles this case.
+
+2008-12-22  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* GeneratedPInvokes.cs: Regenerated for bool size.
+
+2008-12-22  Alan McGovern  <amcgovern@novell.com>
+
+	* Value.cs: unused_padding is now used as a bitfield. Currently used to
+	indicate whether an object is null or not
+
+2008-12-22  Andreia Gaita  <avidigal@novell.com>
+
+	* DispatcherTimer.cs: Added. Internal timeline class used to drive
+	a clock whose duration is the timer's Interval property. The tick
+	events are generated by the timeline's completed events.
+
+	* GeneratedPInvokes.cs, Kind.cs, Types.g.cs: Regenerated for
+	DispatcherTimer
+
+2008-12-19  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* GeneratedPInvokes.cs: Regenerated for ReadOnly DP.
+
+2008-12-19  Chris Toshok  <toshok@ximian.com>
+
+	* Value.cs: move DependencyObject.GetAsValue to Value.FromObject
+	and DependencyObject.ValueToObject to Value.ToObject.
+
+	* ManagedXamlLoader.cs: track change
+
+2008-12-18  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Kind.cs: Regenerated (to be internal in SL)
+
+2008-12-17  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs: Handle IConvertible.
+
+2008-12-12  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs: Allow null for the xmlns
+	- Make sure attached props have a type-name.
+
+2008-12-12  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs: Fix setting non attached properties.
+
+2008-12-11  Chris Toshok  <toshok@ximian.com>
+
+	* Events.cs: add template_applied(_callback).
+
+2008-12-10  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs: Need to convert types to match
+	property/method signatures before setting them.
+
+2008-12-08  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs: Remove some dead code.
+
+2008-12-05  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Events.cs: MouseLeave needs to supply MouseEventArgs.
+
+2008-12-05  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs: Use teh auto-collection adding trick for
+	setting normal properties too, not just attached properties.
+
+2008-12-05  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs: Only do this list add trick on a property
+	if we are not a list. ie don't add a list to the list.
+
+2008-12-04  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs: If there is no collection retrieved from
+	the getter, try creating a new collection and setting it as the
+	value.
+
+2008-12-02  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs: Sometimes we are setting an attached
+	property to a single value, but the property is actually a
+	collection.  In this case we use the getter to get the collection
+	and then add the item to the collection.
+	- remove some dead code (event hookup)
+	
+2008-12-02  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs: CreateComponent can create non-DO objects
+	now.
+	- Fix error message.
+
+2008-11-26  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs: The parser now likes to deal with Values
+	instead of DependencyObjects, also the interface has been
+	simplified a little bit.
+
+2008-11-21  Stephane Delcroix  <sdelcroix@novell.com>
+
+	* Events.cs: use VisualStateGroupe.Raise* methods instead of
+	Invoke*
+
+2008-11-18  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* ManagedXamlLoader.cs: Get a mapping without accessing two times
+	the dictionary. Display the type of the current object when we 
+	can't find a property setter inside SetCustomAttribute.
+
+2008-11-18  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Events.cs: More corcompare work.
+
+2008-09-29  Jb Evain  <jbevain@novell.com>
+
+	* Events.cs: avoid using Helper methods if not needed.
+
+2008-09-09  Chris Toshok  <toshok@ximian.com>
+
+	* ManagedXamlLoader.cs (SetCustomAttribute): return true even if
+	the property setting (but not the property lookup) failed so we
+	can see what else is failing.
+	(AddChild): flesh this out a bit, particular in the non-DP case.
+	
+2008-09-08  Chris Toshok  <toshok@ximian.com>
+
+	* ManagedXamlLoader.cs: a few changes to support creating non-DO
+	objects from within the parser (including property setting),
+	setting completely managed attached DP's on managed objects, and
+	implement AddChild for managed objects.  Also, flatten the
+	hierarchy when looking up the FooProperty DependencyProperty
+	field.
+
+2008-08-20  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs: When setting managed attributes we need to
+	deal with attached properties (actually, 99% of the time it should
+	be an attached property).
+
+2008-08-19  Chris Toshok  <toshok@ximian.com>
+
+	* Events.cs: GotFocus/LostFocus take a RoutedEventArgs.
+
+2008-08-18  Geoff Norton  <gnorton@novell.com>
+
+	* Events.cs: Update to support the final 2.0 KeyEventArgs
+
+2008-08-17  Geoff Norton  <gnorton@novell.com>
+
+	* StreamWrapper.cs: Remove a ton of debug spew.
+
+2008-08-15  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* StreamWrapper.cs: Implement MediaElement.SetSource (stream)
+
+2008-08-14  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs: We need a target object to lookup the
+	event on and a destination object to lookup the delegate on when
+	hooking up events.
+
+2008-08-14  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Events.cs, ManagedXamlLoader.cs: Updated according to new method
+	  names.
+
+2008-08-12  Chris Toshok  <toshok@ximian.com>
+
+	* ManagedXamlLoader.cs (SetCustomAttribute): do the property
+	lookup here instead of passing the property name into both
+	Helper.SetPropertyFrom* methods.  Also simplify the error
+	checking (and actually check the error and not just
+	unmanaged_value before calling SetPropertyFromValue).  Remove the
+	error assignment before SetPropertyFromValue since it's an out
+	param anyway and will overwrite it.
+
+2008-08-06  Chris Toshok  <toshok@ximian.com>
+
+	* NativeMethods.cs: remove.
+
+2008-08-05  Chris Toshok  <toshok@ximian.com>
+
+	* Events.cs: add in some more event types for FrameworkElement's
+	new events.
+
+2008-08-05  Chris Toshok  <toshok@ximian.com>
+
+	* Events.cs: use MouseButtonEventArgs for button up/down.
+
+2008-07-29  Jeffrey Stedfast  <fejj@novell.com>
+
+	* ManagedXamlLoader.cs: Updated for
+	DependencyObject.ValueToObject() API change.
+
+2008-07-26  Chris Toshok  <toshok@ximian.com>
+
+	* Events.cs: KeyboardEventArgs -> KeyEventArgs.
+
+2008-07-26  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs: Allow the parser to get content properties
+	from managed types.
+
+2008-07-23  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Events.cs: Fix event signatures and base class.
+
+2008-07-21  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs: Dont hookup to the asssembly resolve event
+	anymore, this is all handled in Application (at least it should
+	be).
+	- Hookup the new parser callbacks to the Application methods
+	- Get Assemblies from the Application instead of trying to
+	download, ect.
+
+2008-04-20  Geoff Norton  <gnorton@novell.com>
+
+	* Events.cs: Pass a IntPtr to native code, as a GCHandle is
+	a structure and passing it assumes ABI specific behaviour.
+		
+2008-04-13  Jb Evain  <jbevain@novell.com>
+
+	* ManagedXamlLoader.cs: update list ok known assemblies
+	with the 2.0 assemblies. Also use Dictionary<,> instead
+	of Hashtable for the assembly cache.
+	Merged from the Moonlight 2 branch.
+
+2008-04-01  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* ManagedXamlLoader.cs: Two more base_unref_delayed -> base_unref cases.
+
+2008-03-06  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* ManagedXamlLoader.cs: Move LoadDepsSynch to XamlLoader in agmono.
+
+2008-03-03  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* ManagedXamlLoader.cs: Implement xaml loading with more than one surface
+	  per appdomain. Moved surface and plugin fields to XamlLoader.
+	  Implemented a method to create a dependency object from a string.
+
+2008-02-11  Miguel de Icaza  <miguel@novell.com>
+
+	* ManagedXamlLoader.cs: 
+
+2008-02-04  Miguel de Icaza  <miguel@novell.com>
+
+	Fixes for Phalanger.NET on Silverlight:
+	
+	http://tomasp.net/files/copter/default.html
+	
+	* ManagedXamlLoader.cs (assembly_to_source): Add new hashtable to
+	track the mapping of loaded assemblies to the location on the file
+	system.
+
+	(AssemblyToSource): New helper method that is used to track all
+	assemblies loaded and their mapping to the cache in the
+	filesystem. 
+
+	(Setup): Setup an Assembly resolver event for the appdomain.
+
+	(AssemblyResolve): Used to resolve assemblies that are loaded
+	implicitly from a Silverlight application.   If user code calls
+	Assembly.Load ("file.dll") it expects the file.dll to be loaded
+	from the same directory from which the originating assembly
+	called. 
+
+	If that is ClientBin/Dingus.dll calling Load ("Blah.dll") we need
+	to request ClientBin/Blah.dll.
+
+	We walk the stack to find the calling assembly and we map that to
+	the actual directory where the data was loaded from.
+
+	(LoadAssembly): Refactored to allow the synchronous parameter to
+	be used (independently of the global property). 
+
+	Everywhere: when an assembly is successfully loaded, we add it to
+	the AssemblyToSource mapping. 
+
+2008-01-09  Chris Toshok  <toshok@ximian.com>
+
+	* Events.cs: no longer marshal the UnmanagedMouseEventArgs -
+	MouseEventArgs now takes an IntPtr in its ctor which corresponds
+	to the calldata passed in on the mouse events.
+
+2007-12-18  Miguel de Icaza  <miguel@novell.com>
+
+	* ManagedXamlLoader.cs: Support assembly dependency downloading
+	correctly.   This still does not support the Sync case, waiting
+	for a sample test case to fix that case (it would be a lot cleaner
+	to plug now). 
+
+	Fixes starting up http://fluxtools.net/emailphotos/
+
+2007-12-17  Miguel de Icaza  <miguel@novell.com>
+
+	* ManagedXamlLoader.cs: Reorganization, no relevant changes: move
+	all the callback code to a region, prefix it.
+
+2007-11-20  Jeffrey Stedfast  <fejj@novell.com>
+
+	* Events.cs (loaded_callback): call BrowserHost.InvokeResize().
+	Patch by Stephen. Fixes bug #325031.
+
+2007-11-20  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs: Helper now gives us back an unmanaged
+	value if we tried to set a property that was an agclr type.
+	Create the wrapper for this type and set the property using the
+	new object.
+
+2007-10-10  Chris Toshok  <toshok@ximian.com>
+
+	* ManagedXamlLoader.cs (LoadObject): we need to ref again in this
+	case, as the caller of this method assumes it owns a ref to this
+	object.  So, bump it up one for the managed ref.
+
+2007-10-10  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* ManagedXamlLoader.cs: Move the static surface and plugin fields to
+	  XamlLoader.
+
+2007-10-08  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* ManagedXamlLoader.cs: Store the plugin and surface pointers as static
+	  values. Use those values when creating a native loader instead of
+	  IntPtr.Zero.
+
+2007-10-04  Zoltan Varga  <vargaz@gmail.com>
+
+	* ManagedXamlLoader.cs (LoadDepsSynch): New property to control the synchronous
+	downloading of dependencies.
+	(LoadDependency): New helper method.
+	(LoadAssembly): Call LoadDependency if needed.
+
+2007-10-02  Zoltan Varga  <vargaz@gmail.com>
+
+	* ManagedXamlLoader.cs (LoadObject): Log exceptions thrown from CreateInstance.
+
+2007-09-30  Zoltan Varga  <vargaz@gmail.com>
+
+	* ManagedXamlLoader.cs (LoadAssembly): Avoid loading non-downloaded assemblies from 
+	the local file system in the plugin case.
+
+	* Events.cs: Remove a FIXME.
+
+	* ManagedXamlLoader.cs (LoadCode): Report DLR errors through the plugin.
+
+	* DLRHost.cs: Remove some FIXMEs.
+
+2007-09-28  Zoltan Varga  <vargaz@gmail.com>
+
+	* Events.cs: Implement exception handling by forwarding exceptions to the plugin
+	instance.
+
+	* DLRHost.cs: New class hosting the MS DLR inside Silverlight. Requires a 
+	DLR which compiles cleanly under Silverlight, so it is not enabled yet.
+
+	* ManagedXamlLoader: Add hooks for creating the DLR, loading script files,
+	setting globals and hooking up events. Not enabled yet.
+
+2007-09-26  Zoltan Varga  <vargaz@gmail.com>
+
+	* Events.cs: Implement setting of KeyBoardEventArgs.{shift, ctrl}.
+
+2007-09-22  Zoltan Varga  <vargaz@gmail.com>
+
+	* ManagedXamlLoader.cs (load_file): Load the source using Moonlight.LoadResource.
+	
+	* ManagedXamlLoader.cs: Call Moonlight.LoadFile so the desktop code in mopen.cs
+	can take control of assembly loading.
+
+	* ManagedXamlLoader.cs: Add a new load_code callback.
+
+2007-09-22  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* ManagedXamlLoader.cs: Make mappings static. Makes DrPopper work again.
+
+2007-09-21  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* ManagedXamlLoader.cs: Added, unify code from moonlight.cs and
+	  XamlReader.cs into one class (code was basically duplicated).
+
+2007-08-23  Jackson Harper  <jackson@ximian.com>
+
+	* Events.cs: Resize is now a proper event.
+
+2007-08-20  Jb Evain  <jbevain@novell.com>
+
+	* Events.cs: use methods in [agmono]Mono.Helper to avoid calling
+	internal methods of mscorlib.
+
+2007-08-10  Chris Toshok  <toshok@ximian.com>
+
+	* Events.cs: fill in the key_up_callback/key_down_callback to call
+	UIElement.InvokeKey{Up,Down}, and marshal the unmanaged keyboard
+	event args.
+
+2007-07-09  Chris Toshok  <toshok@ximian.com>
+
+	* Events.cs: commit the CrossDomainProxy code for handling events
+	that need to be proxied to a different app domain (as in the
+	browser).
+
+2007-07-08  Chris Toshok  <toshok@ximian.com>
+
+	* Events.cs: phase 2: use GCHandles as the closures we pass to
+	dependency_object_add/remove_event_handler.  this allows us to
+	remove the hash lookup methods (ElementFromPtr, ObjectFromPtr) and
+	just use GCHandle.Target.
+
+2007-07-08  Chris Toshok  <toshok@ximian.com>
+
+	* Events.cs: use UnmanagedEventHandlers for all the delegates
+	here, and mark the UIElement delegates internal so it can get at
+	them.  Probably all the UIElement event stuff should move to
+	UIElement.cs.  Some little fixes (we don't need to check for null
+	in any of the delegates since ElementFromPtr will throw an
+	exception if null would have been returned) and add marshalling
+	from the unmanaged MouseEventArgs struct to the Managed one (since
+	the Managed one lacks a StructLayout attribute.)
+
+2007-06-26  Jeffrey Stedfast  <fejj@novell.com>
+
+	* Events.cs: Updated here too.
+
+	* NativeMethods.cs: Updated dependency_object_get_kind() ->
+	dependency_object_get_object_type() and added a binding for
+	dependency_object_get_value_no_default().
+
+2007-06-22  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Value.cs: The data in an unmanaged array is laid out directly after
+	  the refcount, there's no pointer to anywhere.
+
+2007-06-22  Chris Toshok  <toshok@ximian.com>
+
+	* Value.cs: i know miguel is going to hate this, but defining the
+	managed versions of the unmanaged structures, as well as mirroring
+	the unmanaged Value structure (to a certain degree) *really*
+	cleans things up.
+
+2007-06-21  Chris Toshok  <toshok@ximian.com>
+
+	* Value.cs: 64 bit work with grendel.
+
+2007-06-21  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Kind.cs, NativeMethods.cs: Update.
+
+2007-06-21  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Kind.cs, NativeMethods.cs: Updated.
+
+2007-06-21  Jackson Harper  <jackson@ximian.com>
+
+	* Events.cs: If the wrapper object isn't available to handle a
+	mouse message, try to create it.
+
+2007-06-21  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Kind.cs, NativeMethods.cs: Updated.
+
+2007-06-20  Chris Toshok  <toshok@ximian.com>
+
+	* NativeMethods.cs: add the callbacks to
+	control_initialize_from_xaml's signature.
+
+2007-06-20  Jeffrey Stedfast  <fejj@novell.com>
+
+	* NativeMethods.cs: Bind to dependency_object_get_kind() (this
+	should perhaps be renamed to dependency_object_get_object_type?)
+
+2007-06-20  Jackson Harper  <jackson@ximian.com>
+
+	* NativeMethods.cs: Tie into events.
+
+2007-06-19  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Kind.cs, NativeMethods.cs: More updates.
+
+2007-06-19  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* NativeMethods.cs: Update.
+
+2007-06-19  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* NativeMethods.cs: More native methods.
+
+2007-06-19  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Kind.cs: Update.
+	* NativeMethods.cs: Added dependency_property_is_nullable.
+
+2007-06-18  Chris Toshok  <toshok@ximian.com>
+
+	* Events.cs: add two methods to deal with the EventObject stuff in
+	C++ (AddHandler, and RemoveHandler).
+
+	* NativeMethods.cs: two pinvokes needed for the above Add/Remove
+	methods.
+
+2007-06-18  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Kind.cs: Updated.
+	* NativeMethods.cs: Still more native methods.
+
+2007-06-18  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* NativeMethods.cs: More native functions.
+
+2007-06-17  Miguel de Icaza  <miguel@novell.com>
+
+	* NativeMethods.cs (dependency_object_get_name): Oops, string
+	return values are freed by the runtime.   
+
+2007-06-18  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* NativeMethods.cs : glyphs_new().
+
+2007-06-17  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* NativeMethods.cs : actually PInvokes are already in moon.
+
+2007-06-17  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* NativeMethods.cs : textblock_new() and textblock_set_source().
+	  They do not exist yet.
+
+2007-06-16  Jackson Harper  <jackson@ximian.com>
+
+	* NativeMethods.cs: Updated to match new xaml_create_from_*
+	function signatures.
+
+2007-06-16  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* NativeMethods.cs: Add "out Kind" parameter to control_initialize_
+	from_xaml
+
+2007-06-15  Jackson Harper  <jackson@ximian.com>
+
+	* NativeMethods.cs: Add the callback for creating custom element
+	types.
+	
+2007-06-15  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* NativeMethods.cs: Add image_new and media_base_new
+
+2007-06-15  Sebastien Pouliot  <sebastien@ximian.com> 
+
+	* NativeMethods.cs: Add collection_remove and fix API signature for
+	collection_add
+
+2007-06-15  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Kind.cs: Add Control.
+	* NativeMethods.cs: Add control_new.
+
+2007-06-15  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* NativeMethods.cs: Remove managed downloader.
+
+2007-06-15  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* NativeMethods.cs: Add downloader methods.
+
+2007-06-15  Jeffrey Stedfast  <fejj@gnome.org>
+
+	* Kind.cs: Added Runs/LineBreaks
+
+2007-06-14  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* NativeMethods.cs: More native constructor fixes.
+
+2007-06-14  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Kind.cs: Update.
+
+2007-06-14  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* NativeMethods.cs: And even more native methods.
+
+2007-06-14  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* NativeMethods.cs: More native constructors.
+
+2007-06-13  Jeffrey Stedfast  <fejj@novell.com>
+
+	* Kind.cs: Updated (added TextBlock and Glyphs)
+
+2007-06-13  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* NativeMethods.cs: More native constructors.
+
+2007-06-13  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Kind.cs: Updated.
+
+2007-06-13  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Kind.cs: Update.
+
+2007-06-13  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* NativeMethods.cs: Add a constructor.
+
+2007-06-13  Miguel de Icaza  <miguel@novell.com>
+
+	* Events.cs: Add a couple of new events. 
+
+2007-06-12  Jeffrey Stedfast  <fejj@gnome.org>
+
+	* Kind.cs: Updated (removed Video)
+
+2007-06-12  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Kind.cs: Updated (RADIALGRADIENTBRUSH)
+
+2007-06-12  Jeffrey Stedfast  <fejj@gnome.org>
+
+	* Kind.cs: Updated (added MediaBase and MediaElement)
+
+2007-06-12  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Kind.cs: Updated (MATRIX)
+
+2007-06-12  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Kind.cs: Updated.
+
+2007-06-12  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Kind.cs: Update.
+
+2007-06-08  Miguel de Icaza  <miguel@novell.com>
+
+	* NativeMethods.cs (collection_add): new.
+
+	* Kind.cs: Update values here.
+
+2007-06-08  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Kind.cs: Update.
+
+2007-06-08  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Kind.cs: Add DOUBLE_ARRAY and POINT_ARRAY.
+
+2007-06-08  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Kind.cs: Updated.
+
+2007-06-08  Miguel de Icaza  <miguel@novell.com>
+
+	*  Kind.cs: Split the values here.
+
+2007-06-07  Miguel de Icaza  <miguel@novell.com>
+
+	* Hosting.cs: New file, helper tool.
+
+	* Value.cs: new file, the managed reprensetation of the unmanaged
+	Value. 
+
+	* NativeMethods.cs: xaml_create_from_str.
+
+	* NativeMethods.cs: add new dependency_property_lookup,
+	dependency_object_get_value, dependency_object_set_value,
+	canvas_new.
+
+	update rectangle_new
+
+2007-06-04  Miguel de Icaza  <miguel@novell.com>
+
+	* NativeMethods.cs: Added the beginning of the bindings to `moon'.
+
+	

@@ -1,0 +1,129 @@
+2010-04-19  Andreia Gaita  <avidigal@novell.com>
+
+	* Makefile.am: disable build parallelization just here, fixes
+	parallel builds
+
+2010-03-04  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Makefile.am: Build cecil and friends in the basic profile instead
+	of net_1_1 (which has been removed). Don't fail if copying mdbs fail.
+
+2010-01-09  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Consts.cs: Add FxFileVersion to match latest SL3 version number
+
+2009-12-03  Andrew Jorgensen  <ajorgensen@novell.com>
+
+	* Makefile.am: always run make-lib-directories
+	* Moon.Windows.Desktop/Makefile.am: dist the themes dir
+
+2009-12-03  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Makefile.am: 'tuning' is now included for desktop-only config
+	so it should not be called indirectly either
+
+2009-12-01  Brad Taylor  <brad@getcoded.net>
+
+	* Moon.Windows.Desktop/Assembly/AssemblyInfo.cs: Remove an unneeded
+	InternalsVisibleTo entry.
+
+	r: spouliot
+
+2009-11-30  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Moon.Windows.Desktop/Makefile.am: MOON_A11Y_INTERNAL_HACK is
+	  not needed anymore since the audit finished in r147098. r:
+	  spouliot
+
+2009-10-20  Chris Toshok  <toshok@ximian.com>
+
+	* Makefile.am: revision 3.0 of "fix alan's bot as well as sles-10"
+
+	r: kangaroo
+
+2009-10-20  Chris Toshok  <toshok@ximian.com>
+
+	* Makefile.am: revision 2.0 of "fix alan's bot"
+
+	r: kangaroo
+
+2009-10-20  Chris Toshok  <toshok@ximian.com>
+
+	* Makefile.am: add .NOTPARALLEL to fix alan's bot with -j 1.
+
+	r: rolf
+
+2009-08-08  Chris Toshok  <toshok@ximian.com>
+
+	* Makefile.am (all-local): pretty gross, but add an all-local
+	target that takes care of the initial circular build of
+	System.Windows.dll and System.Windows.Browser.dll, so we can build
+	a System.Windows.dll with a functioning HyperLinkButton (which
+	depends on S.W.B.dll).
+
+2009-07-02  Jb Evain  <jbevain@novell.com>
+
+	* Makefile.am: adjust to the linker and tuner build changes.
+
+2009-03-09  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Makefile.am: Also copy *.mdb debug files for the linker and its
+	required assemblies
+
+2009-02-27  Jb Evain  <jbevain@novell.com>
+
+	* Makefile.am: add new tuning directory, which is built before
+	the traditional moon assemblies, and does the actual tuning of
+	the mcs assemblies.
+
+2009-01-12  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* Makefile.am: Include System.Windows.Controls and
+	System.Windows.Controls.Data in the build.
+
+2008-12-19  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* System.Windows.Controls.Data/Makefile.am,
+	  System.Windows.Controls/Makefile.am: Add more files, enable
+	  disabled files in build.
+
+2008-12-18  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Makefile.am: Remove toolkit helpers from the build since they are
+	not needed anymore (new controls).
+
+2008-12-17  Chris Toshok  <toshok@ximian.com>
+
+	* Makefile.am (SUBDIRS): remove Mono.Moonlight from here, we no
+	longer build it.
+
+2008-12-17  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Makefile.am: Add a few files from SL Toolkit into the build.
+
+2008-11-20  Stephane Delcroix  <sdelcroix@novell.com>
+
+	* WPF.Toolkit/VSM: import VisualStateManager from
+	the MsPL WPFToolkit
+
+2008-08-17  Chris Toshok  <toshok@ximian.com>
+
+	* Makefile.am (SUBDIRS): don't include
+	Microsoft.SilverlightControls in the build here.  add a dist-hook
+	that copies the directory tree.
+
+	Also, split up the 2.1/3.0 stuff here so we only do the things we
+	need to.
+
+2008-08-08  Fernando Herrera  <fherrera@novell.com>
+
+	* Makefile.am: Add Microsoft.SilverlightControls.
+
+2008-05-07  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Makefile.am: Add silverlight.pub to dist.
+
+2008-05-06  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* silverlight.pub: Public key for Silverlight 2.0 assemblies.
+	Public Key Token: 7cec85d7bea7798e

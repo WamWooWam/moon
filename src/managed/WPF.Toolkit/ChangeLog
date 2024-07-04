@@ -1,0 +1,120 @@
+2010-03-26  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* VSM/System/Windows/VisualStateManager.cs: Call SafeNativeMethods
+
+2010-03-24  Alan McGovern  <amcgovern@novell.com>
+
+	* VSM/System/Windows/VisualStateManager.cs: Fix a null ref
+	  caused by null properties.
+
+2010-03-05  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* VSM/System/Windows/VisualStateGroup.cs: Update to SL4 beta API.
+
+2010-02-09  Rolf Bjarne Kvinge  <RKvinge@novell.com>
+
+	* VSM/System/Windows/VisualStateManager.cs: Fix compiler warnings.
+
+2009-12-14  Jeffrey Stedfast  <fejj@novell.com>
+
+	* VSM/System/Windows/VisualStateChangedEventArgs.cs: Added a
+	public default ctor and added setters for each of the properties.
+
+2009-12-04  Alan McGovern  <amcgovern@novell.com>
+
+	* VSM/System/Windows/VisualStateGroup.cs: We should be using
+	  the DP not a manage field for VisualStateGroup.Name. Fixes
+	  all the datavisualisation demos in 
+
+	* VSM/System/Windows/VisualState.cs: Don't bother storing a
+	  copy of the Name property locally - just use
+	  FrameworkElement.NameProperty.
+
+2009-12-03  Jeffrey Stedfast  <fejj@novell.com>
+
+	* VSM/System/Windows/VisualTransition.cs: Subclasses
+	DependencyObject (as opposed to object) in both Silverlight 3.0
+	and WPF, so removed the #if guards.
+
+2009-11-25  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* VSM/System/Windows/VisualStateManager.cs: Always override 
+	Equals(Object) if GetHashCode is overridden. Found using 
+	Gendarme's ImplementEqualsAndGetHashCodeInPairRule
+
+2009-09-04  Chris Toshok  <toshok@ximian.com>
+
+	* VSM/System/Windows/VisualStateGroup.cs,
+	VSM/System/Windows/VisualStateChangedEventArgs.cs: revert a chunk
+	of an early patch which attempted to use unmanaged events for
+	these completely managed events.
+
+	r: andreia
+
+2009-07-24  Alan McGovern  <amcgovern@novell.com>
+
+	* VSM/System/Windows/VisualStateGroup.cs: Copy/paste bug here.
+	  Register/Unregister the correct events and handlers for
+	  CurrentStateChanged.
+
+2009-07-07  Alan McGovern  <amcgovern@novell.com>
+
+	* VSM/System/Windows/VisualStateGroup.cs:
+	* VSM/System/Windows/VisualStateManager.cs: Update VSM so that
+	  it works now that we have better namescope handling.
+
+2009-03-06  Alan McGovern  <amcgovern@novell.com>
+
+	* VSM/System/Windows/VisualStateManager.cs: Update VSM so that
+	  it doesn't crash and burn with PropertyPaths created from
+	  DependencyProperties.
+
+2009-03-06  Alan McGovern  <amcgovern@novell.com>
+
+	* ChangeLog:
+	* VSM/System/Windows/VisualStateManager.cs: Revert - I didn't
+	  mean to commit that yet. It's not complete.
+
+2009-03-05  Alan McGovern  <amcgovern@novell.com>
+
+	* VSM/System/Windows/VisualStateManager.cs: The PathParameters
+	  supplied to PropertyPath are always guaranteed to be of
+	  length 0. There is no point in storing them, exposing them
+	  or comparing them.
+
+2009-02-18  Jeffrey Stedfast  <fejj@novell.com>
+
+	* VSM/System/Windows/VisualStateGroup.cs: Default the name to "".
+
+2009-02-02  Chris Toshok  <toshok@ximian.com>
+
+	* VSM/System/Windows/VisualState.cs: use a hack to get around our
+	lack of support for RuntimeNameProperty (use the
+	DependencyObject.NameProperty for Name for the time being.)
+
+2009-01-30  Chris Toshok  <toshok@ximian.com>
+
+	* VSM/System/Windows/VisualStateManager.cs: dubious change - the
+	type Collection<VisualStateGroup> is *mostly* hidden, and is
+	reflected as IList to managed code.  so let's take advantage of
+	this fact to make things MUCH easier on us, and make it a subclass
+	of PresentationFrameworkCollection<VisualStateGroup>.
+
+2009-03-15  Alan McGovern  <amcgovern@novell.com>
+
+	* VSM/System/Windows/VisualStateGroup.cs: Simplify how native events are
+	connected to in managed code. The managed add/remove event methods
+	just call RegisterEvent/UnregisterEvent defined in DO.cs instead of
+	each event managing the event list itself.
+
+2009-01-12  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* VSM/System/Windows/VisualStateGroup.cs,
+	* VSM/System/Windows/VisualTransition.cs: Fix API to match SL2
+
+2008-11-21  Stephane Delcroix  <sdelcroix@novell.com>
+
+	* VSM/System/Windows/VisualStateChangedEventArgs.cs:
+	* VSM/System/Windows/VisualStateGroup.cs:
+	* VSM/System/Windows/VisualStateManager.cs: Various changes to
+	integrate those WPF.Toolkits parts in our System.Windows.dll

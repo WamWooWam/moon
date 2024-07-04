@@ -1,0 +1,55 @@
+<Project name="System.Windows.Browser" fileversion="2.0" DefaultNamespace="System.Windows.Browser" language="C#" clr-version="Net_2_0" targetFramework="2.0" ctype="DotNetProject">
+  <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="True" RelativeMakefileName="Makefile.am" BuildTargetName="install" IsAutotoolsProject="True" RelativeConfigureInPath="../..">
+    <BuildFilesVar Name="system_windows_browser_sources" />
+    <DeployFilesVar />
+    <ResourcesVar />
+    <OthersVar />
+    <GacRefVar Name="nunit" Prefix="-r:" />
+    <AsmRefVar Name="nunit" Prefix="-r:" />
+    <ProjectRefVar Name="nunit" Prefix="-r:" />
+  </MonoDevelop.Autotools.MakefileInfo>
+  <Configurations active="Default">
+    <Configuration name="Debug" ctype="DotNetProjectConfiguration">
+      <Output directory="bin/Debug" assembly="System.Windows.Browser" signAssembly="True" assemblyKeyFile="/mono/main/src/moon-2.0/class/mono.snk" />
+      <Build debugmode="True" target="Library" />
+      <Execution consolepause="False" runwithwarnings="True" runtime="MsNet" clr-version="Net_2_0" />
+      <CodeGeneration compiler="Mcs" warninglevel="4" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" definesymbols="DEBUG,NET_2_1" generatexmldocumentation="False" ctype="CSharpCompilerParameters" />
+    </Configuration>
+    <Configuration name="Release" ctype="DotNetProjectConfiguration">
+      <Output directory="bin/Release" assembly="System.Windows.Browser" />
+      <Build debugmode="False" target="Library" />
+      <Execution consolepause="False" runwithwarnings="True" runtime="MsNet" clr-version="Net_2_0" />
+      <CodeGeneration compiler="Mcs" warninglevel="4" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" generatexmldocumentation="False" ctype="CSharpCompilerParameters" />
+    </Configuration>
+  </Configurations>
+  <Contents>
+    <File subtype="Code" buildaction="Compile" name="Assembly/AssemblyInfo.cs" />
+    <File subtype="Code" buildaction="Compile" name="System.Windows.Browser/BrowserInformation.cs" />
+    <File subtype="Code" buildaction="Compile" name="System.Windows.Browser/HtmlDocument.cs" />
+    <File subtype="Code" buildaction="Compile" name="System.Windows.Browser/HtmlElement.cs" />
+    <File subtype="Code" buildaction="Compile" name="System.Windows.Browser/HtmlEventArgs.cs" />
+    <File subtype="Code" buildaction="Compile" name="System.Windows.Browser/HtmlObject.cs" />
+    <File subtype="Code" buildaction="Compile" name="System.Windows.Browser/HtmlPage.cs" />
+    <File subtype="Code" buildaction="Compile" name="System.Windows.Browser/HttpUtility.cs" />
+    <File subtype="Code" buildaction="Compile" name="System.Windows.Browser/ScriptableMemberAttribute.cs" />
+    <File subtype="Code" buildaction="Compile" name="System.Windows.Browser/ScriptObject.cs" />
+    <File subtype="Code" buildaction="Nothing" name="Makefile.am" />
+    <File subtype="Code" buildaction="Compile" name="System.Windows.Browser/HtmlWindow.cs" />
+    <File subtype="Code" buildaction="Compile" name="System.Windows.Browser/MouseButtons.cs" />
+    <File subtype="Code" buildaction="Compile" name="System.Windows.Browser/ScriptEventHandler.cs" />
+    <File subtype="Code" buildaction="Compile" name="System.Windows.Browser/ScriptableTypeAttribute.cs" />
+    <File subtype="Code" buildaction="Compile" name="System.Windows.Browser/ScriptObjectCollection.cs" />
+    <File subtype="Code" buildaction="Compile" name="System.Windows.Browser/HtmlPopupWindowOptions.cs" />
+    <File subtype="Code" buildaction="Compile" name="Mono/JSFriendlyMethodBinder.cs" />
+    <File subtype="Code" buildaction="Compile" name="Mono/ScriptObjectEventInfo.cs" />
+    <File subtype="Code" buildaction="Compile" name="Mono/ScriptObjectHelper.cs" />
+    <File subtype="Code" buildaction="Compile" name="Mono/ScriptObjectToggleRef.cs" />
+    <File subtype="Code" buildaction="Compile" name="System.Windows.Browser/HostServices.cs" />
+    <File subtype="Code" buildaction="Compile" name="System.Windows.Browser/ManagedObject.cs" />
+  </Contents>
+  <References>
+    <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+    <ProjectReference type="Project" localcopy="True" refto="Mono.Moonlight" />
+    <ProjectReference type="Project" localcopy="True" refto="System.Windows" />
+  </References>
+</Project>
