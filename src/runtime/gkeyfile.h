@@ -25,15 +25,16 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+#if GLIB_IS_EGLIB
 
 #ifndef __G_KEY_FILE_H__
 #define __G_KEY_FILE_H__
 
 #include <glib.h>
 
-G_BEGIN_DECLS
-
 typedef struct _GKeyFile GKeyFile;
+
+G_BEGIN_DECLS
 
 typedef enum {
 	G_KEY_FILE_ERROR_UNKNOWN_ENCODING,
@@ -68,3 +69,7 @@ gchar    *g_key_file_get_value (GKeyFile *key_file, const gchar *group_name, con
 G_END_DECLS
 
 #endif /* __G_KEY_FILE_H__ */
+
+#else
+#include <glib.h>
+#endif

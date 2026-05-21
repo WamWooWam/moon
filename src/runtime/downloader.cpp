@@ -22,6 +22,11 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <errno.h>
+#include <limits.h>
+
+#ifndef MAX_PATH
+#define MAX_PATH PATH_MAX
+#endif
 
 #include "downloader.h"
 #include "deployment.h"

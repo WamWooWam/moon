@@ -501,13 +501,8 @@ namespace Moonlight {
     }
 
     FontFace::~FontFace() {
-        FT_Stream stream;
-
         g_hash_table_steal(manager->faces, key);
-
-        stream = face->stream;
         FT_Done_Face(face);
-        font_stream_destroy(stream);
         g_free(key);
     }
 
@@ -1305,8 +1300,6 @@ namespace Moonlight {
     FontFace *
     FontManager::OpenFontFace(const char *filename, const char *guid, int index) {
         FT_Library libft2 = Runtime::GetFontService()->libft2;
-        FT_Open_Args args;
-        FT_Stream stream;
         FontFace *ff;
         FT_Face face;
         char *key;
@@ -1318,23 +1311,13 @@ namespace Moonlight {
             return ff;
         }
 
-        // if (!(stream = font_stream_new (filename, guid))) {
-        //	g_free (key);
-        //	return NULL;
-        // }
-
-        // args.flags = FT_OPEN_PATHNAME;
-        // args.pathname = filename;
-
         if (FT_New_Face(libft2, filename, index, &face) != 0) {
-            font_stream_destroy(stream);
             g_free(key);
             return NULL;
         }
 
         if (!FT_IS_SCALABLE(face)) {
             FT_Done_Face(face);
-            font_stream_destroy(stream);
             g_free(key);
             return NULL;
         }

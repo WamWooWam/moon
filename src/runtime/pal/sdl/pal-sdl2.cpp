@@ -14,6 +14,13 @@
 
 #include <glib.h>
 
+#include "events/button-sdl2.h"
+#include "events/motion-sdl2.h"
+#include "events/wheel-sdl2.h"
+#include "events/key-sdl2.h"
+#include "events/crossing-sdl2.h"
+#include "events/focus-sdl2.h"
+
 #undef CreateWindow
 
 using namespace Moonlight;
@@ -42,14 +49,10 @@ public:
         if (result != 0)
             return result;
 
-        // reverse source1 and source2 here from above, since lower
-        // priority values represent higher priorities
         return source2->priority - source1->priority;
     }
 
-    // this one must be signed
     gint32 time_remaining;
-
     bool pending_destroy;
     guint source_id;
     int priority;
@@ -58,41 +61,27 @@ public:
     gpointer data;
 };
 
-/// our windowing system KKomrade
-
-enum class MoonWindowCreateType {
-    Message,
-    Regular,
-    Offscreen
-};
-
-struct MoonCreateParams {
-    MoonWindowCreateType type;
-    void *data;
-};
-
 MoonWindowingSystemSDL2::MoonWindowingSystemSDL2(bool out_of_browser)
     : sourceMutex(false) {
     source_id = 1;
     sources = NULL;
-    timer = NULL;
+    windows = NULL;
+    timer = 0;
     before = -1;
     emitting_sources = false;
-    pool = 0;
-    stride = 0;
 
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_AUDIO);
 }
 
 MoonWindowingSystemSDL2::~MoonWindowingSystemSDL2() {
+    if (windows)
+        g_list_free(windows);
 }
 
 void MoonWindowingSystemSDL2::ShowCodecsUnavailableMessage() {
-    // FIXME
 }
 
 cairo_surface_t *MoonWindowingSystemSDL2::CreateSurface() {
-    // FIXME...
     g_assert_not_reached();
 }
 
@@ -100,10 +89,8 @@ void MoonWindowingSystemSDL2::ExitApplication() {
     SDL_Quit();
 }
 
-
 MoonWindow *MoonWindowingSystemSDL2::CreateWindow(MoonWindowType windowType, int width, int height, MoonWindow *parentWindow, Surface *surface) {
-    MoonWindowSDL2 *window = new MoonWindowSDL2(windowType, width, height, parentWindow, surface, this);
-    return window;
+    return new MoonWindowSDL2(windowType, width, height, parentWindow, surface, this);
 }
 
 MoonWindow *MoonWindowingSystemSDL2::CreateWindowless(int width, int height, PluginInstance *forPlugin) {
@@ -112,7 +99,6 @@ MoonWindow *MoonWindowingSystemSDL2::CreateWindowless(int width, int height, Plu
 }
 
 MoonMessageBoxResult MoonWindowingSystemSDL2::ShowMessageBox(MoonMessageBoxType message_type, const char *caption, const char *text, MoonMessageBoxButton button) {
-
     return MoonMessageBoxResult::MessageBoxResultOk;
 }
 
@@ -129,9 +115,21 @@ bool MoonWindowingSystemSDL2::ShowConsentDialog(const char *question, const char
 }
 
 void MoonWindowingSystemSDL2::RegisterWindow(MoonWindow *window) {
+    windows = g_list_append(windows, window);
 }
 
 void MoonWindowingSystemSDL2::UnregisterWindow(MoonWindow *window) {
+    windows = g_list_remove(windows, window);
+}
+
+MoonWindowSDL2 *MoonWindowingSystemSDL2::FindWindowByID(Uint32 windowID) {
+    for (GList *l = windows; l; l = l->next) {
+        MoonWindowSDL2 *w = (MoonWindowSDL2 *)l->data;
+        SDL_Window *sdlwin = (SDL_Window *)w->GetPlatformWindow();
+        if (sdlwin && SDL_GetWindowID(sdlwin) == windowID)
+            return w;
+    }
+    return NULL;
 }
 
 Color *MoonWindowingSystemSDL2::GetSystemColor(SystemColor id) {
@@ -142,7 +140,6 @@ guint MoonWindowingSystemSDL2::AddTimeout(gint priority, gint ms, MoonSourceFunc
     sourceMutex.Lock();
 
     int new_source_id = source_id;
-
     SDL2Source *new_source = new SDL2Source(new_source_id, priority, ms, timeout, data);
     sources = g_list_insert_sorted(sources, new_source, SDL2Source::Compare);
     source_id++;
@@ -182,7 +179,6 @@ guint MoonWindowingSystemSDL2::AddIdle(MoonSourceFunc idle, gpointer data) {
     sourceMutex.Lock();
 
     int new_source_id = source_id;
-
     SDL2Source *new_source = new SDL2Source(new_source_id, MOON_PRIORITY_DEFAULT_IDLE, 0, idle, data);
     sources = g_list_insert_sorted(sources, new_source, SDL2Source::Compare);
     source_id++;
@@ -200,8 +196,32 @@ MoonIMContext *MoonWindowingSystemSDL2::CreateIMContext() {
 }
 
 MoonEvent *MoonWindowingSystemSDL2::CreateEventFromPlatformEvent(gpointer platformEvent) {
-    // FIXME
-    return NULL;
+    if (!platformEvent)
+        return NULL;
+
+    SDL_Event *ev = (SDL_Event *)platformEvent;
+    switch (ev->type) {
+    case SDL_MOUSEMOTION:
+        return new MoonMotionEventSDL2(1.0f, ev->motion.x, ev->motion.y, SDL_GetModState());
+    case SDL_MOUSEBUTTONDOWN:
+    case SDL_MOUSEBUTTONUP: {
+        int btn = ev->button.button == SDL_BUTTON_RIGHT ? 3 : ev->button.button;
+        bool rel = ev->type == SDL_MOUSEBUTTONUP;
+        return new MoonButtonEventSDL2(btn, rel, 1.0f, ev->button.x, ev->button.y, ev->button.clicks, SDL_GetModState());
+    }
+    case SDL_MOUSEWHEEL: {
+        float delta = ev->wheel.direction == SDL_MOUSEWHEEL_FLIPPED ? -(float)ev->wheel.y : (float)ev->wheel.y;
+        int mx, my;
+        SDL_GetMouseState(&mx, &my);
+        return new MoonWheelEventSDL2(1.0f, mx, my, delta);
+    }
+    case SDL_KEYDOWN:
+        return new MoonKeyEventSDL2(true, false, ev->key.keysym.sym, ev->key.keysym.scancode, (SDL_Keymod)ev->key.keysym.mod);
+    case SDL_KEYUP:
+        return new MoonKeyEventSDL2(false, false, ev->key.keysym.sym, ev->key.keysym.scancode, (SDL_Keymod)ev->key.keysym.mod);
+    default:
+        return NULL;
+    }
 }
 
 MoonModifier
@@ -210,9 +230,12 @@ MoonWindowingSystemSDL2::GetCommandModifier() {
 }
 
 guint MoonWindowingSystemSDL2::GetCursorBlinkTimeout(MoonWindow *moon_window) {
+#if defined(GetCaretBlinkTime)
     return GetCaretBlinkTime();
+#else
+    return CURSOR_BLINK_TIMEOUT_DEFAULT;
+#endif
 }
-
 
 MoonPixbufLoader *MoonWindowingSystemSDL2::CreatePixbufLoader(const char *imageType) {
     return new MoonPixbufLoaderSDL2(imageType);
@@ -240,8 +263,6 @@ void MoonWindowingSystemSDL2::OnTick() {
 
             if (s->time_remaining + delta < 0) {
                 if (max_priority == G_MAXINT) {
-                    // first time through here, so we do what glib does, and limit the sources we
-                    // dispatch on to those at or above this priority.
                     max_priority = s->priority;
                     sources_to_dispatch = g_list_prepend(sources_to_dispatch, s);
                 }
@@ -288,6 +309,7 @@ void MoonWindowingSystemSDL2::OnTick() {
         }
     }
 
+    timer = 0;
     emitting_sources = false;
     sourceMutex.Unlock();
 
@@ -298,7 +320,7 @@ void MoonWindowingSystemSDL2::AddSDL2Timer() {
     int timeout = -1;
 
     sourceMutex.Lock();
-    if (timer != NULL) {
+    if (timer != 0) {
         sourceMutex.Unlock();
         return;
     }
@@ -310,10 +332,12 @@ void MoonWindowingSystemSDL2::AddSDL2Timer() {
     }
 
     if (timeout >= 0) {
-        // timer = (gpointer)SetTimer(message_window, MoonSDL2TimerId, timeout, nullptr);
         timer = SDL_AddTimer(
             timeout, [](Uint32 interval, void *param) -> Uint32 {
-                SDL_PushEvent(new SDL_Event{ SDL_USEREVENT });
+                SDL_Event ev;
+                SDL_memset(&ev, 0, sizeof(ev));
+                ev.type = SDL_USEREVENT;
+                SDL_PushEvent(&ev);
                 return 0;
             },
             this);
@@ -331,32 +355,171 @@ void MoonWindowingSystemSDL2::RunMainLoop(MoonWindow *window, bool quit_on_windo
 
     AddSDL2Timer();
 
+    bool running = true;
     SDL_Event event;
-    while (SDL_WaitEvent(&event)) {
-        if (event.type == SDL_QUIT) {
+    while (running && SDL_WaitEvent(&event)) {
+        switch (event.type) {
+        case SDL_QUIT:
+            running = false;
+            break;
+
+        case SDL_USEREVENT:
+            OnTick();
+            break;
+
+        case SDL_MOUSEMOTION: {
+            MoonWindowSDL2 *win = FindWindowByID(event.motion.windowID);
+            if (win) {
+                auto ev = new MoonMotionEventSDL2(1.0f, event.motion.x, event.motion.y, SDL_GetModState());
+                ev->DispatchToWindow(win);
+                delete ev;
+            }
             break;
         }
-        else if (event.type == SDL_USEREVENT) {
-            OnTick();
+
+        case SDL_MOUSEBUTTONDOWN:
+        case SDL_MOUSEBUTTONUP: {
+            MoonWindowSDL2 *win = FindWindowByID(event.button.windowID);
+            if (win) {
+                int btn = event.button.button == SDL_BUTTON_RIGHT ? 3 : event.button.button;
+                bool is_release = event.type == SDL_MOUSEBUTTONUP;
+                auto ev = new MoonButtonEventSDL2(btn, is_release, 1.0f, event.button.x, event.button.y, event.button.clicks, SDL_GetModState());
+                ev->DispatchToWindow(win);
+                delete ev;
+            }
+            break;
+        }
+
+        case SDL_MOUSEWHEEL: {
+            MoonWindowSDL2 *win = FindWindowByID(event.wheel.windowID);
+            if (win) {
+                float delta = event.wheel.direction == SDL_MOUSEWHEEL_FLIPPED
+                                  ? -(float)event.wheel.y
+                                  : (float)event.wheel.y;
+                int mx, my;
+                SDL_GetMouseState(&mx, &my);
+                auto ev = new MoonWheelEventSDL2(1.0f, (float)mx, (float)my, delta);
+                ev->DispatchToWindow(win);
+                delete ev;
+            }
+            break;
+        }
+
+        case SDL_KEYDOWN: {
+            MoonWindowSDL2 *win = FindWindowByID(event.key.windowID);
+            if (win) {
+                SDL_Keycode sym = event.key.keysym.sym;
+                SDL_Keymod mod = (SDL_Keymod)event.key.keysym.mod;
+                // Skip printable ASCII keys — SDL_TEXTINPUT handles those,
+                // except when a modifier is held (Ctrl+key, etc.)
+                bool is_printable = (sym >= SDLK_SPACE && sym <= 0x7e);
+                if (!is_printable || (mod & (KMOD_CTRL | KMOD_ALT))) {
+                    auto ev = new MoonKeyEventSDL2(true, false, sym, event.key.keysym.scancode, mod);
+                    ev->DispatchToWindow(win);
+                    delete ev;
+                }
+            }
+            break;
+        }
+
+        case SDL_KEYUP: {
+            MoonWindowSDL2 *win = FindWindowByID(event.key.windowID);
+            if (win) {
+                SDL_Keymod mod = (SDL_Keymod)event.key.keysym.mod;
+                auto ev = new MoonKeyEventSDL2(false, false, event.key.keysym.sym, event.key.keysym.scancode, mod);
+                ev->DispatchToWindow(win);
+                delete ev;
+            }
+            break;
+        }
+
+        case SDL_TEXTINPUT: {
+            MoonWindowSDL2 *win = FindWindowByID(event.text.windowID);
+            if (win && event.text.text[0]) {
+                gunichar uc = g_utf8_get_char(event.text.text);
+                if (uc != 0 && uc != (gunichar)-1) {
+                    auto ev = new MoonKeyEventSDL2(true, true, (int32_t)uc, 0, SDL_GetModState());
+                    ev->DispatchToWindow(win);
+                    delete ev;
+                }
+            }
+            break;
+        }
+
+        case SDL_WINDOWEVENT: {
+            MoonWindowSDL2 *win = FindWindowByID(event.window.windowID);
+            if (!win)
+                break;
+            switch (event.window.event) {
+            case SDL_WINDOWEVENT_ENTER: {
+                int mx, my;
+                SDL_GetMouseState(&mx, &my);
+                auto ev = new MoonCrossingEventSDL2(true, (float)mx, (float)my);
+                ev->DispatchToWindow(win);
+                delete ev;
+                break;
+            }
+            case SDL_WINDOWEVENT_LEAVE: {
+                int mx, my;
+                SDL_GetMouseState(&mx, &my);
+                auto ev = new MoonCrossingEventSDL2(false, (float)mx, (float)my);
+                ev->DispatchToWindow(win);
+                delete ev;
+                break;
+            }
+            case SDL_WINDOWEVENT_FOCUS_GAINED: {
+                auto ev = new MoonFocusEventSDL2(true);
+                ev->DispatchToWindow(win);
+                delete ev;
+                break;
+            }
+            case SDL_WINDOWEVENT_FOCUS_LOST: {
+                auto ev = new MoonFocusEventSDL2(false);
+                ev->DispatchToWindow(win);
+                delete ev;
+                break;
+            }
+            case SDL_WINDOWEVENT_RESIZED:
+            case SDL_WINDOWEVENT_SIZE_CHANGED:
+                win->Resize(event.window.data1, event.window.data2);
+                break;
+            case SDL_WINDOWEVENT_EXPOSED:
+                win->ProcessUpdates();
+                break;
+            case SDL_WINDOWEVENT_CLOSE:
+                if (win->GetQuitOnClose())
+                    running = false;
+                break;
+            }
+            break;
+        }
         }
     }
 }
 
 guint32
 MoonWindowingSystemSDL2::GetScreenHeight(MoonWindow *moon_window) {
-    return -1;
+    SDL_Rect bounds;
+    if (SDL_GetDisplayBounds(0, &bounds) == 0)
+        return bounds.h;
+    return 0;
 }
 
 guint32
 MoonWindowingSystemSDL2::GetScreenWidth(MoonWindow *moon_window) {
-    return -1;
+    SDL_Rect bounds;
+    if (SDL_GetDisplayBounds(0, &bounds) == 0)
+        return bounds.w;
+    return 0;
 }
 
-
 gchar *MoonWindowingSystemSDL2::GetTemporaryFolder() {
-    return NULL;
+    return g_strdup(g_get_tmp_dir());
 }
 
 gchar *MoonWindowingSystemSDL2::GetUserConfigFolder() {
-    return NULL;
+    char *data = SDL_GetPrefPath("moonlight", "moonlight");
+    char *ret = g_strdup(data);
+    SDL_free(data);
+    return ret;
 }

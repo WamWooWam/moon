@@ -88,7 +88,7 @@ namespace Moonlight {
 		// "<date>%.4i-%.2i-%.2i</date>" // yyyy-MM-dd
 		tm now;
 		time_t time_now = time(NULL);
-		gmtime_s(&now, &time_now);
+		gmtime_r(&time_now, &now);
 		g_ptr_array_add(keys, (void*)"date");
 		g_ptr_array_add(values, g_strdup_printf("%.4i-%.2i-%.2i", now.tm_year + 1900, now.tm_mon + 1, now.tm_mday));
 

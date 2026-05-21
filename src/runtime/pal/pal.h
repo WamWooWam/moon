@@ -9,7 +9,9 @@
 #define MOON_DLL_LOCAL
 #define G_PLATFORM_WIN32
 #define _USE_MATH_DEFINES
+#ifndef PATH_MAX
 #define PATH_MAX 260
+#endif
 #define NOMINMAX
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
@@ -338,6 +340,8 @@ namespace Moonlight {
         virtual void RemoveIdle(guint idle_id) = 0;
 
         virtual MoonIMContext *CreateIMContext() = 0;
+
+        virtual bool ConvertJPEGToBGRA(void *jpeg, guint32 jpeg_size, guint8 *buffer, guint32 buffer_stride, guint32 buffer_height) { return false; }
 
         virtual MoonEvent *CreateEventFromPlatformEvent(gpointer platformEvent) = 0;
 

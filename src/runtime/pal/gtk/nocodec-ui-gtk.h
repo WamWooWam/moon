@@ -19,7 +19,6 @@
 #include "runtime.h"
 #include "moonlightconfiguration.h"
 
-#include <gtk/gtkwidget.h>
 #include <gtk/gtk.h>
 
 namespace Moonlight {

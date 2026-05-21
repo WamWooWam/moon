@@ -4,16 +4,12 @@
 #define MOON_PIXBUF_SDL2_H
 
 #include "pal.h"
-#include <wrl.h>
-
-struct IWICImagingFactory;
-struct IWICBitmapSource;
 
 namespace Moonlight {
 
 class MoonPixbufSDL2 : public MoonPixbuf {
 public:
-    MoonPixbufSDL2(IWICBitmapSource *image, bool crc_error);
+    MoonPixbufSDL2(guchar *pixels, guint width, guint height, guint stride, bool crc_error);
 	virtual ~MoonPixbufSDL2 ();
 
 	virtual gint GetWidth ();
@@ -24,12 +20,11 @@ public:
 	virtual gboolean IsPremultiplied ();
 
 	virtual gpointer GetPlatformPixbuf ();
-	
+
 private:
-    BYTE *data;
-    UINT width, height, stride;
-    Microsoft::WRL::ComPtr<IWICBitmapSource> pBitmapSource;
-	HBITMAP hBitmap;
+	guchar *pixels;
+	guint width, height, stride;
+	bool crc_error;
 };
 
 class MoonPixbufLoaderSDL2 : public MoonPixbufLoader {
@@ -48,7 +43,6 @@ private:
 	const char *image_type;
 	guint offset;
 	MoonPixbufSDL2 *pixbuf;
-    Microsoft::WRL::ComPtr<IWICImagingFactory> pWICFactory;
 };
 
 };

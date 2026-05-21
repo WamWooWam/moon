@@ -28,7 +28,7 @@
 
 #include <config.h>
 
-#if !PAL_GTK_WINDOWING
+#if GLIB_IS_EGLIB
 #include <stdlib.h>
 #include "gkeyfile.h"
 

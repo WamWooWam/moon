@@ -1,208 +1,247 @@
-set(PROJECT_NAME libmoon)
+# src/runtime/CMakeLists.txt
 
-################################################################################
-# Source groups
-################################################################################
-set(no_group_source_files
-    "../../.clang-format"
-)
-source_group("" FILES ${no_group_source_files})
+# ---- Dependency discovery ----
 
-set(Header_Files
-    "animation.h"
-    "application.h"
-    "applier.h"
-    "asxparser.h"
-    "audio-alsa.h"
-    "audio-opensles.h"
-    "audio-pulse.h"
-    "audio.h"
-    "authors.h"
-    "bitmapcache.h"
-    "bitmapimage.h"
-    "bitmapsource.h"
-    "border.h"
-    "brush.h"
-    "canvas.h"
-    "capture.h"
-    "cbinding.h"
-    "clock.h"
-    "collection.h"
-    "color.h"
-    "consent.h"
-    "contentcontrol.h"
-    "contentpresenter.h"
-    "context-cairo.h"
-    "context-cgl.h"
-    "context-egl.h"
-    "context-gallium.h"
-    "context-gl.h"
-    "context-opengl.h"
-    "context.h"
-    "control.h"
-    "cornerradius.h"
-    "cpu.h"
-    "debug.h"
-    "deepzoomimagetilesource.h"
-    "dependencyobject.h"
-    "dependencyproperty.h"
-    "deployment.h"
-    "designmode.h"
-    "dirty.h"
-    "downloader.h"
-    "drm.h"
-    "easing.h"
-    "effect.h"
-    "enums.h"
-    "error.h"
-    "eventargs.h"
-    "factory.h"
-    "font-utils.h"
-    "fontfamily.h"
-    "fontmanager.h"
-    "fonts.h"
-    "fontsource.h"
-    "fontstretch.h"
-    "fontstyle.h"
-    "fontweight.h"
-    "framerate-display.h"
-    "frameworkelement.h"
-    "fullscreen.h"
-    "gchandle.h"
-    "geometry.h"
-    "gkeyfile.h"
-    "glyphs.h"
-    "grid.h"
-    "http-streaming.h"
-    "imagesource.h"
-    "incomplete-support.h"
-    "inputmethod.h"
-    "inputscope.h"
-    "jpeg.h"
-    "keyboard.h"
-    "layoutinformation.h"
-    "libmoon.h"
-    "list.h"
-    "managedtypeinfo.h"
-    "media.h"
-    "mediaelement.h"
-    "medialog.h"
-    "mediaplayer.h"
-    "messaging.h"
-    "moon-curves.h"
-    "moon-path.h"
-    "moonlightconfiguration.h"
-    "mp3.h"
-    "multiscaleimage.h"
-    "multiscalesubimage.h"
-    "namescope.h"
-    "network-curl.h"
-    "network.h"
-    "notificationwindow.h"
-    "openfile.h"
-    "pal/pal-threads.h"
-    "pal/pal.h"
-    "pal/window.h"
-    "panel.h"
-    "pipeline-asf.h"
-    "pipeline-ffmpeg.h"
-    "pipeline-mp4.h"
-    "pipeline-vda.h"
-    "pipeline.h"
-    "playlist.h"
-    "point.h"
-    "popup.h"
-    "printing.h"
-    "projection.h"
-    "propertypath.h"
-    "provider.h"
-    "ptr.h"
-    "rect.h"
-    "region.h"
-    "resources.h"
-    "richtextbox.h"
-    "richtextlayout.h"
-    "runtime.h"
-    "security.h"
-    "shape.h"
-    "size.h"
-    "style.h"
-    "stylus.h"
-    "surface-cairo.h"
-    "surface-cgl.h"
-    "surface-egl.h"
-    "surface-gallium-egl.h"
-    "surface-gallium.h"
-    "surface-gl.h"
-    "surface-opengl.h"
-    "surface.h"
-    "tabnavigationwalker.h"
-    "template.h"
-    "textblock.h"
-    "textbox.h"
-    "textelement.h"
-    "textlayout.h"
-    "textoptions.h"
-    "textpointer.h"
-    "textselection.h"
-    "thickness.h"
-    "tilesource.h"
-    "timeline.h"
-    "timemanager.h"
-    "timesource.h"
-    "transform.h"
-    "trigger.h"
-    "type.h"
-    "uielement.h"
-    "uri.h"
-    "usercontrol.h"
-    "utils.h"
-    "validators.h"
-    "value.h"
-    "weakrefmanager.h"
-    "webbrowser.h"
-    "writeablebitmap.h"
-    "xaml.h"
-    "xap.h"
-    "yuv-converter.h"
-    "zip/crypt.h"
-    "zip/ioapi.h"
-    "zip/unzip.h"
-)
-source_group("Header Files" FILES ${Header_Files})
+find_package(PkgConfig QUIET)
 
-set(Header_Files__pal__win32
-    "pal/win32/pal-win32.h"
-    "pal/win32/window-win32.h"
-    "pal/win32/clipboard-win32.h"
-    "pal/win32/fonts-win32.h"
-    "pal/win32/im-win32.h"
-    "pal/win32/installer-win32.h"
-    "pal/win32/pixbuf-win32.h"
-    "pal/win32/helpers/dialogeventhandler.h"
-    "pal/win32/events/button-win32.h"
-    "pal/win32/events/wheel-win32.h"
-    "pal/win32/events/motion-win32.h"
-    "pal/win32/events/key-win32.h"
-)
-source_group("Header Files\\pal\\win32" FILES ${Header_Files__pal__win32})
+set(_deps "${CMAKE_SOURCE_DIR}/deps")
 
-set(Header_Files__pal__sdl
-    "pal/sdl/pal-sdl2.h"
-    "pal/sdl/window-sdl2.h"
-    "pal/sdl/clipboard-sdl2.h"
-    "pal/sdl/fonts-sdl2.h"
-    "pal/sdl/im-sdl2.h"
-    "pal/sdl/installer-sdl2.h"
-    "pal/sdl/pixbuf-sdl2.h"
-    "pal/sdl/events/button-sdl2.h"
-    "pal/sdl/events/wheel-sdl2.h"
-    "pal/sdl/events/motion-sdl2.h"
-    "pal/sdl/events/key-sdl2.h"
-)
-source_group("Header Files\\pal\\sdl" FILES ${Header_Files__pal__sdl})
+# Helper: abort with a clear message when pkg-config is absent on non-Windows.
+macro(require_pkgconfig _feature)
+    if(NOT PKG_CONFIG_FOUND)
+        message(FATAL_ERROR
+            "pkg-config is required to locate '${_feature}' on this platform. "
+            "Install pkg-config and re-run cmake.")
+    endif()
+endmacro()
 
-set(Source_Files
+# ------------------------------------------------------------------
+# GLib / eglib
+# On Windows we use the in-tree eglib (Mono's minimal glib subset).
+# Everywhere else we use the system glib-2.0.
+# ------------------------------------------------------------------
+if(WIN32)
+    find_path(EGLIB_INCLUDE_DIR glib.h REQUIRED
+        HINTS "${_deps}/eglib/eglib/src")
+    find_library(EGLIB_LIBRARY NAMES eglib REQUIRED
+        HINTS "${_deps}/eglib/${MOON_ARCH}/Release")
+    add_library(_moon_glib UNKNOWN IMPORTED)
+    set_target_properties(_moon_glib PROPERTIES
+        IMPORTED_LOCATION             "${EGLIB_LIBRARY}"
+        INTERFACE_INCLUDE_DIRECTORIES "${EGLIB_INCLUDE_DIR}")
+else()
+    require_pkgconfig(glib-2.0)
+    pkg_check_modules(GLIB REQUIRED IMPORTED_TARGET glib-2.0)
+    add_library(_moon_glib ALIAS PkgConfig::GLIB)
+endif()
+
+# ------------------------------------------------------------------
+# Cairo
+# ------------------------------------------------------------------
+if(WIN32)
+    find_path(CAIRO_INCLUDE_DIR cairo.h REQUIRED
+        HINTS "${_deps}/cairo/include")
+    find_library(CAIRO_LIBRARY NAMES cairo REQUIRED
+        HINTS "${_deps}/cairo/lib/${MOON_ARCH}")
+    add_library(_moon_cairo UNKNOWN IMPORTED)
+    set_target_properties(_moon_cairo PROPERTIES
+        IMPORTED_LOCATION             "${CAIRO_LIBRARY}"
+        INTERFACE_INCLUDE_DIRECTORIES "${CAIRO_INCLUDE_DIR}")
+else()
+    require_pkgconfig(cairo)
+    pkg_check_modules(CAIRO REQUIRED IMPORTED_TARGET cairo)
+    add_library(_moon_cairo ALIAS PkgConfig::CAIRO)
+endif()
+
+# ------------------------------------------------------------------
+# FreeType
+# ------------------------------------------------------------------
+if(WIN32)
+    find_path(FREETYPE_INCLUDE_DIR ft2build.h REQUIRED
+        HINTS "${_deps}/freetype/include")
+    find_library(FREETYPE_LIBRARY NAMES freetype REQUIRED
+        HINTS "${_deps}/freetype/release/${MOON_ARCH}")
+    add_library(_moon_freetype UNKNOWN IMPORTED)
+    set_target_properties(_moon_freetype PROPERTIES
+        IMPORTED_LOCATION             "${FREETYPE_LIBRARY}"
+        INTERFACE_INCLUDE_DIRECTORIES "${FREETYPE_INCLUDE_DIR}")
+else()
+    find_package(Freetype REQUIRED)
+    add_library(_moon_freetype ALIAS Freetype::Freetype)
+endif()
+
+# ------------------------------------------------------------------
+# Expat
+# ------------------------------------------------------------------
+if(WIN32)
+    find_path(EXPAT_INCLUDE_DIR expat.h REQUIRED
+        HINTS "${_deps}/expat/include")
+    find_library(EXPAT_LIBRARY NAMES libexpat expat REQUIRED
+        HINTS "${_deps}/expat/lib/${MOON_ARCH}/Release")
+    add_library(_moon_expat UNKNOWN IMPORTED)
+    set_target_properties(_moon_expat PROPERTIES
+        IMPORTED_LOCATION             "${EXPAT_LIBRARY}"
+        INTERFACE_INCLUDE_DIRECTORIES "${EXPAT_INCLUDE_DIR}")
+else()
+    find_package(EXPAT REQUIRED)
+    add_library(_moon_expat ALIAS EXPAT::EXPAT)
+endif()
+
+# ------------------------------------------------------------------
+# zlib
+# ------------------------------------------------------------------
+if(WIN32)
+    find_path(ZLIB_INCLUDE_DIR zlib.h REQUIRED
+        HINTS "${_deps}/zlib/include")
+    find_library(ZLIB_LIBRARY NAMES zlib zlibstatic REQUIRED
+        HINTS "${_deps}/zlib/binaries/${MOON_ARCH}/Release")
+    add_library(_moon_zlib UNKNOWN IMPORTED)
+    set_target_properties(_moon_zlib PROPERTIES
+        IMPORTED_LOCATION             "${ZLIB_LIBRARY}"
+        INTERFACE_INCLUDE_DIRECTORIES "${ZLIB_INCLUDE_DIR}")
+else()
+    find_package(ZLIB REQUIRED)
+    add_library(_moon_zlib ALIAS ZLIB::ZLIB)
+endif()
+
+# ------------------------------------------------------------------
+# OpenGL
+# ------------------------------------------------------------------
+find_package(OpenGL REQUIRED)
+
+# ------------------------------------------------------------------
+# libcurl  (optional)
+# ------------------------------------------------------------------
+if(MOON_ENABLE_CURL)
+    if(WIN32)
+        # Prebuilt static curl in the convention used by the deps tree.
+        set(_curl_triplet
+            "libcurl-vc-${MOON_ARCH}-release-static-ipv6-sspi-schannel")
+        find_path(CURL_INCLUDE_DIR curl/curl.h REQUIRED
+            HINTS "${_deps}/curl/builds/${_curl_triplet}/include")
+        find_library(CURL_LIBRARY NAMES libcurl_a REQUIRED
+            HINTS "${_deps}/curl/builds/${_curl_triplet}/lib")
+        add_library(_moon_curl UNKNOWN IMPORTED)
+        set_target_properties(_moon_curl PROPERTIES
+            IMPORTED_LOCATION             "${CURL_LIBRARY}"
+            INTERFACE_INCLUDE_DIRECTORIES "${CURL_INCLUDE_DIR}"
+            # Static curl on Windows needs these system libs.
+            INTERFACE_LINK_LIBRARIES      "ws2_32;crypt32;wldap32;normaliz")
+    else()
+        find_package(CURL REQUIRED)
+        add_library(_moon_curl ALIAS CURL::libcurl)
+    endif()
+endif()
+
+# ------------------------------------------------------------------
+# GLEW  (win32 and sdl2 PALs)
+# ------------------------------------------------------------------
+if(MOON_PAL STREQUAL "win32" OR MOON_PAL STREQUAL "sdl2")
+    if(WIN32)
+        find_path(GLEW_INCLUDE_DIR GL/glew.h REQUIRED
+            HINTS "${_deps}/glew/include")
+        find_library(GLEW_LIBRARY NAMES glew32 glew32s GLEW REQUIRED
+            HINTS "${_deps}/glew/lib/Release/${MOON_ARCH}")
+        add_library(_moon_glew UNKNOWN IMPORTED)
+        set_target_properties(_moon_glew PROPERTIES
+            IMPORTED_LOCATION             "${GLEW_LIBRARY}"
+            INTERFACE_INCLUDE_DIRECTORIES "${GLEW_INCLUDE_DIR}")
+    else()
+        find_package(GLEW REQUIRED)
+        add_library(_moon_glew ALIAS GLEW::GLEW)
+    endif()
+    set(_moon_use_glew ON)
+else()
+    set(_moon_use_glew OFF)
+endif()
+
+# ------------------------------------------------------------------
+# SDL2  (sdl2 PAL only)
+# ------------------------------------------------------------------
+if(MOON_PAL STREQUAL "sdl2")
+    if(WIN32)
+        find_path(SDL2_INCLUDE_DIR SDL.h REQUIRED
+            HINTS "${_deps}/sdl2/include")
+        find_library(SDL2_LIBRARY NAMES SDL2 REQUIRED
+            HINTS "${_deps}/sdl2/lib/${MOON_ARCH}")
+        add_library(_moon_sdl2 UNKNOWN IMPORTED)
+        set_target_properties(_moon_sdl2 PROPERTIES
+            IMPORTED_LOCATION             "${SDL2_LIBRARY}"
+            INTERFACE_INCLUDE_DIRECTORIES "${SDL2_INCLUDE_DIR}")
+    else()
+        # Prefer the official CMake config shipped with SDL2 2.x;
+        # fall back to pkg-config for older distro packages.
+        find_package(SDL2 QUIET CONFIG)
+        if(TARGET SDL2::SDL2)
+            add_library(_moon_sdl2 ALIAS SDL2::SDL2)
+        else()
+            require_pkgconfig(sdl2)
+            pkg_check_modules(SDL2 REQUIRED IMPORTED_TARGET sdl2)
+            add_library(_moon_sdl2 ALIAS PkgConfig::SDL2)
+        endif()
+    endif()
+endif()
+
+# ------------------------------------------------------------------
+# SDL2_image  (sdl2 PAL only)
+# ------------------------------------------------------------------
+if(MOON_PAL STREQUAL "sdl2")
+    if(WIN32)
+        find_path(SDL2_IMAGE_INCLUDE_DIR SDL_image.h REQUIRED
+            HINTS "${_deps}/sdl2_image/include")
+        find_library(SDL2_IMAGE_LIBRARY NAMES SDL2_image REQUIRED
+            HINTS "${_deps}/sdl2_image/lib/${MOON_ARCH}")
+        add_library(_moon_sdl2_image UNKNOWN IMPORTED)
+        set_target_properties(_moon_sdl2_image PROPERTIES
+            IMPORTED_LOCATION             "${SDL2_IMAGE_LIBRARY}"
+            INTERFACE_INCLUDE_DIRECTORIES "${SDL2_IMAGE_INCLUDE_DIR}")
+    else()
+        find_package(SDL2_image QUIET CONFIG)
+        if(TARGET SDL2_image::SDL2_image)
+            add_library(_moon_sdl2_image ALIAS SDL2_image::SDL2_image)
+        else()
+            require_pkgconfig(SDL2_image)
+            pkg_check_modules(SDL2_IMAGE REQUIRED IMPORTED_TARGET SDL2_image)
+            add_library(_moon_sdl2_image ALIAS PkgConfig::SDL2_IMAGE)
+        endif()
+    endif()
+endif()
+
+# ------------------------------------------------------------------
+# GTK3 + fontconfig  (gtk PAL; also fontconfig for SDL2 on non-Windows)
+# ------------------------------------------------------------------
+if(MOON_PAL STREQUAL "gtk")
+    require_pkgconfig("gtk+-2.0 / fontconfig")
+    pkg_check_modules(GTK2       REQUIRED IMPORTED_TARGET gtk+-2.0)
+    pkg_check_modules(FONTCONFIG REQUIRED IMPORTED_TARGET fontconfig)
+elseif(MOON_PAL STREQUAL "sdl2" AND NOT WIN32)
+    require_pkgconfig(fontconfig)
+    pkg_check_modules(FONTCONFIG REQUIRED IMPORTED_TARGET fontconfig)
+endif()
+
+# ------------------------------------------------------------------
+# Audio backends
+# ------------------------------------------------------------------
+if(MOON_AUDIO_ALSA)
+    find_package(ALSA QUIET)
+    if(TARGET ALSA::ALSA)
+        add_library(_moon_alsa ALIAS ALSA::ALSA)
+    else()
+        require_pkgconfig(alsa)
+        pkg_check_modules(ALSA REQUIRED IMPORTED_TARGET alsa)
+        add_library(_moon_alsa ALIAS PkgConfig::ALSA)
+    endif()
+endif()
+
+if(MOON_AUDIO_PULSE)
+    require_pkgconfig(libpulse)
+    pkg_check_modules(PULSE REQUIRED IMPORTED_TARGET libpulse)
+endif()
+
+# ---- Source files --------------------------------------------------------
+
+# Core runtime — platform-independent.
+set(Source_Files_Core
     "animation.cpp"
     "application.cpp"
     "applier.cpp"
@@ -224,7 +263,6 @@ set(Source_Files
     "contentpresenter.cpp"
     "context-cairo.cpp"
     "context-gl.cpp"
-    "context-wgl.cpp"
     "context.cpp"
     "control.cpp"
     "cornerradius.cpp"
@@ -270,11 +308,9 @@ set(Source_Files
     "multiscaleimage.cpp"
     "multiscalesubimage.cpp"
     "namescope.cpp"
-    "network-curl.cpp"
     "network.cpp"
     "notificationwindow.cpp"
     "openfile.cpp"
-    "pal/window.cpp"
     "panel.cpp"
     "pipeline-asf.cpp"
     "pipeline-logo.cpp"
@@ -299,7 +335,6 @@ set(Source_Files
     "stylus.cpp"
     "surface-cairo.cpp"
     "surface-gl.cpp"
-    "surface-wgl.cpp"
     "surface.cpp"
     "tabnavigationwalker.cpp"
     "template.cpp"
@@ -330,294 +365,294 @@ set(Source_Files
     "xaml.cpp"
     "xap.cpp"
     "yuv-converter.cpp"
-)
-source_group("Source Files" FILES ${Source_Files})
-
-set(Source_Files__pal
+    # PAL base (not backend-specific)
     "pal/pal.cpp"
+    "pal/window.cpp"
+    # Shared OpenGL base (used by WGL, SDL-GL, EGL — not Cairo-only builds)
+    "context-opengl.cpp"
+    "surface-opengl.cpp"
 )
-source_group("Source Files\\pal" FILES ${Source_Files__pal})
 
-if(PAL_WIN32)
-set(Source_Files__pal__win32
-    "pal/win32/fonts-win32.cpp"
-    "pal/win32/im-win32.cpp"
-    "pal/win32/pal-win32.cpp"
-    "pal/win32/pixbuf-win32.cpp"
-    "pal/win32/threads-win32.cpp"
-    "pal/win32/window-win32.cpp"
-    "pal/win32/clipboard-win32.cpp"
-    "pal/win32/fonts-win32.cpp"
-    "pal/win32/installer-win32.cpp"
-    "pal/win32/helpers/dialogeventhandler.cpp"
-)
+# libcurl networking — only when curl is enabled.
+if(MOON_ENABLE_CURL)
+    list(APPEND Source_Files_Core "network-curl.cpp")
 endif()
-source_group("Source Files\\pal\\win32" FILES ${Source_Files__pal__win32})
 
-if(PAL_SDL2)
-set(Source_Files__pal__sdl2
-    "pal/sdl/fonts-sdl2.cpp"
-    "pal/sdl/im-sdl2.cpp"
-    "pal/sdl/pal-sdl2.cpp"
-    "pal/sdl/pixbuf-sdl2.cpp"
-    "pal/sdl/threads-sdl2.cpp"
-    "pal/sdl/window-sdl2.cpp"
-    "pal/sdl/clipboard-sdl2.cpp"
-    "pal/sdl/fonts-sdl2.cpp"
-    "pal/sdl/installer-sdl2.cpp"
-    "pal/sdl/gl/context-sdl2.cpp"
-    "pal/sdl/gl/surface-sdl2.cpp"
-)
+# WGL (Windows OpenGL) — win32 PAL only.
+if(MOON_PAL STREQUAL "win32")
+    list(APPEND Source_Files_Core
+        "context-wgl.cpp"
+        "surface-wgl.cpp"
+    )
 endif()
-source_group("Source Files\\pal\\sdl" FILES ${Source_Files__pal__sdl2})
 
-set(Source_Files__zip
+# FFmpeg pipeline — opt-in.
+if(MOON_ENABLE_FFMPEG)
+    list(APPEND Source_Files_Core "pipeline-ffmpeg.cpp")
+endif()
+
+# Audio backends — each opt-in independently.
+set(Source_Files_Audio)
+if(MOON_AUDIO_ALSA)
+    list(APPEND Source_Files_Audio "audio-alsa.cpp")
+endif()
+if(MOON_AUDIO_PULSE)
+    list(APPEND Source_Files_Audio "audio-pulse.cpp")
+endif()
+if(MOON_AUDIO_OPENSLES)
+    list(APPEND Source_Files_Audio "audio-opensles.cpp")
+endif()
+
+# Bundled zip library.
+set(Source_Files_Zip
     "zip/ioapi.c"
     "zip/unzip.c"
 )
-source_group("Source Files\\zip" FILES ${Source_Files__zip})
 
-set(ALL_FILES
-    ${no_group_source_files}
-    ${Header_Files}
-    ${Header_Files__pal__win32}
-    ${Header_Files__pal__sdl}
-    ${Source_Files}
-    ${Source_Files__pal}
-    ${Source_Files__pal__win32}
-    ${Source_Files__pal__sdl2}
-    ${Source_Files__zip}
+# PAL backend sources.
+if(MOON_PAL STREQUAL "win32")
+    set(Source_Files_PAL
+        "pal/win32/clipboard-win32.cpp"
+        "pal/fonts/dwrite/fonts-dwrite.cpp"
+        "pal/win32/helpers/dialogeventhandler.cpp"
+        "pal/win32/im-win32.cpp"
+        "pal/win32/installer-win32.cpp"
+        "pal/win32/pal-win32.cpp"
+        "pal/win32/pixbuf-win32.cpp"
+        "pal/win32/threads-win32.cpp"
+        "pal/win32/window-win32.cpp"
+    )
+elseif(MOON_PAL STREQUAL "sdl2")
+    set(Source_Files_PAL
+        "pal/sdl/clipboard-sdl2.cpp"
+        "pal/sdl/gl/context-sdl2.cpp"
+        "pal/sdl/gl/surface-sdl2.cpp"
+        "pal/sdl/im-sdl2.cpp"
+        "pal/sdl/installer-sdl2.cpp"
+        "pal/sdl/pal-sdl2.cpp"
+        "pal/sdl/pixbuf-sdl2.cpp"
+        "pal/sdl/threads-sdl2.cpp"
+        "pal/sdl/window-sdl2.cpp"
+    )
+    if(WIN32)
+        list(APPEND Source_Files_PAL "pal/fonts/dwrite/fonts-dwrite.cpp")
+    else()
+        list(APPEND Source_Files_PAL "pal/fonts/fontconfig/fonts-fontconfig.cpp")
+    endif()
+elseif(MOON_PAL STREQUAL "gtk")
+    set(Source_Files_PAL
+        # GTK windowing
+        "pal/gtk/clipboard-gtk.cpp"
+        "pal/gtk/config-dialog-gtk.cpp"
+        "pal/gtk/debug-ui-gtk.cpp"
+        "pal/gtk/im-gtk.cpp"
+        "pal/gtk/install-dialog-gtk.cpp"
+        "pal/gtk/nocodec-ui-gtk.cpp"
+        "pal/gtk/pal-gtk.cpp"
+        "pal/gtk/pixbuf-gtk.cpp"
+        "pal/gtk/window-gtk.cpp"
+        # windowless-gtk.cpp is the NPAPI browser-plugin path; it depends on
+        # plugin.h / moonlight.h that are not part of the standalone runtime.
+        # Threading (pthreads)
+        "pal/gtk/pal-threads-pthreads.cpp"
+        # Font discovery
+        "pal/fonts/fontconfig/fonts-fontconfig.cpp"
+        # Linux capture (V4L2 video, ALSA/pulse audio capture)
+        "pal/gtk/capture/pal-linux-capture.cpp"
+        "pal/gtk/capture/pal-linux-audio-capture.cpp"
+        "pal/gtk/capture/v4l2/pal-v4l2-video-capture.cpp"
+        # GLib-based inter-process messaging
+        "pal/gtk/messaging/glib/pal-glib-msg.cpp"
+        # Linux network (generic; D-Bus optional)
+        "pal/gtk/network/pal-linux-network.cpp"
+        # EGL rendering path
+        "context-egl.cpp"
+        "surface-egl.cpp"
+    )
+
+    # D-Bus network backend — requires dbus-glib which is not always present.
+    if(PKG_CONFIG_FOUND)
+        pkg_check_modules(DBUS_GLIB QUIET dbus-glib-1)
+    endif()
+    if(DBUS_GLIB_FOUND)
+        list(APPEND Source_Files_PAL "pal/gtk/network/dbus/pal-dbus-network.cpp")
+        set(_moon_gtk_extra_includes ${DBUS_GLIB_INCLUDE_DIRS})
+        set(_moon_gtk_extra_libs     ${DBUS_GLIB_LIBRARIES})
+    endif()
+
+    # Gallium3D software renderer — requires Mesa Gallium headers.
+    option(MOON_ENABLE_GALLIUM "Enable Gallium3D software renderer (requires Mesa dev headers)" OFF)
+    if(MOON_ENABLE_GALLIUM)
+        list(APPEND Source_Files_PAL
+            "context-gallium.cpp"
+            "surface-gallium.cpp"
+            "surface-gallium-egl.cpp"
+        )
+    endif()
+endif()
+
+# IDE source grouping (harmless on non-VS generators).
+source_group("Source Files"           FILES ${Source_Files_Core})
+source_group("Source Files\\audio"    FILES ${Source_Files_Audio})
+source_group("Source Files\\zip"      FILES ${Source_Files_Zip})
+source_group("Source Files\\pal"      FILES ${Source_Files_PAL})
+
+# ---- Target --------------------------------------------------------------
+
+add_library(libmoon SHARED
+    ${Source_Files_Core}
+    ${Source_Files_Audio}
+    ${Source_Files_Zip}
+    ${Source_Files_PAL}
 )
 
-################################################################################
-# Target
-################################################################################
-add_library(${PROJECT_NAME} SHARED ${ALL_FILES})
+# ---- Include directories -------------------------------------------------
 
-use_props(${PROJECT_NAME} "${CMAKE_CONFIGURATION_TYPES}" "${DEFAULT_CXX_PROPS}")
-set(ROOT_NAMESPACE libmoon)
-
-set_target_properties(${PROJECT_NAME} PROPERTIES
-    VS_GLOBAL_KEYWORD "Win32Proj"
-)
-################################################################################
-# Output directory
-################################################################################
-if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
-    set_target_properties(${PROJECT_NAME} PROPERTIES
-        OUTPUT_DIRECTORY_DEBUG   "${CMAKE_CURRENT_SOURCE_DIR}/bin/$<CONFIG>/${CMAKE_VS_PLATFORM_NAME}/"
-        OUTPUT_DIRECTORY_RELEASE "${CMAKE_CURRENT_SOURCE_DIR}/bin/$<CONFIG>/${CMAKE_VS_PLATFORM_NAME}/"
-    )
-elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x86")
-    set_target_properties(${PROJECT_NAME} PROPERTIES
-        OUTPUT_DIRECTORY_DEBUG   "${CMAKE_CURRENT_SOURCE_DIR}/bin/$<CONFIG>/${CMAKE_VS_PLATFORM_NAME}/"
-        OUTPUT_DIRECTORY_RELEASE "${CMAKE_CURRENT_SOURCE_DIR}/bin/$<CONFIG>/${CMAKE_VS_PLATFORM_NAME}/"
-    )
-endif()
-if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
-    set_target_properties(${PROJECT_NAME} PROPERTIES
-        INTERPROCEDURAL_OPTIMIZATION_RELEASE "TRUE"
-    )
-elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x86")
-    set_target_properties(${PROJECT_NAME} PROPERTIES
-        INTERPROCEDURAL_OPTIMIZATION_RELEASE "TRUE"
-    )
-endif()
-################################################################################
-# MSVC runtime library
-################################################################################
-get_property(MSVC_RUNTIME_LIBRARY_DEFAULT TARGET ${PROJECT_NAME} PROPERTY MSVC_RUNTIME_LIBRARY)
-if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
-    string(CONCAT "MSVC_RUNTIME_LIBRARY_STR"
-        $<$<CONFIG:Debug>:
-            MultiThreadedDebugDLL
-        >
-        $<$<CONFIG:Release>:
-            MultiThreadedDLL
-        >
-        $<$<NOT:$<OR:$<CONFIG:Debug>,$<CONFIG:Release>>>:${MSVC_RUNTIME_LIBRARY_DEFAULT}>
-    )
-elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x86")
-    string(CONCAT "MSVC_RUNTIME_LIBRARY_STR"
-        $<$<CONFIG:Debug>:
-            MultiThreadedDebugDLL
-        >
-        $<$<CONFIG:Release>:
-            MultiThreadedDLL
-        >
-        $<$<NOT:$<OR:$<CONFIG:Debug>,$<CONFIG:Release>>>:${MSVC_RUNTIME_LIBRARY_DEFAULT}>
-    )
-endif()
-set_target_properties(${PROJECT_NAME} PROPERTIES MSVC_RUNTIME_LIBRARY ${MSVC_RUNTIME_LIBRARY_STR})
-
-################################################################################
-# Include directories
-################################################################################
-target_include_directories(${PROJECT_NAME} PUBLIC
-    "${CMAKE_CURRENT_SOURCE_DIR}/.;"
-    "${CMAKE_CURRENT_SOURCE_DIR}/pal;"
-    "${CMAKE_CURRENT_SOURCE_DIR}/pal/win32;"
-    "${CMAKE_CURRENT_SOURCE_DIR}/pal/win32/events;"
-    "${CMAKE_CURRENT_SOURCE_DIR}/../../deps/curl/builds/libcurl-vc-${CMAKE_VS_PLATFORM_NAME}-release-static-ipv6-sspi-schannel/include;"
-    "${CMAKE_CURRENT_SOURCE_DIR}/../../deps/cairo/include;"
-    "${CMAKE_CURRENT_SOURCE_DIR}/../../deps/expat/include;"
-    "${CMAKE_CURRENT_SOURCE_DIR}/../../deps/freetype/include;"
-    "${CMAKE_CURRENT_SOURCE_DIR}/../../deps/eglib/eglib/src;"
-    "${CMAKE_CURRENT_SOURCE_DIR}/../../deps/zlib/include;"
-    "${CMAKE_CURRENT_SOURCE_DIR}/../../deps/glew/include"
-    "${CMAKE_CURRENT_SOURCE_DIR}/../../deps/sdl2/include"
+target_include_directories(libmoon PRIVATE
+    "${CMAKE_CURRENT_SOURCE_DIR}"
+    "${CMAKE_CURRENT_SOURCE_DIR}/pal"
 )
 
-################################################################################
-# Compile definitions
-################################################################################
-if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
-    target_compile_definitions(${PROJECT_NAME} PRIVATE
-        "$<$<CONFIG:Debug>:"
-            "_DEBUG"
-        ">"
-        "$<$<CONFIG:Release>:"
-            "NDEBUG"
-        ">"
-        "WIN32;"
-        "BUILDING_LIBMOON;"
-        "DEBUG;"
-        "_WINDOWS;"
-        "_USRDLL;"
-        "LIBMOON_EXPORTS;"
-        "UNICODE;"
-        "_UNICODE"
+# Each PAL subdirectory contains a config.h that activates its feature flags.
+if(MOON_PAL STREQUAL "win32")
+    target_include_directories(libmoon PRIVATE
+        "${CMAKE_CURRENT_SOURCE_DIR}/pal/win32"
+        "${CMAKE_CURRENT_SOURCE_DIR}/pal/win32/events"
     )
-elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x86")
-    target_compile_definitions(${PROJECT_NAME} PRIVATE
-        "$<$<CONFIG:Debug>:"
-            "_DEBUG"
-        ">"
-        "$<$<CONFIG:Release>:"
-            "NDEBUG"
-        ">"
-        "WIN32;"
-        "BUILDING_LIBMOON;"
-        "DEBUG;"
-        "_WINDOWS;"
-        "_USRDLL;"
-        "LIBMOON_EXPORTS;"
-        "UNICODE;"
-        "_UNICODE"
+elseif(MOON_PAL STREQUAL "sdl2")
+    target_include_directories(libmoon PRIVATE
+        "${CMAKE_CURRENT_SOURCE_DIR}/pal/sdl"
+        "${CMAKE_CURRENT_SOURCE_DIR}/pal/sdl/events"
+    )
+elseif(MOON_PAL STREQUAL "gtk")
+    target_include_directories(libmoon PRIVATE
+        "${CMAKE_CURRENT_SOURCE_DIR}/pal/gtk"
     )
 endif()
 
-################################################################################
-# Compile and link options
-################################################################################
+# ---- Compile definitions -------------------------------------------------
+
+target_compile_definitions(libmoon PRIVATE
+    BUILDING_LIBMOON
+    HAVE_CONFIG_H          # tells sources that config.h exists and can be included
+    # LOGGING must be defined globally so that runtime.h's #if LOGGING guard is
+    # satisfied before debug.h includes runtime.h and then later sets #define LOGGING 1.
+    # Without this, debug_flags is undeclared in Release/RelWithDebInfo builds.
+    LOGGING=1
+    $<$<CONFIG:Debug>:DEBUG _DEBUG>
+    $<$<NOT:$<CONFIG:Debug>>:NDEBUG>
+)
+
+if(WIN32)
+    target_compile_definitions(libmoon PRIVATE
+        WIN32
+        _WINDOWS
+        _USRDLL
+        UNICODE
+        _UNICODE
+        # NOMINMAX is defined inside pal.h already; don't duplicate it here
+    )
+else()
+    target_compile_definitions(libmoon PRIVATE
+        HAVE_SYS_TIME_H    # available on every POSIX target we care about
+    )
+endif()
+
+if(MOON_ENABLE_CURL)
+    target_compile_definitions(libmoon PRIVATE HAVE_CURL=1)
+endif()
+
+if(_moon_use_glew)
+    target_compile_definitions(libmoon PRIVATE USE_GLEW=1)
+endif()
+
+# ---- Compile options -----------------------------------------------------
+
 if(MSVC)
-    if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
-        target_compile_options(${PROJECT_NAME} PRIVATE
-            $<$<CONFIG:Debug>:
-                /std:c++17;
-                /Gm-;
-                /Od;
-                /RTC1
-            >
-            $<$<CONFIG:Release>:
-                /GL-;
-                /O2;
-                /Oi;
-                /Gy
-            >
-            /MP;
-            /Gd;
-            /W1;
-            /Zi;
-            ${DEFAULT_CXX_EXCEPTION_HANDLING};
-            /Y-
-        )
-    elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x86")
-        target_compile_options(${PROJECT_NAME} PRIVATE
-            $<$<CONFIG:Debug>:
-                /Gm-;
-                /Od;
-                /RTC1;
-                /ZI
-            >
-            $<$<CONFIG:Release>:
-                /GL-;
-                /O2;
-                /Oi;
-                /Gy;
-                /Zi
-            >
-            /MP;
-            /Gd;
-            /W1;
-            ${DEFAULT_CXX_EXCEPTION_HANDLING};
-            /Y-
-        )
+    target_compile_options(libmoon PRIVATE
+        /W1         # Minimal warnings — bump to /W3 when the tree is clean
+        /Gd         # __cdecl calling convention
+        /MP         # Parallel compilation
+        /Y-         # Disable precompiled headers
+        $<$<CONFIG:Debug>:          /Od /RTC1 /Zi>
+        $<$<CONFIG:RelWithDebInfo>: /O2 /Oi  /Gy /Zi>
+        $<$<CONFIG:Release>:        /O2 /Oi  /Gy /Zi>
+    )
+    target_link_options(libmoon PRIVATE
+        /DEBUG
+        $<$<CONFIG:Debug>:          /INCREMENTAL>
+        $<$<CONFIG:RelWithDebInfo>: /OPT:REF /OPT:ICF /INCREMENTAL:NO>
+        $<$<CONFIG:Release>:        /OPT:REF /OPT:ICF /INCREMENTAL:NO>
+    )
+else()
+    # GCC / Clang
+    target_compile_options(libmoon PRIVATE
+        -Wall
+        -Wextra
+        -Wno-unused-parameter
+        $<$<CONFIG:Debug>:          -g -O0>
+        $<$<CONFIG:RelWithDebInfo>: -O2 -g>
+        $<$<CONFIG:Release>:        -O2>
+    )
+    # Export only symbols explicitly marked MOON_API.
+    target_compile_options(libmoon PRIVATE -fvisibility=hidden)
+endif()
+
+# ---- Link libraries ------------------------------------------------------
+
+target_link_libraries(libmoon PRIVATE
+    _moon_glib
+    _moon_cairo
+    _moon_freetype
+    _moon_expat
+    _moon_zlib
+    OpenGL::GL
+)
+
+if(MOON_ENABLE_CURL)
+    target_link_libraries(libmoon PRIVATE _moon_curl)
+endif()
+
+if(_moon_use_glew)
+    target_link_libraries(libmoon PRIVATE _moon_glew)
+endif()
+
+# PAL-specific link deps.
+if(MOON_PAL STREQUAL "win32")
+    target_link_libraries(libmoon PRIVATE
+        comctl32
+        dwrite
+        shlwapi
+        windowscodecs
+        winmm
+    )
+elseif(MOON_PAL STREQUAL "sdl2")
+    target_link_libraries(libmoon PRIVATE _moon_sdl2 _moon_sdl2_image)
+    if(WIN32)
+        target_link_libraries(libmoon PRIVATE dwrite)
+    else()
+        target_link_libraries(libmoon PRIVATE PkgConfig::FONTCONFIG)
     endif()
-    if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
-        target_link_options(${PROJECT_NAME} PRIVATE
-            $<$<CONFIG:Debug>:
-                /INCREMENTAL
-            >
-            $<$<CONFIG:Release>:
-                /OPT:REF;
-                /LTCG;
-                /OPT:ICF;
-                /INCREMENTAL:NO
-            >
-            /DEBUG;
-            /MACHINE:X64;
-            /SUBSYSTEM:WINDOWS
-        )
-    elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x86")
-        target_link_options(${PROJECT_NAME} PRIVATE
-            $<$<CONFIG:Debug>:
-                /INCREMENTAL
-            >
-            $<$<CONFIG:Release>:
-                /OPT:REF;
-                /LTCG;
-                /OPT:ICF;
-                /INCREMENTAL:NO
-            >
-            /DEBUG;
-            /MACHINE:X86;
-            /SUBSYSTEM:WINDOWS
-        )
+elseif(MOON_PAL STREQUAL "gtk")
+    target_link_libraries(libmoon PRIVATE
+        PkgConfig::GTK2
+        PkgConfig::FONTCONFIG
+    )
+    if(_moon_gtk_extra_includes)
+        target_include_directories(libmoon PRIVATE ${_moon_gtk_extra_includes})
+    endif()
+    if(_moon_gtk_extra_libs)
+        target_link_libraries(libmoon PRIVATE ${_moon_gtk_extra_libs})
+    endif()
+    if(MOON_ENABLE_GALLIUM)
+        target_compile_definitions(libmoon PRIVATE USE_GALLIUM=1)
     endif()
 endif()
 
-################################################################################
-# Dependencies
-################################################################################
-set(ADDITIONAL_LIBRARY_DEPENDENCIES
-    "$(CoreLibraryDependencies);"
-    "zlib;"
-    "cairo;"
-    "libexpat;"
-    "eglib;"
-    "freetype;"
-    "libcurl_a;"
-    "ws2_32;"
-    "crypt32;"
-    "wldap32;"
-    "normaliz;"
-    "comctl32;"
-    "shlwapi;"
-    "windowscodecs;"
-    "winmm;"
-    "opengl32;"
-    "glew32"
-)
-target_link_libraries(${PROJECT_NAME} PUBLIC "${ADDITIONAL_LIBRARY_DEPENDENCIES}")
-
-target_link_directories(${PROJECT_NAME} PUBLIC
-    "${CMAKE_CURRENT_SOURCE_DIR}/../../deps/eglib/${CMAKE_VS_PLATFORM_NAME}/Release"
-    "${CMAKE_CURRENT_SOURCE_DIR}/../../deps/cairo/lib/${CMAKE_VS_PLATFORM_NAME};"
-    "${CMAKE_CURRENT_SOURCE_DIR}/../../deps/freetype/release/${CMAKE_VS_PLATFORM_NAME};"
-    "${CMAKE_CURRENT_SOURCE_DIR}/../../deps/expat/lib/${CMAKE_VS_PLATFORM_NAME}/Release;"
-    "${CMAKE_CURRENT_SOURCE_DIR}/../../deps/glew/lib/Release/${CMAKE_VS_PLATFORM_NAME};"
-    "${CMAKE_CURRENT_SOURCE_DIR}/../../deps/curl/builds/libcurl-vc-${CMAKE_VS_PLATFORM_NAME}-release-static-ipv6-sspi-schannel/lib;"
-    "${CMAKE_CURRENT_SOURCE_DIR}/../../deps/zlib/binaries/${CMAKE_VS_PLATFORM_NAME}/Release"
-    "${CMAKE_CURRENT_SOURCE_DIR}/../../deps/sdl2/lib/${CMAKE_VS_PLATFORM_NAME}"
-)
+# Audio.
+if(MOON_AUDIO_ALSA)
+    target_link_libraries(libmoon PRIVATE _moon_alsa)
+endif()
+if(MOON_AUDIO_PULSE)
+    target_link_libraries(libmoon PRIVATE PkgConfig::PULSE)
+endif()

@@ -25,6 +25,10 @@
 using namespace Moonlight;
 using namespace Microsoft::WRL;
 
+#ifndef CREATE_WAITABLE_TIMER_HIGH_RESOLUTION
+#define CREATE_WAITABLE_TIMER_HIGH_RESOLUTION 0x00000002
+#endif
+
 
 /// our windowing system KKomrade
 
@@ -39,8 +43,51 @@ struct MoonCreateParams {
     void *data;
 };
 
+class Win32Source {
+public:
+    Win32Source(int source_id, int priority, int interval, MoonSourceFunc source_func, gpointer data) {
+        this->source_id = source_id;
+        this->priority = priority;
+        this->interval = interval;
+        this->source_func = source_func;
+        this->data = data;
+        time_remaining = interval;
+        pending_destroy = false;
+    }
+
+    bool InvokeSourceFunc() {
+        return source_func(data);
+    }
+
+    static gint Compare(gconstpointer p1, gconstpointer p2) {
+        const Win32Source *source1 = (const Win32Source *)p1;
+        const Win32Source *source2 = (const Win32Source *)p2;
+
+        gint result = source1->time_remaining - source2->time_remaining;
+        if (result != 0)
+            return result;
+
+        // reverse source1 and source2 here from above, since lower
+        // priority values represent higher priorities
+        return source2->priority - source1->priority;
+    }
+
+    // this one must be signed
+    gint32 time_remaining;
+
+    bool pending_destroy;
+    guint source_id;
+    int priority;
+    gint32 interval;
+    MoonSourceFunc source_func;
+    gpointer data;
+};
+
 MoonWindowingSystemWin32::MoonWindowingSystemWin32(bool out_of_browser)
     : sourceMutex(false) {
+
+    // The UI thread hosts the shell file dialogs, which require an STA.
+    MoonEnsureCOM(COINIT_APARTMENTTHREADED, &com_initialized);
 
     // LoadSystemColors();
 
@@ -67,16 +114,45 @@ MoonWindowingSystemWin32::MoonWindowingSystemWin32(bool out_of_browser)
 
     source_id = 1;
     sources = NULL;
-    timer = NULL;
     before = -1;
     emitting_sources = false;
     pool = 0;
     stride = 0;
+
+    hires_timer = false;
+
+    // An auto-reset waitable timer: signals once when due, then re-arms to
+    // unsignaled. Cheap to (re)arm from any thread, and lets the main loop
+    // sleep with no periodic wakes — far friendlier to power than WM_TIMER.
+    DWORD timerFlags = hires_timer ? CREATE_WAITABLE_TIMER_HIGH_RESOLUTION : 0;
+    timer = CreateWaitableTimerEx(nullptr, nullptr, timerFlags, TIMER_ALL_ACCESS);
+    if (timer == nullptr && hires_timer) {
+        // HIGH_RESOLUTION needs Win10 1803+; fall back on older systems.
+        timer = CreateWaitableTimerEx(nullptr, nullptr, 0, TIMER_ALL_ACCESS);
+        hires_timer = false;
+    }
+    timer_armed = false;
 }
 
 MoonWindowingSystemWin32::~MoonWindowingSystemWin32() {
     // for (int i = 0; i < (int)NumSystemColors; i++)
     //     delete system_colors[i];
+
+    if (timer != nullptr) {
+        CancelWaitableTimer(timer);
+        CloseHandle(timer);
+        timer = nullptr;
+    }
+
+    for (GList *l = sources; l; l = l->next)
+        delete (Win32Source *)l->data;
+    g_list_free(sources);
+    sources = nullptr;
+
+    if (com_initialized) {
+        CoUninitialize();
+        com_initialized = false;
+    }
 }
 
 void MoonWindowingSystemWin32::ShowCodecsUnavailableMessage() {
@@ -464,47 +540,6 @@ Color *MoonWindowingSystemWin32::GetSystemColor(SystemColor id) {
     return new Color(GetSysColor(id));
 }
 
-class Win32Source {
-public:
-    Win32Source(int source_id, int priority, int interval, MoonSourceFunc source_func, gpointer data) {
-        this->source_id = source_id;
-        this->priority = priority;
-        this->interval = interval;
-        this->source_func = source_func;
-        this->data = data;
-        time_remaining = interval;
-        pending_destroy = false;
-    }
-
-    bool InvokeSourceFunc() {
-        return source_func(data);
-    }
-
-    static gint Compare(gconstpointer p1, gconstpointer p2) {
-        const Win32Source *source1 = (const Win32Source *)p1;
-        const Win32Source *source2 = (const Win32Source *)p2;
-
-        gint result = source1->time_remaining - source2->time_remaining;
-        if (result != 0)
-            return result;
-
-        // reverse source1 and source2 here from above, since lower
-        // priority values represent higher priorities
-        return source2->priority - source1->priority;
-    }
-
-    // this one must be signed
-    gint32 time_remaining;
-
-    bool pending_destroy;
-    guint source_id;
-    int priority;
-    gint32 interval;
-    MoonSourceFunc source_func;
-    gpointer data;
-};
-
-
 guint MoonWindowingSystemWin32::AddTimeout(gint priority, gint ms, MoonSourceFunc timeout, gpointer data) {
     sourceMutex.Lock();
 
@@ -555,6 +590,11 @@ guint MoonWindowingSystemWin32::AddIdle(MoonSourceFunc idle, gpointer data) {
     source_id++;
 
     sourceMutex.Unlock();
+
+    // Unlike the original, arm the timer here too — otherwise a freshly
+    // added idle would never be scheduled until some other event ticked.
+    AddWin32Timer();
+
     return new_source_id;
 }
 
@@ -622,10 +662,6 @@ LRESULT CALLBACK MoonWindowingSystemWin32::WndProc(HWND hwnd, UINT msg, WPARAM w
 
 // Windowing System instance WndProc callback
 LRESULT MoonWindowingSystemWin32::WndProc(UINT msg, WPARAM wParam, LPARAM lParam) {
-    if (msg == WM_TIMER && wParam == MoonWin32TimerId) {
-        this->OnTick();
-    }
-
     return DefWindowProc(message_window, msg, wParam, lParam);
 }
 
@@ -638,8 +674,9 @@ void MoonWindowingSystemWin32::OnTick() {
 
     sourceMutex.Lock();
 
-    KillTimer(message_window, MoonWin32TimerId);
-    timer = nullptr;
+    // The auto-reset timer has already reset itself; just note that the
+    // armed wait is consumed so AddWin32Timer starts a fresh cycle.
+    timer_armed = false;
 
     emitting_sources = true;
 
@@ -709,24 +746,42 @@ void MoonWindowingSystemWin32::OnTick() {
 }
 
 void MoonWindowingSystemWin32::AddWin32Timer() {
-    int timeout = -1;
-
     sourceMutex.Lock();
-    if (timer != NULL) {
+
+    if (timer == nullptr) {
         sourceMutex.Unlock();
         return;
     }
-    if (sources != NULL) {
-        Win32Source *s = (Win32Source *)sources->data;
-        timeout = s->time_remaining;
-        if (timeout < 0)
-            timeout = 0;
+
+    if (sources == NULL) {
+        // Nothing pending: stop waking the loop entirely.
+        CancelWaitableTimer(timer);
+        timer_armed = false;
+        before = -1;
+        sourceMutex.Unlock();
+        return;
     }
 
-    if (timeout >= 0) {
-        timer = (gpointer)SetTimer(message_window, MoonWin32TimerId, timeout, nullptr);
-        before = get_now_in_millis();
+    gint32 now = get_now_in_millis();
+    if (!timer_armed) {
+        // Start of a new wait cycle — establish the baseline OnTick measures
+        // its delta against (this preserves the original dispatch timing).
+        before = now;
     }
+
+    // time_remaining is relative to `before`; adjust for time already elapsed
+    // so a re-arm from another thread for a sooner deadline shortens the wait
+    // instead of restarting it.
+    Win32Source *s = (Win32Source *)sources->data;
+    gint32 timeout = s->time_remaining - (now - before);
+    if (timeout < 0)
+        timeout = 0;
+
+    // SetWaitableTimer takes a relative due time in negative 100ns units.
+    LARGE_INTEGER due;
+    due.QuadPart = -(LONGLONG)timeout * 10000;
+    SetWaitableTimer(timer, &due, 0, nullptr, nullptr, FALSE);
+    timer_armed = true;
 
     sourceMutex.Unlock();
 }
@@ -739,10 +794,28 @@ void MoonWindowingSystemWin32::RunMainLoop(MoonWindow *window, bool quit_on_wind
 
     AddWin32Timer();
 
-    MSG msg;
-    while (GetMessage(&msg, NULL, 0, 0) > 0) {
-        TranslateMessage(&msg);
-        DispatchMessage(&msg);
+    for (;;) {
+        // Wait on the timer handle and the message queue together. The loop
+        // sleeps until the timer is due or input arrives — no polling, no
+        // periodic wake-ups.
+        DWORD result = MsgWaitForMultipleObjectsEx(
+            1, &timer, INFINITE, QS_ALLINPUT, MWMO_INPUTAVAILABLE);
+
+        if (result == WAIT_OBJECT_0) {
+            OnTick();
+        }
+        else if (result == WAIT_OBJECT_0 + 1) {
+            MSG msg;
+            while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
+                if (msg.message == WM_QUIT)
+                    return;
+                TranslateMessage(&msg);
+                DispatchMessage(&msg);
+            }
+        }
+        else if (result == WAIT_FAILED) {
+            break;
+        }
     }
 }
 

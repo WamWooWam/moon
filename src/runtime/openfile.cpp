@@ -83,7 +83,7 @@ get_size (const char *root)
 		return result;
 
 	// there should be no link in IS but, if any, we're not following them
-	if (S_ISLINK (info.st_mode))
+	if (S_ISLNK (info.st_mode))
 		return result;
 
 	if (S_ISDIR (info.st_mode)) {

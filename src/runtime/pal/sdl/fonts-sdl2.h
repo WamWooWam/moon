@@ -1,19 +1,10 @@
 /* -*- Mode: C++; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
+/* Font service for the SDL2 PAL — delegates to the platform font backend. */
 
 #pragma once
-#include "pal.h"
 
-struct IFileDialog;
-
-namespace Moonlight {
-    class MoonFontServiceSDL2 : public MoonFontService {
-        GPtrArray *system_fonts;
-
-    public:
-        MoonFontServiceSDL2();
-        ~MoonFontServiceSDL2();
-
-        virtual void ForeachFont(MoonForeachFontCallback foreach, gpointer user_data);
-        virtual MoonFont *FindFont(const FontStyleInfo *pattern);
-    };
-};
+#ifdef _WIN32
+#include "pal/fonts/dwrite/fonts-dwrite.h"
+#else
+#include "pal/fonts/fontconfig/fonts-fontconfig.h"
+#endif

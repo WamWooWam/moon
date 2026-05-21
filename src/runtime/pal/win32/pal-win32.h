@@ -8,7 +8,20 @@ struct IFileDialog;
 
 namespace Moonlight {
 
-    constexpr int MoonWin32TimerId = 6969;
+    // Initializes COM on the calling thread so we don't depend on a host
+    // (e.g. the .NET runtime) having done it for us. Coexists with a host
+    // that already initialized COM in a different apartment.
+    //
+    // Returns true if COM is usable on this thread afterwards. *owned is set
+    // to true only when this call took a reference that must be balanced with
+    // CoUninitialize — i.e. only the owner should ever uninitialize.
+    inline bool MoonEnsureCOM(DWORD model, bool *owned) {
+        HRESULT hr = CoInitializeEx(nullptr, model);
+        // S_OK / S_FALSE both take a ref we must release; RPC_E_CHANGED_MODE
+        // means COM is already up in another apartment (usable, not ours).
+        *owned = SUCCEEDED(hr);
+        return SUCCEEDED(hr) || hr == RPC_E_CHANGED_MODE;
+    }
 
     class MoonWindowingSystemWin32 : public MoonWindowingSystem {
     public:
@@ -81,8 +94,19 @@ namespace Moonlight {
         guint source_id;
         bool emitting_sources;
         MoonMutex sourceMutex;
-        guint32 before;
-        gpointer timer;
+        // baseline timestamp the currently-armed wait is measured against,
+        // or -1 when no wait is armed (matches the dispatch math in OnTick).
+        gint32 before;
+        // auto-reset waitable timer driving the main loop wake-ups.
+        HANDLE timer;
+        bool timer_armed;
+        // request a high-resolution timer (Win10 1803+); falls back to a
+        // standard waitable timer when unavailable. Plumbing for a future
+        // switchable precision mode; defaults off for Win7+ support.
+        bool hires_timer;
+        // whether we own the COM initialization on the UI thread and must
+        // balance it with CoUninitialize at teardown.
+        bool com_initialized;
     };
 
     class MoonInstallerServiceWin32 : public MoonInstallerService {

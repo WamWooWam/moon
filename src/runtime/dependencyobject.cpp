@@ -29,6 +29,8 @@
 #ifdef MONO
 #include <mono/io-layer/atomic.h>
 #include <mono/utils/mono-membar.h>
+#else
+#include "pal/compat/atomic.h"
 #endif
 
 namespace Moonlight {

@@ -40,34 +40,47 @@ void MoonPixbufLoaderWin32::Write(const guchar *buffer, int buflen, MoonError **
 }
 
 void MoonPixbufLoaderWin32::Close(MoonError **error) {
-    // g_warning ("MPLA::Close ()");
-}
-
-MoonPixbuf *MoonPixbufLoaderWin32::GetPixbuf() {
-    // g_warning ("MPLA::GetPixbuf ()");
     if (pixbuf != NULL)
-        return pixbuf;
+        return;
 
-    if (pWICFactory == NULL)
-        return NULL;
+    if (pWICFactory == NULL) {
+        if (error)
+            *error = new MoonError(MoonError::EXCEPTION, 4001, "No WIC factory.");
+        return;
+    }
 
     ComPtr<IWICBitmapSource> source;
     ComPtr<IWICBitmapDecoder> decoder;
     ComPtr<IWICBitmapFrameDecode> frame;
     ComPtr<IStream> stream = SHCreateMemStream(data->data, data->len);
     HRESULT hr = pWICFactory->CreateDecoderFromStream(stream.Get(), NULL, WICDecodeMetadataCacheOnDemand, decoder.GetAddressOf());
-    if (FAILED(hr))
-        return NULL;
+    if (FAILED(hr)) {
+        if (error)
+            *error = new MoonError(MoonError::EXCEPTION, 4001, "CreateDecoderFromStream failed");
+
+        return;
+    }
 
     hr = decoder->GetFrame(0, frame.GetAddressOf());
-    if (FAILED(hr))
-        return NULL;
+    if (FAILED(hr)) {
+        if (error)
+            *error = new MoonError(MoonError::EXCEPTION, 4001, "GetFrame failed");
+
+        return;
+    }
 
     hr = WICConvertBitmapSource(GUID_WICPixelFormat32bppPBGRA, frame.Get(), source.GetAddressOf());
-    if (FAILED(hr))
-        return NULL;
+    if (FAILED(hr)) {
+        if (error)
+            *error = new MoonError(MoonError::EXCEPTION, 4001, "WICConvertBitmapSource failed");
+
+        return;
+    }
 
     pixbuf = new MoonPixbufWin32(source.Get(), false);
+}
+
+MoonPixbuf *MoonPixbufLoaderWin32::GetPixbuf() {
     return pixbuf;
 }
 
@@ -84,9 +97,6 @@ MoonPixbufWin32::MoonPixbufWin32(IWICBitmapSource *source, bool crc_error) {
 
 MoonPixbufWin32::~MoonPixbufWin32() {
     delete[] data;
-
-    if (hBitmap != NULL)
-        DeleteObject(hBitmap);
 }
 
 gint MoonPixbufWin32::GetWidth() {
@@ -113,13 +123,6 @@ gboolean MoonPixbufWin32::IsPremultiplied() {
     return TRUE;
 }
 
-// Returns a HBITMAP
 gpointer MoonPixbufWin32::GetPlatformPixbuf() {
-    if (pBitmapSource == NULL)
-        return NULL;
-
-    if (this->hBitmap != NULL)
-        return this->hBitmap;
-
-    return this->hBitmap = CreateBitmap(width, height, 1, 32, data);
+    return NULL;
 }

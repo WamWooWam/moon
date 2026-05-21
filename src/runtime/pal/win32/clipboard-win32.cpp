@@ -13,35 +13,39 @@ bool Moonlight::MoonClipboardWin32::ContainsText() {
 }
 
 void Moonlight::MoonClipboardWin32::SetText(const char *text) {
+    wchar_t *textW = reinterpret_cast<wchar_t *>(g_utf8_to_utf16(text, -1, NULL, NULL, NULL));
+    if (textW == NULL)
+        return;
+
     if (!OpenClipboard(hwnd)) {
+        g_free(textW);
         return;
     }
 
     EmptyClipboard();
 
-    const wchar_t *textW = reinterpret_cast<wchar_t *>(g_utf8_to_utf16(text, -1, NULL, NULL, NULL));
-
-    HGLOBAL hglbCopy = GlobalAlloc(GMEM_MOVEABLE, strlen(text) + 1);
-    HGLOBAL hglbCopyW = GlobalAlloc(GMEM_MOVEABLE, (wcslen(textW) + 1) * sizeof(wchar_t));
-    if (hglbCopy == NULL || hglbCopyW == NULL) {
+    // Only place CF_UNICODETEXT: Windows synthesizes CF_TEXT/CF_OEMTEXT from
+    // it on demand, which avoids corrupting non-ASCII text (the old code
+    // copied raw UTF-8 bytes straight into CF_TEXT).
+    size_t bytes = (wcslen(textW) + 1) * sizeof(wchar_t);
+    HGLOBAL hglbCopyW = GlobalAlloc(GMEM_MOVEABLE, bytes);
+    if (hglbCopyW == NULL) {
         CloseClipboard();
+        g_free(textW);
         return;
     }
 
-    char *lptstrCopy = (char *)GlobalLock(hglbCopy);
     wchar_t *lptstrCopyW = (wchar_t *)GlobalLock(hglbCopyW);
-
-    strcpy(lptstrCopy, text);
-    wcscpy(lptstrCopyW, textW);
-
-    GlobalUnlock(hglbCopy);
+    memcpy(lptstrCopyW, textW, bytes);
     GlobalUnlock(hglbCopyW);
 
-    // BUGBUG: smushing UTF-8 into CF_TEXT is not correct, but it's what we do for now
-    SetClipboardData(CF_TEXT, hglbCopy);
-    SetClipboardData(CF_UNICODETEXT, hglbCopyW);
+    if (SetClipboardData(CF_UNICODETEXT, hglbCopyW) == NULL) {
+        // ownership wasn't transferred; free our copy
+        GlobalFree(hglbCopyW);
+    }
 
     CloseClipboard();
+    g_free(textW);
 }
 
 void Moonlight::MoonClipboardWin32::AsyncGetText(MoonClipboardGetTextCallback cb, gpointer data) {

@@ -69,7 +69,7 @@ namespace Moonlight {
 
         SDL_TLSSet(self_tls, NULL, NULL);
 
-        return (int)rv;
+        return 0;
     }
 
     int MoonThread::Start(MoonThread** mt, MoonThread::ThreadFunc func, gpointer arg) {

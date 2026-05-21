@@ -318,7 +318,7 @@ namespace Moonlight {
                 targetobj->GetTypeName(), targetprop->GetName(),
                 property_type_name, timeline_type_name);
 
-            return false;
+            return nullptr;
         }
 
         char *name = g_strdup_printf("AnimationClock for %s, targetobj = %p/%s, targetprop = %s", GetTypeName(),

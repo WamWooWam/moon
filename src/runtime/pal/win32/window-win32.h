@@ -77,6 +77,8 @@ namespace Moonlight {
         void SetHandle(HWND hwnd);
         LRESULT WndProc(UINT msg, WPARAM wParam, LPARAM lParam);
 
+        void UpdateRefreshRate();
+
         void SetQuitOnClose(bool quitOnClose);
 
     private:
@@ -95,6 +97,12 @@ namespace Moonlight {
         Region *damage;
         HWND handle;
         HMONITOR monitor;
+        // per-window cursor; applied on WM_SETCURSOR so it doesn't leak to
+        // every window sharing the window class.
+        HCURSOR cursor;
+        // whether we've asked Win32 to post us a WM_MOUSELEAVE for the
+        // current hover, so we can synthesize enter/leave crossing events.
+        bool tracking_mouse;
 
         double left;
         double top;

@@ -1,15 +1,4 @@
 /* -*- Mode: C++; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
-/*
- * window-android.h: MoonWindow implementation using android widgets.
- *
- * Contact:
- *   Moonlight List (moonlight-list@lists.ximian.com)
- *
- * Copyright 2007 Novell, Inc. (http://www.novell.com)
- *
- * See the LICENSE file included with the distribution for details.
- *
- */
 
 #pragma once
 
@@ -19,18 +8,13 @@
 #include "runtime.h"
 
 #include "pal-sdl2.h"
-#include "context-sdl2.h"
+#include "gl/context-sdl2.h"
 
 namespace Moonlight {
 
-#if USE_WGL
-    class MoonWGLSurface;
-    class MoonWGLContext;
-#endif
-
     /* @Namespace=System.Windows */
     class MoonWindowSDL2 : public MoonWindow {
-        friend class MoonWindowSystemSDL2;
+        friend class MoonWindowingSystemSDL2;
 
     public:
         MoonWindowSDL2(MoonWindowType windowType, int w = -1, int h = -1, MoonWindow *parent = NULL, Surface *surface = NULL, MoonWindowingSystem *windowingSystem = NULL);
@@ -57,28 +41,28 @@ namespace Moonlight {
         virtual double GetTop();
 
         virtual void SetWidth(double width);
-
         virtual void SetHeight(double height);
 
         virtual void SetTitle(const char *title);
-
         virtual void SetIconFromPixbuf(MoonPixbuf *pixbuf);
-
         virtual void SetStyle(WindowStyle style);
 
         virtual void GrabFocus();
         virtual bool HasFocus();
 
         virtual MoonClipboard *GetClipboard(MoonClipboardType clipboardType);
-
         virtual gpointer GetPlatformWindow();
 
         void Paint();
 
         void SetQuitOnClose(bool quitOnClose);
+        bool GetQuitOnClose() { return quitOnClose; }
+
+        void RegisterWindow(MoonWindow *window);
 
     private:
         void CreateGlContext();
+
         MoonSDLGLSurface *gltarget;
         MoonSDLGLContext *glctx;
         bool has_swap_rect;
@@ -86,12 +70,12 @@ namespace Moonlight {
 
         SDL_Window *window;
         SDL_Renderer *renderer;
+        SDL_Cursor *activeCursor;
 
         double left;
         double top;
 
         MoonClipboard *clipboard;
-
         bool quitOnClose;
     };
 

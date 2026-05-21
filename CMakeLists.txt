@@ -1,89 +1,62 @@
-cmake_minimum_required(VERSION 3.16.0 FATAL_ERROR)
-
-set(CMAKE_SYSTEM_VERSION 10.0 CACHE STRING "" FORCE)
-
+cmake_minimum_required(VERSION 3.21 FATAL_ERROR)
 project(Moonlight C CXX)
 
-################################################################################
-# Set target arch type if empty. Visual studio solution generator provides it.
-################################################################################
-if(NOT CMAKE_VS_PLATFORM_NAME)
-    set(CMAKE_VS_PLATFORM_NAME "x64")
-endif()
-message("${CMAKE_VS_PLATFORM_NAME} architecture in use")
+# ---- Language standard ----
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
-if(NOT ("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64"
-     OR "${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x86"))
-    message(FATAL_ERROR "${CMAKE_VS_PLATFORM_NAME} arch is not supported!")
-endif()
+# ---- MSVC runtime ----
+# Use the DLL runtime (MD/MDd) so we match the rest of the dependency tree.
+set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreadedDLL"
+    CACHE STRING "MSVC runtime library selection")
 
-################################################################################
-# Global configuration types
-################################################################################
-set(CMAKE_CONFIGURATION_TYPES
-    "Debug"
-    "Release"
-    CACHE STRING "" FORCE
-)
-
-################################################################################
-# Global compiler options
-################################################################################
-if(MSVC)
-    # remove default flags provided with CMake for MSVC
-    set(CMAKE_C_FLAGS "")
-    set(CMAKE_C_FLAGS_DEBUG "")
-    set(CMAKE_C_FLAGS_RELEASE "")
-    set(CMAKE_CXX_FLAGS "")
-    set(CMAKE_CXX_FLAGS_DEBUG "")
-    set(CMAKE_CXX_FLAGS_RELEASE "")
+# ---- Build configurations ----
+# Explicitly enumerate the three configs we care about so multi-config
+# generators (VS, Ninja Multi-Config) don't sprout MinSizeRel by default.
+get_property(_is_multi GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
+if(_is_multi)
+    set(CMAKE_CONFIGURATION_TYPES "Debug;RelWithDebInfo;Release"
+        CACHE STRING "Build configurations" FORCE)
 endif()
 
-################################################################################
-# Global linker options
-################################################################################
-if(MSVC)
-    # remove default flags provided with CMake for MSVC
-    set(CMAKE_EXE_LINKER_FLAGS "")
-    set(CMAKE_MODULE_LINKER_FLAGS "")
-    set(CMAKE_SHARED_LINKER_FLAGS "")
-    set(CMAKE_STATIC_LINKER_FLAGS "")
-    set(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS}")
-    set(CMAKE_MODULE_LINKER_FLAGS_DEBUG "${CMAKE_MODULE_LINKER_FLAGS}")
-    set(CMAKE_SHARED_LINKER_FLAGS_DEBUG "${CMAKE_SHARED_LINKER_FLAGS}")
-    set(CMAKE_STATIC_LINKER_FLAGS_DEBUG "${CMAKE_STATIC_LINKER_FLAGS}")
-    set(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS}")
-    set(CMAKE_MODULE_LINKER_FLAGS_RELEASE "${CMAKE_MODULE_LINKER_FLAGS}")
-    set(CMAKE_SHARED_LINKER_FLAGS_RELEASE "${CMAKE_SHARED_LINKER_FLAGS}")
-    set(CMAKE_STATIC_LINKER_FLAGS_RELEASE "${CMAKE_STATIC_LINKER_FLAGS}")
+# ---- PAL backend ----
+if(WIN32)
+    set(_default_pal "win32")
+elseif(APPLE)
+    set(_default_pal "cocoa")
+else()
+    set(_default_pal "gtk")
 endif()
 
-################################################################################
-# Nuget packages function stub.
-################################################################################
-function(use_package TARGET PACKAGE VERSION)
-    message(WARNING "No implementation of use_package. Create yours. "
-                    "Package \"${PACKAGE}\" with version \"${VERSION}\" "
-                    "for target \"${TARGET}\" is ignored!")
-endfunction()
+set(MOON_PAL "${_default_pal}" CACHE STRING
+    "Platform abstraction layer backend. One of: win32  sdl2  gtk  cocoa")
+set_property(CACHE MOON_PAL PROPERTY STRINGS win32 sdl2 gtk cocoa)
 
-################################################################################
-# Common utils
-################################################################################
-include(CMake/Utils.cmake)
+if(MOON_PAL STREQUAL "win32" AND NOT WIN32)
+    message(FATAL_ERROR "MOON_PAL=win32 requires a Windows host")
+endif()
+if(MOON_PAL STREQUAL "cocoa" AND NOT APPLE)
+    message(FATAL_ERROR "MOON_PAL=cocoa requires macOS")
+endif()
 
-################################################################################
-# Additional Global Settings(add specific info there)
-################################################################################
-include(CMake/GlobalSettingsInclude.cmake OPTIONAL)
+message(STATUS "Moonlight PAL: ${MOON_PAL}")
 
-################################################################################
-# Use solution folders feature
-################################################################################
+# ---- Feature flags ----
+option(MOON_ENABLE_CURL    "Enable libcurl for networking"       ON)
+option(MOON_ENABLE_FFMPEG  "Enable FFmpeg media pipeline"        OFF)
+option(MOON_AUDIO_ALSA     "Enable ALSA audio backend"           OFF)
+option(MOON_AUDIO_PULSE    "Enable PulseAudio audio backend"     OFF)
+option(MOON_AUDIO_OPENSLES "Enable OpenSLES audio (Android)"     OFF)
+
+# ---- Architecture token ----
+# Used to locate prebuilt Windows deps laid out as deps/<lib>/{x64,x86}/...
+if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+    set(MOON_ARCH "x64")
+else()
+    set(MOON_ARCH "x86")
+endif()
+
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
-################################################################################
-# Sub-projects
-################################################################################
 add_subdirectory(src/runtime)
-

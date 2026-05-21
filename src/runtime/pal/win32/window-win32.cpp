@@ -40,6 +40,8 @@
 #include "events/motion-win32.h"
 #include "events/wheel-win32.h"
 #include "events/key-win32.h"
+#include "events/crossing-win32.h"
+#include "events/focus-win32.h"
 
 using namespace Moonlight;
 
@@ -51,10 +53,15 @@ MoonWindowWin32::MoonWindowWin32(MoonWindowType windowType, int w, int h, MoonWi
     this->quitOnClose = false;
     this->handle = (HWND)INVALID_HANDLE_VALUE;
     this->monitor = (HMONITOR)INVALID_HANDLE_VALUE;
+    this->cursor = LoadCursor(NULL, IDC_ARROW);
+    this->tracking_mouse = false;
     this->damage = new Region();
     this->last_click_time = -1;
     this->num_clicks = 0;
     this->rc_clicks = { 0, 0, 0, 0 };
+    this->clipboard = nullptr;
+    this->left = 0;
+    this->top = 0;
 
 #ifdef USE_WGL
     gltarget = NULL;
@@ -100,8 +107,6 @@ void MoonWindowWin32::Resize(int width, int height) {
         return;
 
     SetWindowPos(handle, nullptr, 0, 0, width, height, SWP_NOMOVE);
-
-    g_warning("buffer = (%d,%d) surface = (%d,%d)", width, height, this->width, this->height);
 
     this->width = width;
     this->height = height;
@@ -156,22 +161,31 @@ void MoonWindowWin32::SetCursor(CursorType cursor) {
         break;
     }
 
-    if (pCursor) {
-        SetClassLongPtr(handle,                   // window handle
-            GCLP_HCURSOR,                         // change cursor
-            (LONG_PTR)LoadCursor(NULL, pCursor)); // new cursor
-    }
+    // CursorTypeNone (and the unmapped stylus/eraser cases) leave pCursor
+    // NULL, which hides the cursor over the client area.
+    this->cursor = pCursor ? LoadCursor(NULL, pCursor) : NULL;
+
+    // Apply immediately if the pointer is already over our client area;
+    // otherwise the next WM_SETCURSOR will pick it up. SetClassLongPtr would
+    // have changed the cursor for every window sharing the class, which is wrong.
+    if (tracking_mouse || handle == GetCapture())
+        ::SetCursor(this->cursor);
 }
 
 void MoonWindowWin32::Invalidate(Rect r) {
-    // FIXME
-    // damage->Union(r);
-
-    RECT rect = { r.x, r.y, r.x + r.width, r.y + r.height };
-    InvalidateRect(handle, &rect, false);
+    // Round outward so we never invalidate less than the damaged area.
+    RECT rect = {
+        (LONG)floor(r.x),
+        (LONG)floor(r.y),
+        (LONG)ceil(r.x + r.width),
+        (LONG)ceil(r.y + r.height)
+    };
+    InvalidateRect(handle, &rect, FALSE);
 }
 
 void MoonWindowWin32::ProcessUpdates() {
+    if (handle != (HWND)INVALID_HANDLE_VALUE)
+        UpdateWindow(handle);
 }
 
 gboolean MoonWindowWin32::HandleEvent(gpointer platformEvent) {
@@ -191,7 +205,7 @@ void MoonWindowWin32::Show() {
 
 void MoonWindowWin32::Hide() {
     if (surface)
-        surface->HandleUIWindowAvailable();
+        surface->HandleUIWindowUnavailable();
 
     ShowWindow(handle, SW_HIDE);
 }
@@ -209,14 +223,15 @@ void MoonWindowWin32::GrabFocus() {
 }
 
 bool MoonWindowWin32::HasFocus() {
-    return GetActiveWindow() == handle;
+    return GetFocus() == handle;
 }
 
 void MoonWindowWin32::SetLeft(double left) {
     if (this->left == left)
         return;
 
-    SetWindowPos(handle, nullptr, left, 0, 0, 0, SWP_NOSIZE);
+    this->left = left;
+    SetWindowPos(handle, nullptr, (int)left, (int)top, 0, 0, SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE);
 }
 
 double MoonWindowWin32::GetLeft() {
@@ -227,7 +242,8 @@ void MoonWindowWin32::SetTop(double top) {
     if (this->top == top)
         return;
 
-    SetWindowPos(handle, nullptr, 0, top, 0, 0, SWP_NOSIZE);
+    this->top = top;
+    SetWindowPos(handle, nullptr, (int)left, (int)top, 0, 0, SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE);
 }
 
 double MoonWindowWin32::GetTop() {
@@ -277,6 +293,7 @@ void MoonWindowWin32::SetIconFromPixbuf(MoonPixbuf *pixbuf) {
 
     DeleteObject(hBitmapMask);
 }
+
 
 typedef HRESULT(WINAPI *PFNSETWINDOWATTRIBUTE)(HWND hWnd, DWORD dwAttribute, LPCVOID pvAttribute, DWORD cbAttribute);
 enum DWM_WINDOW_CORNER_PREFERENCE {
@@ -432,6 +449,10 @@ void MoonWindowWin32::Paint() {
 
 LRESULT MoonWindowWin32::WndProc(UINT msg, WPARAM wParam, LPARAM lParam) {
     switch (msg) {
+    case WM_CREATE: {
+        this->UpdateRefreshRate();
+        return 0;
+    }
     case WM_PAINT: {
         this->Paint();
         return 0;
@@ -472,11 +493,46 @@ LRESULT MoonWindowWin32::WndProc(UINT msg, WPARAM wParam, LPARAM lParam) {
         return 0;
     }
 
+    case WM_SETCURSOR: {
+        // Only override the cursor over our own client area; let the default
+        // handler deal with the non-client area (resize borders, etc.).
+        if (LOWORD(lParam) == HTCLIENT) {
+            ::SetCursor(cursor);
+            return TRUE;
+        }
+        break;
+    }
+
     case WM_MOUSEMOVE: {
         auto x = GET_X_LPARAM(lParam);
         auto y = GET_Y_LPARAM(lParam);
+
+        if (!tracking_mouse) {
+            // Ask for a WM_MOUSELEAVE, then emit the enter crossing.
+            TRACKMOUSEEVENT tme{ sizeof(TRACKMOUSEEVENT), TME_LEAVE, handle, 0 };
+            TrackMouseEvent(&tme);
+            tracking_mouse = true;
+
+            auto enter = new MoonCrossingEventWin32(true, x, y);
+            enter->DispatchToWindow(this);
+            delete enter;
+        }
+
         auto event = new MoonMotionEventWin32(wParam, 0, x, y);
         event->DispatchToWindow(this);
+        delete event;
+        return 0;
+    }
+    case WM_MOUSELEAVE: {
+        tracking_mouse = false;
+
+        POINT pt;
+        GetCursorPos(&pt);
+        ScreenToClient(handle, &pt);
+
+        auto event = new MoonCrossingEventWin32(false, pt.x, pt.y);
+        event->DispatchToWindow(this);
+        delete event;
         return 0;
     }
     case WM_LBUTTONDOWN:
@@ -497,6 +553,7 @@ LRESULT MoonWindowWin32::WndProc(UINT msg, WPARAM wParam, LPARAM lParam) {
 
         auto event = new MoonButtonEventWin32(msg == WM_RBUTTONDOWN ? 3 : 1, false, 0, x, y, this->num_clicks);
         event->DispatchToWindow(this);
+        delete event;
         break;
     }
     case WM_LBUTTONUP:
@@ -506,24 +563,28 @@ LRESULT MoonWindowWin32::WndProc(UINT msg, WPARAM wParam, LPARAM lParam) {
 
         auto event = new MoonButtonEventWin32(msg == WM_RBUTTONUP ? 3 : 1, true, 0, x, y, this->num_clicks);
         event->DispatchToWindow(this);
+        delete event;
         break;
     }
     case WM_MOUSEWHEEL: {
-        auto x = GET_X_LPARAM(lParam);
-        auto y = GET_Y_LPARAM(lParam);
-        auto keys = GET_KEYSTATE_WPARAM(wParam);
+        // Wheel coordinates arrive in screen space, unlike the other mouse
+        // messages; convert to client space to match the rest of the PAL.
+        POINT pt{ GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam) };
+        ScreenToClient(handle, &pt);
         auto delta = (float)GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA;
 
-        auto event = new MoonWheelEventWin32(0, x, y, delta);
+        auto event = new MoonWheelEventWin32(0, pt.x, pt.y, delta);
         event->DispatchToWindow(this);
+        delete event;
         return 0;
     }
 
     case WM_KEYDOWN: {
-        if ((wParam >= 'A' && wParam <= 'Z') || (wParam >= '0' && wParam >= '9') || wParam == VK_SPACE)
+        if ((wParam >= 'A' && wParam <= 'Z') || (wParam >= '0' && wParam <= '9') || wParam == VK_SPACE)
             break;
         auto event = new MoonKeyEventWin32(true, false, wParam, lParam, 0);
         event->DispatchToWindow(this);
+        delete event;
         break;
     }
 
@@ -532,34 +593,33 @@ LRESULT MoonWindowWin32::WndProc(UINT msg, WPARAM wParam, LPARAM lParam) {
             break;
         auto event = new MoonKeyEventWin32(true, true, wParam, lParam, 0);
         event->DispatchToWindow(this);
+        delete event;
         break;
     }
 
     case WM_KEYUP: {
         auto event = new MoonKeyEventWin32(false, false, wParam, lParam, 0);
         event->DispatchToWindow(this);
+        delete event;
+        break;
+    }
+
+    case WM_SETFOCUS: {
+        auto event = new MoonFocusEventWin32(true);
+        event->DispatchToWindow(this);
+        delete event;
+        break;
+    }
+
+    case WM_KILLFOCUS: {
+        auto event = new MoonFocusEventWin32(false);
+        event->DispatchToWindow(this);
+        delete event;
         break;
     }
 
     case WM_WINDOWPOSCHANGED: {
-        HMONITOR currentMonitor = MonitorFromWindow(this->handle, MONITOR_DEFAULTTONEAREST);
-        if (currentMonitor != this->monitor) {
-            this->monitor = currentMonitor;
-
-            MONITORINFOEX monitorInfo{};
-            monitorInfo.cbSize = sizeof(MONITORINFOEX);
-            if (!GetMonitorInfo(currentMonitor, (LPMONITORINFO)&monitorInfo))
-                break;
-
-            DEVMODE devMode{};
-            devMode.dmSize = sizeof(DEVMODE);
-            if (!EnumDisplaySettings(monitorInfo.szDevice, ENUM_CURRENT_SETTINGS, &devMode))
-                break;
-
-            if (this->surface)
-                this->surface->GetTimeManager()
-                    ->SetMaximumRefreshRate(devMode.dmDisplayFrequency);
-        }
+        UpdateRefreshRate();
         break;
     }
     case WM_DISPLAYCHANGE: {
@@ -569,6 +629,28 @@ LRESULT MoonWindowWin32::WndProc(UINT msg, WPARAM wParam, LPARAM lParam) {
     }
 
     return DefWindowProc(handle, msg, wParam, lParam);
+}
+
+void Moonlight::MoonWindowWin32::UpdateRefreshRate()
+{
+    HMONITOR currentMonitor = MonitorFromWindow(this->handle, MONITOR_DEFAULTTOPRIMARY);
+    if (currentMonitor != this->monitor) {
+        this->monitor = currentMonitor;
+
+        MONITORINFOEX monitorInfo{};
+        monitorInfo.cbSize = sizeof(MONITORINFOEX);
+        if (!GetMonitorInfo(currentMonitor, (LPMONITORINFO)&monitorInfo))
+            return;
+
+        DEVMODE devMode{};
+        devMode.dmSize = sizeof(DEVMODE);
+        if (!EnumDisplaySettings(monitorInfo.szDevice, ENUM_CURRENT_SETTINGS, &devMode))
+            return;
+
+        if (this->surface)
+            this->surface->GetTimeManager()
+            ->SetMaximumRefreshRate(devMode.dmDisplayFrequency);
+    }
 }
 
 void Moonlight::MoonWindowWin32::SetQuitOnClose(bool quitOnClose) {

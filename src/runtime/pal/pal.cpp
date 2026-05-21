@@ -780,7 +780,7 @@ namespace Moonlight {
             return;
         }
 
-        gmtime_s(&tm, &app->mtime);
+        gmtime_r(&app->mtime, &tm);
 
         snprintf(mtime, sizeof(mtime), "%s, %02d %s %04d %02d:%02d:%02d GMT",
             tm_days[tm.tm_wday], tm.tm_mday, tm_months[tm.tm_mon],
@@ -882,19 +882,8 @@ namespace Moonlight {
 };
 
 #if _WIN32 && !PAL_WIN32_WINDOWING
-#undef InterlockedExchangeAdd
-#undef InterlockedIncrement
-#undef CreateSymbolicLinkA
-
 #include <windows.h>
 
-unsigned int __stdcall _InterlockedExchangeAdd(unsigned int *Addend, unsigned int Value) {
-    return InterlockedExchangeAdd((LONG *)Addend, Value);
-}
-
-unsigned int __stdcall _InterlockedIncrement(unsigned int *Addend) {
-    return InterlockedIncrement((LONG *)Addend);
-}
 int __stdcall _CreateSymbolicLinkA(
     const char *lpSymlinkFileName,
     const char *lpTargetFileName,

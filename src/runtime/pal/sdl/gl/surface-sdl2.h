@@ -14,8 +14,8 @@
 #include <SDL.h>
 
 #include "surface-gl.h"
-#include <GL/GL.h>
-#include <GL/glew.h>
+
+#include <GL/gl.h>
 
 namespace Moonlight {
 

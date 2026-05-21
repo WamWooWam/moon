@@ -749,7 +749,7 @@ namespace Moonlight {
                                          shutting_down(false),
                                          worker_mutex(true) {
         // Create our pipe
-        if (_pipe(fds, 256, O_BINARY) != 0) {
+        if (pipe(fds) != 0) {
             fds[0] = -1;
             fds[1] = -1;
             LOG_CURL("BRIDGE CurlHttpHandler pipe (%s).\n", strerror(errno));
@@ -834,11 +834,11 @@ namespace Moonlight {
         LOG_CURL("BRIDGE ~CurlHttpHandler\n");
 
         if (fds[0] != -1) {
-            _close(fds[0]);
+            close(fds[0]);
             fds[0] = -1;
         }
         if (fds[1] != -1) {
-            _close(fds[1]);
+            close(fds[1]);
             fds[1] = -1;
         }
 

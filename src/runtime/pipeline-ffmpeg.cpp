@@ -28,7 +28,11 @@
 #include "debug.h"
 #include "deployment.h"
 
+#ifdef MONO
 #include <mono/io-layer/atomic.h>
+#else
+#include "pal/compat/atomic.h"
+#endif
 
 namespace Moonlight {
 

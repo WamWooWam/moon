@@ -64,24 +64,21 @@
 #include "pal/sdl/pal-sdl2.h"
 #endif
 #if PAL_GLIB_MESSAGING
-#include "pal/messaging/glib/pal-glib-msg.h"
+#include "pal/gtk/messaging/glib/pal-glib-msg.h"
 #endif
 #if PAL_LINUX_CAPTURE
-#include "pal/capture/pal-linux-capture.h"
+#include "pal/gtk/capture/pal-linux-capture.h"
 #endif
 #if PAL_LINUX_NETWORKAVAILABILITY
-#include "pal/network/pal-linux-network.h"
+#include "pal/gtk/network/pal-linux-network.h"
 #elif PAL_DBUS_NETWORKAVAILABILITY
-#include "pal/network/dbus/pal-dbus-network.h"
+#include "pal/gtk/network/dbus/pal-dbus-network.h"
 #endif
 #if PAL_FONTCONFIG_FONTSERVICE
-#include "pal/fonts/fontconfig/pal-fontconfig.h"
+#include "pal/fonts/fontconfig/fonts-fontconfig.h"
 #endif
-#if PAL_WIN32_FONTSERVICE
-#include "pal/win32/fonts-win32.h"
-#endif
-#if PAL_SDL2_FONTSERVICE
-#include "pal/sdl/fonts-sdl2.h"
+#if PAL_DWRITE_FONTSERVICE
+#include "pal/fonts/dwrite/fonts-dwrite.h"
 #endif
 
 #include "pipeline.h"
@@ -204,8 +201,8 @@ namespace Moonlight {
 #define GLX_RUNTIME_INIT 0
 #endif
 
-#define RUNTIME_INIT_DESKTOP (RuntimeInitFlag)(RUNTIME_INIT_OCCLUSION_CULLING | RUNTIME_INIT_USE_UPDATE_POSITION | RUNTIME_INIT_USE_SHAPE_CACHE | RUNTIME_INIT_USE_IDLE_HINT | RUNTIME_INIT_ALL_IMAGE_FORMATS | RUNTIME_INIT_DESKTOP_EXTENSIONS | GLX_RUNTIME_INIT | RUNTIME_INIT_ENABLE_TOGGLEREFS | RUNTIME_INIT_AUDIO_ALSA | RUNTIME_INIT_AUDIO_PULSE | RUNTIME_INIT_AUDIO_OPENSLES)
-#define RUNTIME_INIT_BROWSER (RuntimeInitFlag)(RUNTIME_INIT_OCCLUSION_CULLING | RUNTIME_INIT_USE_UPDATE_POSITION | RUNTIME_INIT_USE_SHAPE_CACHE | RUNTIME_INIT_ALLOW_WINDOWLESS | RUNTIME_INIT_USE_IDLE_HINT | RUNTIME_INIT_ENABLE_MS_CODECS | RUNTIME_INIT_CREATE_ROOT_DOMAIN | GLX_RUNTIME_INIT | RUNTIME_INIT_ENABLE_TOGGLEREFS | RUNTIME_INIT_AUDIO_ALSA | RUNTIME_INIT_AUDIO_PULSE | RUNTIME_INIT_AUDIO_OPENSLES)
+#define RUNTIME_INIT_DESKTOP (RuntimeInitFlag)(RUNTIME_INIT_SHOW_FPS | RUNTIME_INIT_OCCLUSION_CULLING | RUNTIME_INIT_USE_UPDATE_POSITION | RUNTIME_INIT_USE_SHAPE_CACHE | RUNTIME_INIT_USE_IDLE_HINT | RUNTIME_INIT_ALL_IMAGE_FORMATS | RUNTIME_INIT_DESKTOP_EXTENSIONS | GLX_RUNTIME_INIT | RUNTIME_INIT_ENABLE_TOGGLEREFS | RUNTIME_INIT_AUDIO_ALSA | RUNTIME_INIT_AUDIO_PULSE | RUNTIME_INIT_AUDIO_OPENSLES)
+#define RUNTIME_INIT_BROWSER (RuntimeInitFlag)(RUNTIME_INIT_SHOW_FPS | RUNTIME_INIT_OCCLUSION_CULLING | RUNTIME_INIT_USE_UPDATE_POSITION | RUNTIME_INIT_USE_SHAPE_CACHE | RUNTIME_INIT_ALLOW_WINDOWLESS | RUNTIME_INIT_USE_IDLE_HINT | RUNTIME_INIT_ENABLE_MS_CODECS | RUNTIME_INIT_CREATE_ROOT_DOMAIN | GLX_RUNTIME_INIT | RUNTIME_INIT_ENABLE_TOGGLEREFS | RUNTIME_INIT_AUDIO_ALSA | RUNTIME_INIT_AUDIO_PULSE | RUNTIME_INIT_AUDIO_OPENSLES)
 
 #if DEBUG || LOGGING
     static struct MoonlightDebugOption debugs[] = {
@@ -232,7 +229,7 @@ namespace Moonlight {
         { "mp3", RUNTIME_DEBUG_MP3 },
         { "mp4", RUNTIME_DEBUG_MP4 },
         { "msi", RUNTIME_DEBUG_MSI },
-        { "oob", RUNTIME_DEBUG_OOB },
+        { "oob", (guint32)RUNTIME_DEBUG_OOB },
         { "pipeline", RUNTIME_DEBUG_PIPELINE },
         { "pipeline-error", RUNTIME_DEBUG_PIPELINE_ERROR },
         { "playlist", RUNTIME_DEBUG_PLAYLIST },
@@ -2808,14 +2805,12 @@ dump_render_list (List *render_list)
 
 #if PAL_FONTCONFIG_FONTSERVICE
         font_service = new MoonFontServiceFontconfig();
+#elif PAL_DWRITE_FONTSERVICE
+        font_service = new MoonFontServiceDWrite();
 #elif PAL_ANDROID_FONTSERVICE
         font_service = new MoonFontServiceAndroid();
 #elif PAL_COCOA_FONTSERVICE
         font_service = new MoonFontServiceCocoa();
-#elif PAL_WIN32_FONTSERVICE
-        font_service = new MoonFontServiceWin32();
-#elif PAL_SDL2_FONTSERVICE
-        font_service = new MoonFontServiceSDL2();
 #else
         g_warning("This pal doesn't have a font service, you will crash, burn and die a fiery death.");
 #endif

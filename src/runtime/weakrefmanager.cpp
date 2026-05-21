@@ -53,7 +53,7 @@ namespace Moonlight {
         if (field) {
             field->RemoveHandler(EventObject::DestroyedEvent, clear_weak_ref, this);
             // If 'id' is NULL then it means this WeakRef should not be mirrored in managed code
-            if (id && !obj->GetDeployment()->IsShuttingDown()) {
+            if (id && obj->clearManagedRef && !obj->GetDeployment()->IsShuttingDown()) {
                 /* We have to check if we're shutting down, since setManagedRef is a managed callback */
                 obj->clearManagedRef(obj, field->GetManagedHandle().ToIntPtr(), id);
             }
@@ -64,7 +64,7 @@ namespace Moonlight {
         if (field) {
             field->AddHandler(EventObject::DestroyedEvent, clear_weak_ref, this);
             // If 'id' is NULL then it means this WeakRef should not be mirrored in managed code
-            if (id && !obj->GetDeployment()->IsShuttingDown()) {
+            if (id && obj->addManagedRef && !obj->GetDeployment()->IsShuttingDown()) {
                 /* We have to check if we're shutting down, since setManagedRef is a managed callback */
                 obj->addManagedRef(obj, field->GetManagedHandle().ToIntPtr(), id);
             }

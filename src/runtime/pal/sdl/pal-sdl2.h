@@ -9,12 +9,13 @@ namespace Moonlight {
 
     constexpr int MoonSDL2TimerId = 6969;
 
+    class MoonWindowSDL2;
+
     class MoonWindowingSystemSDL2 : public MoonWindowingSystem {
     public:
         MoonWindowingSystemSDL2(bool out_of_browser);
         virtual ~MoonWindowingSystemSDL2();
 
-        // creates a platform/windowing system specific surface
         virtual cairo_surface_t *CreateSurface();
         virtual void ExitApplication();
 
@@ -60,19 +61,19 @@ namespace Moonlight {
         virtual gchar *GetUserConfigFolder();
 
     private:
+        MoonWindowSDL2 *FindWindowByID(Uint32 windowID);
+
         void OnTick();
         void AddSDL2Timer();
         void RemoveSource(guint sourceId);
-        
-        void *pool;
-        int stride;
 
-        // glib terminology here.  we mean "timeouts and idles"
         GList *sources;
         guint source_id;
         bool emitting_sources;
         MoonMutex sourceMutex;
         guint32 before;
         SDL_TimerID timer;
+
+        GList *windows;
     };
 };

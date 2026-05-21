@@ -137,7 +137,7 @@ namespace Moonlight {
         RUNTIME_DEBUG_DEMUXERS = 1 << 28,
         RUNTIME_DEBUG_MP4 = 1 << 29,
         RUNTIME_DEBUG_EFFECT = 1 << 30,
-        RUNTIME_DEBUG_OOB = 1 << 31,
+        RUNTIME_DEBUG_OOB = (int)(1u << 31),
     };
 
     enum RuntimeDebugExtraFlag {

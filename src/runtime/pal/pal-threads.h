@@ -55,6 +55,16 @@ namespace Moonlight {
         static gpointer GetSpecific(MoonTlsKey& key);
         static void SetSpecific(MoonTlsKey& key, gpointer data);
 
+#if PAL_THREADS_WINDOWS
+        // Initialize a COM apartment on the calling thread, tracked by this
+        // thread's MoonThread so it is balanced with CoUninitialize on exit.
+        // Idempotent per thread, and safe to call when COM is already
+        // initialized (e.g. by the .NET runtime) — it defers to the existing
+        // apartment rather than fighting it. `sta` selects single-threaded
+        // (apartment) vs multi-threaded.
+        static void InitComApartment(bool sta);
+#endif
+
     private:
         // we want to outlaw copy ctors and operator= since the platform types might
         // not be copyable/refcounted/etc, and the dtor called on the other value will
@@ -79,8 +89,19 @@ namespace Moonlight {
 #elif PAL_THREADS_WINDOWS
         HANDLE thread;
         DWORD threadId;
-        static DWORD self_tls;
+        // true for objects we synthesize in Self() for unattached threads —
+        // those are owned by the self_tls slot and freed on thread exit.
+        // Threads created via Start() are owned by their creator.
+        bool synthetic;
+        // COM apartment ownership for this thread: 0 = not attempted,
+        // 1 = we initialized it and must CoUninitialize on exit, -1 = COM was
+        // already initialized in another apartment, so we leave it alone.
+        int com_state;
+        static DWORD self_tls; // FLS index
+        static void EnsureSelfTls();
+        static BOOL WINAPI InitSelfTls(PINIT_ONCE once, PVOID param, PVOID* ctx);
         static DWORD WINAPI Main(LPVOID data);
+        static VOID WINAPI SelfCleanup(PVOID data);
 #elif PAL_SDL2_THREADS
         SDL_threadID thread;
         static SDL_TLSID self_tls;

@@ -34,7 +34,7 @@
 namespace Moonlight {
 
 // Unicode Line Separator (\u2028)
-static const char utf8_linebreak[3] = { 0xe2, 0x80, 0xa8 };
+static const char utf8_linebreak[3] = { (char)0xe2, (char)0x80, (char)0xa8 };
 #define utf8_linebreak_len 3
 
 
